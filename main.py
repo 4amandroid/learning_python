@@ -144,7 +144,7 @@ balls = []
 
 balls.append(ball4)
 
-
+# some shit code
 
 #pri natiskane na quit krai ili game over later
 
