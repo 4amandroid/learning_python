@@ -141,41 +141,11 @@ ball3.move_down_right = True
 ball4 = MooveCoor()
 
 balls = []
-balls.append(ball2)
-balls.append(ball1)
-balls.append(ball3)
+
 balls.append(ball4)
-'''class PopcornBar:
-    def __init__(self, x_position=300, y_position=550, accelerate=0, gaming=True):
-        self.x_position = x_position
-        self.y_position = y_position
-        self.accelerate = accelerate
-        self.gaming = gaming
-    def move_bar(self):
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.type == pygame.QUIT:
-                    self.gaming = False
 
-                if event.key == pygame.K_LEFT:
-                    self.accelerate += -0.3
-                if event.key == pygame.K_RIGHT:
-                    self.accelerate += 0.3
-            #if event.type == pygame.KEYUP:
-            #    if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-            #        self.accelerate += 0
-        self.x_position += self.accelerate
-        if self.x_position < 0:
-            self.accelerate = 0
-            self.x_position = 1
-        if self.x_position > 930:
-            self.accelerate = 0
-            self.x_position = 930
-
-        screen.blit(playerImg, (int(self.x_position), int(self.y_position)))
-
-bar = PopcornBar()'''
-
+# some shit code
+#more code
 
 #pri natiskane na quit krai ili game over later
 
