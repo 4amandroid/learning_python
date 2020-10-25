@@ -1,5 +1,5 @@
 #fist change
-
+#second commit
 import pygame
 
 pygame.init()
