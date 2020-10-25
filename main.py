@@ -1,5 +1,6 @@
 #fist change
 #second commit
+#from py charm
 import pygame
 
 pygame.init()
@@ -145,7 +146,7 @@ balls = []
 balls.append(ball4)
 
 # some shit code
-#more code
+
 
 #pri natiskane na quit krai ili game over later
 
