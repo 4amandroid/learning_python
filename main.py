@@ -1,6 +1,7 @@
 #fist change
 #second commit
 #from py charm
+import math
 import pygame
 
 pygame.init()
@@ -99,7 +100,20 @@ class MooveCoor:
         if self.x_position > 930:
             self.accelerate = 0
             self.x_position = 930
+        print(pygame.mouse.get_pos()[0])
+        self.x_position = pygame.mouse.get_pos()[0]
+        screen.blit(playerImg, (int(self.x_position), int(self.y_position)))
 
+    def move_bar_mouse(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.type == pygame.QUIT:
+                    self.gaming = False
+                if event.key == pygame.K_q:
+                    self.gaming = False
+
+        self.x_position = pygame.mouse.get_pos()[0]
+        print(self.x_position)
         screen.blit(playerImg, (int(self.x_position), int(self.y_position)))
 
     def ball_blowed_on_bar(self):
@@ -180,28 +194,31 @@ while bar.gaming:
     #pygame.draw.rect(screen, (100, 100, 60), (100, 100, 60, 40))
     brick1.put_brick_on_screen()
 
-    bar.move_bar()
+    bar.move_bar_mouse()
     ball2.ball_blowed_on_bar()
     for _ball in balls:
         opx = _ball.koorx
         opy = _ball.koory
-        if _ball.koorx >= brick1.left_corner_x  and \
-                _ball.koorx <= brick1.left_corner_x + brick1.lenght and \
-                _ball.koory >= brick1.left_corner_y and \
-                _ball.koory >= brick1.left_corner_y and \
-                _ball.koory <= brick1.left_corner_y + brick1.width:
-            if _ball.move_up_left:
-                _ball.move_up_left = False
-                _ball.move_down_left = True
-            elif _ball.move_up_right:
-                _ball.move_up_right = False
-                _ball.move_down_right = True
-            elif _ball.move_down_left:
-                _ball.move_down_left = False
-                _ball.move_up_left = True
-            elif _ball.move_down_right:
-                _ball.move_down_right = False
-                _ball.move_up_right = True
+        for _degrees in range(180):
+            opx = int(_ball.radius * math.cos(_degrees)) + _ball.koorx
+            opy = int(_ball.radius * math.sin(_degrees)) + _ball.koory
+            if opx >= brick1.left_corner_x  and \
+                    opx <= brick1.left_corner_x + brick1.lenght and \
+                    opy >= brick1.left_corner_y and \
+                    opy >= brick1.left_corner_y and \
+                    opy <= brick1.left_corner_y + brick1.width:
+                if _ball.move_up_left:
+                    _ball.move_up_left = False
+                    _ball.move_down_left = True
+                elif _ball.move_up_right:
+                    _ball.move_up_right = False
+                    _ball.move_down_right = True
+                elif _ball.move_down_left:
+                    _ball.move_down_left = False
+                    _ball.move_up_left = True
+                elif _ball.move_down_right:
+                    _ball.move_down_right = False
+                    _ball.move_up_right = True
 
 
 
