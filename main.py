@@ -13,7 +13,7 @@ pygame.display.set_icon(icon)
 playerImg = pygame.image.load("C:\\Users\\hrisi\\Desktop\\popcorn\\greenbar.png")
 
 class MooveCoor:
-    def __init__(self, koorx=130, koory=130, radius=20, stepx=0.1, stepy=0.1,
+    def __init__(self, koorx=130, koory=130, radius=20, stepx=1, stepy=1,
                  move_down_left=True, move_down_right=False,
                  move_up_left=False, move_up_right=False, object_blowed=False,
                  x_position=300, y_position=550, accelerate=0, gaming=True):
@@ -141,11 +141,30 @@ ball3.move_down_left = False
 ball3.move_down_right = True
 ball4 = MooveCoor()
 
-balls = []
-
+balls = [ball1, ball2]
+#balls.append(ball1)
+#balls.append(ball2)
+balls.append(ball3)
 balls.append(ball4)
 
 # some shit code
+
+
+class Bricks:
+    def __init__(self, left_corner_x, left_corner_y, lenght=340, width=40):
+        self.left_corner_x = left_corner_x
+        self.left_corner_y = left_corner_y
+        self.lenght = lenght
+        self.width = width
+
+    def put_brick_on_screen(self):
+        pygame.draw.rect(screen, (100, 100, 60), (self.left_corner_x,
+                                                  self.left_corner_y,
+                                                  self.lenght, self.width))
+
+
+brick1 = Bricks(150, 160)
+brick1.put_brick_on_screen()
 
 
 #pri natiskane na quit krai ili game over later
@@ -158,10 +177,34 @@ def not_game_over(gaming = True):
 
 while bar.gaming:
     screen.fill((95, 222, 146))
+    #pygame.draw.rect(screen, (100, 100, 60), (100, 100, 60, 40))
+    brick1.put_brick_on_screen()
 
     bar.move_bar()
     ball2.ball_blowed_on_bar()
     for _ball in balls:
+        opx = _ball.koorx
+        opy = _ball.koory
+        if _ball.koorx >= brick1.left_corner_x  and \
+                _ball.koorx <= brick1.left_corner_x + brick1.lenght and \
+                _ball.koory >= brick1.left_corner_y and \
+                _ball.koory >= brick1.left_corner_y and \
+                _ball.koory <= brick1.left_corner_y + brick1.width:
+            if _ball.move_up_left:
+                _ball.move_up_left = False
+                _ball.move_down_left = True
+            elif _ball.move_up_right:
+                _ball.move_up_right = False
+                _ball.move_down_right = True
+            elif _ball.move_down_left:
+                _ball.move_down_left = False
+                _ball.move_up_left = True
+            elif _ball.move_down_right:
+                _ball.move_down_right = False
+                _ball.move_up_right = True
+
+
+
         if _ball.koorx - _ball.radius > bar.x_position \
                 and _ball.koorx < bar.x_position + 107 and _ball.koory > 550 - _ball.radius:
             bar.object_blowed = True
