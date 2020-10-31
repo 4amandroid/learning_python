@@ -17,7 +17,12 @@ class MooveCoor:
     def __init__(self, koorx=130, koory=130, radius=20, stepx=1, stepy=1,
                  move_down_left=True, move_down_right=False,
                  move_up_left=False, move_up_right=False, object_blowed=False,
-                 x_position=300, y_position=550, accelerate=0, gaming=True):
+                 x_position=300, y_position=550, accelerate=0, gaming=True,
+                 left_x=100, left_y=100, lenght_x=100, lenght_y=100):
+        self.left_x = left_x
+        self.left_y=left_y
+        self.lenght_x = lenght_x
+        self.lenght_y = lenght_y
         self.gaming = gaming
         self.accelerate = accelerate
         self.x_position = x_position
@@ -32,6 +37,10 @@ class MooveCoor:
         self.move_down_right = move_down_right
         self.move_up_left = move_up_left
         self.move_up_right = move_up_right
+    def put_brick_on_screen(self):
+        pygame.draw.rect(screen, (100, 100, 60), (self.left_x,
+                                                  self.left_y,
+                                                  self.lenght_x, self.lenght_y))
     def get_data(self):
         if self.move_down_left:
             if self.koorx <= 0:
