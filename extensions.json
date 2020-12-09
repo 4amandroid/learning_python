@@ -1,0 +1,12 @@
+{
+    "recommendations":
+    [
+        "ms-python.python", 
+        "tht13.python",
+        "donjayamanne.python-extension-pack",
+        "kevinrose.vsc-python-indent",
+        "himanoa.python-autopep8",
+        "igress.python-coding-conventions",
+        "VisualStudioExptTeam.vscodeintellicode"
+    ]
+}
