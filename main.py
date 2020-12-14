@@ -1,3 +1,4 @@
+from typing import List, Tuple
 import pygame
 
 POPCORN_GREEN_BAR_PNG = "/home/ivan/Desktop/my_project/source/popcorn/greenbar.png"
@@ -7,9 +8,9 @@ STEP_Y = 1
 DARK_GREEN = (2, 62, 16)
 GREEN = (0, 255, 0)
 LIGHT_GREEN = (250, 248, 0)
-PURPLE = (128, 0, 128)
-BLUE = (0, 0, 255)
-RED = (255, 0, 0)
+PURPLE: pygame.Color = pygame.Color(128, 0, 128, 0)
+BLUE = (0, 0, 255, 0)
+RED = (255, 0, 0, 0)
 WHITE = (255, 255, 255)
 LEVEL1_X_BRICK = [10, 60, 110, 160, 210, 260, 310, 360, 410, 460, 510, 560, 610, 660, 710, 760, 810, 860, 910 /
                   10, 60, 110, 160, 210, 260, 310, 360, 410, 460, 510, 560, 610, 660, 710, 760, 810, 860, 910]
@@ -26,11 +27,12 @@ RIGHT_WALL_X = 1000
 STICK_LENGHT = 107
 STICK_Y_POS = 550
 
-class Coordinate:
-    x = 0
-    y = 0
 
-    def __init__(self, x=0, y=0):
+class Coordinate:
+    x: int = 0
+    y: int = 0
+
+    def __init__(self, x: int = 0, y: int = 0):
         self.x = x
         self.y = y
         pass
@@ -58,8 +60,10 @@ class Make_level:
 
     pass
 
+
 make_new_level = Make_level()
-#make_new_level.make()
+# make_new_level.make()
+
 
 class Ball:
     def __init__(self):
@@ -83,7 +87,7 @@ class Ball:
         self.move_up_right = False
         self.move_up_left = False
 
-    def move(self, screen):
+    def move(self, screen: pygame.Surface):
         stick_left_point = Coordinate()
         stick_left_point.x = Player.move_stick(self, game.screen)
         brick_left_point = Coordinate()
@@ -99,9 +103,11 @@ class Ball:
                     self.move_up_left = True
 
         for i in range(LEVEL1_X_BRICK.__len__()):
-            brick_left_point.x = LEVEL1_X_BRICK[i]
-            brick_left_point.y = LEVEL1_Y_BRICK[i]                     # Brick_offset_x & Y must be taken from
-            brick_right_point.x = (brick_left_point.x + BRICK_OFFSET_X)# Brick class to work when resize screen
+            brick_left_point.x = int(LEVEL1_X_BRICK[i])
+            # Brick_offset_x & Y must be taken from
+            brick_left_point.y = int(LEVEL1_Y_BRICK[i])
+            # Brick class to work when resize screen
+            brick_right_point.x = (brick_left_point.x + BRICK_OFFSET_X)
             brick_right_point.y = (brick_left_point.y + BRICK_OFFSET_Y)
             # TODO ball blew in corner bugg
             if (self.ball_x >= brick_left_point.x) and (self.ball_x <= brick_right_point.x):
@@ -198,26 +204,32 @@ class Ball:
         coords = (self.ball_x, self.ball_y)
         return coords
         pass
+
+
 class Base_game_object():
     def __init__(self):
         pass
     pass
+
 
 class Text:
     def __init__(self, points):
         self.points = points
         pass
 
-    def prnt_text(self, screen):
-        #pygame.font.init()
+    def prnt_text(self, screen: pygame.Surface):
+        # pygame.font.init()
         font = pygame.font.Font('freesansbold.ttf', 32)
-        text = font.render(('Points ' + str(self.points)) + ' LIVES ', True, GREEN, BLUE)
+        text = font.render(('Points ' + str(self.points)) +
+                           ' LIVES ', True, GREEN, BLUE)
         textRect = text.get_rect()
         # set the center of the rectangular object.
         #X = 250
         #Y = 32
         #textRect.center = (X // 2, Y // 2)
-        screen.blit(text, textRect) # that was returned by pygame.event.get() method.
+        # that was returned by pygame.event.get() method.
+        screen.blit(text, textRect)
+
 
 class Prnt_lives(Text):
     pass
@@ -238,7 +250,7 @@ class Brick:
         self.points = 0
         self.text = Text(0)
 
-    def remove_from_ball(self, ball_coordinate):
+    def remove_from_ball(self, ball_coordinate: Coordinate):
         # define brick bounderies
         brick_left_point = Coordinate()
         brick_right_point = Coordinate()
@@ -246,8 +258,8 @@ class Brick:
         self.brick_y_wall_blew = False
         # check each brick
         for i in range(LEVEL1_X_BRICK.__len__()):
-            brick_left_point.x = LEVEL1_X_BRICK[i]
-            brick_left_point.y = LEVEL1_Y_BRICK[i]
+            brick_left_point.x = int(LEVEL1_X_BRICK[i])
+            brick_left_point.y = int(LEVEL1_Y_BRICK[i])
             brick_right_point.x = (brick_left_point.x + self.offset_x)
             brick_right_point.y = (brick_left_point.y + self.offset_y)
             if (ball_coordinate.x >= brick_left_point.x) and \
@@ -261,7 +273,8 @@ class Brick:
                 else:
                     if LVEL1_BREAKABLE_BRICK[i] < 7:
                         if LVEL1_BREAKABLE_BRICK[i] == 2:
-                            LVEL1_BREAKABLE_BRICK.pop(i)    # TODO  remove идиотското решение
+                            # TODO  remove идиотското решение
+                            LVEL1_BREAKABLE_BRICK.pop(i)
                             LVEL1_BREAKABLE_BRICK.insert(i, 1)
                         if LVEL1_BREAKABLE_BRICK[i] == 3:  # на проблема
                             LVEL1_BREAKABLE_BRICK.pop(i)
@@ -278,7 +291,7 @@ class Brick:
                         self.points += 1
                 return True  # TODO: think about what happens if not goes here
 
-    def draw_all(self, screen, pygame):
+    def draw_all(self, screen: pygame.Surface, pygame: pygame):
         color_brick = LIGHT_GREEN
         for i in range(LEVEL1_X_BRICK.__len__()):
             left_x = LEVEL1_X_BRICK[i]
@@ -307,7 +320,7 @@ class Player:
     def __init__(self, stick, ):
         pass
 
-    def move_stick(self, screen):
+    def move_stick(self, screen: pygame.Surface):
         # remove hardcoded position
         x = game.my_pygame.mouse.get_pos()[0]
         if x > (RIGHT_WALL_X - STICK_LENGHT):
@@ -316,6 +329,7 @@ class Player:
         return x
 
 # global class
+
 
 class Game:
     running = True
@@ -342,18 +356,21 @@ class Game:
         self.ball_coordinate.y = coords[1]
         return self.ball_coordinate
 
-
-
     def get_mouse(self):
         coords = game.my_pygame.mouse.get_pos()
         self.mouse_coordinate.x = coords[0]
         self.mouse_coordinate.y = coords[1]
         return self.mouse_coordinate
 
-    def begin_update(self, screen):
-        screen.fill((95, 222, 146))
+    def begin_update(self, screen: pygame.Surface):
+        try:
+            screen.fill((95, 222, 146, 0))
+        except:
+            return False
+        else:
+            return True
 
-    def end_update(self, my_pygame):
+    def end_update(self, my_pygame: pygame):
         my_pygame.display.update()
 
 
@@ -382,7 +399,7 @@ while game.running:
                 game.running = False
             if event.key == game.my_pygame.K_z:
                 ball2.kill()
-                #ball3.kill()
+                # ball3.kill()
             if event.key == game.my_pygame.K_x:
                 ball.move_up_left = True
                 ball2.move_up_right = True
@@ -390,7 +407,7 @@ while game.running:
                 ball.move_up_left = True
                 #ball3.move_up_left = True
     ball2.move(game.screen)
-    #ball3.move(game.screen)
+    # ball3.move(game.screen)
     op.prnt_text(game.screen)
     ball.move(game.screen)
     if brick.remove_from_ball(game.get_ball()):

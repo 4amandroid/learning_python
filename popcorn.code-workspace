@@ -29,6 +29,7 @@
 		},
 		"debug.focusWindowOnBreak": true,
 		"debug.showInStatusBar": "always",
-		"vsintellicode.features.python.deepLearning": "enabled"
+		"vsintellicode.features.python.deepLearning": "enabled",
+		"python.analysis.completeFunctionParens": true
 	}
 }
