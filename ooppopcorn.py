@@ -12,6 +12,9 @@ RED = (255, 0, 0, 0)
 WHITE = (255, 255, 255)
 BRICK_OFFSET_X = 50
 BRICK_OFFSET_Y = 40
+RIGHT_WALL_X = 1000
+STICK_LENGHT = 107
+STICK_Y_POSITION = 550
 class Coordinate:
     x: int = 0
     y: int = 0
@@ -81,20 +84,15 @@ class Brick(BaseGameObject):
         return True
 
 class Stick:
-    pass       
-
-
-class Player:
-    def __init__(self, stick, ):
-        pass
-
-    def move_stick(self, screen: pygame.Surface):
+    def move(self, screen: pygame.Surface):
+        stick_position = Coordinate()
         # remove hardcoded position
-        x = game.my_pygame.mouse.get_pos()[0]
-        if x > (RIGHT_WALL_X - STICK_LENGHT):
-            x = (RIGHT_WALL_X - STICK_LENGHT)
-        screen.blit(game.stick_img, (x, 550))
-        return x
+        stick_position.x = game.my_pygame.mouse.get_pos()[0]
+        if stick_position.x > (RIGHT_WALL_X - STICK_LENGHT):
+            stick_position.x = (RIGHT_WALL_X - STICK_LENGHT)
+        screen.blit(game.stick_img, (stick_position.x, STICK_Y_POSITION))
+        return stick_position.x
+    pass       
 
 
 class Game:
@@ -108,10 +106,10 @@ class Game:
         self.my_pygame.display.set_caption("")
         self.icon = self.my_pygame.image.load(POPCORN_GREEN_BAR_PNG)
         self.my_pygame.display.set_icon(self.icon)
-        self.sick_img = self.my_pygame.image.load(POPCORN_GREEN_BAR_PNG)
-        self.stick = Stick()
-        self.screen.blit(self.sick_img, (1, 550))
-        self.player = Player(self.stick)
+        self.stick_img = self.my_pygame.image.load(POPCORN_GREEN_BAR_PNG)
+        #self.stick = Stick()
+        
+        #self.player = Player(self.stick)
          
 
     def get_ball(self):
@@ -136,6 +134,7 @@ class Game:
 
 game = Game()
 bricks = Brick()
+stick = Stick()
 #f.print_massive()
 
 clock = pygame.time.Clock()
@@ -158,6 +157,7 @@ while game.running:
                 ball.move_up_left = True
                 #ball3.move_up_left = True
     bricks.draw(game.screen, pygame)
+    stick.move(game.screen)
     # ball3.move(game.screen)
      
     game.end_update(game.my_pygame)
