@@ -1,6 +1,7 @@
 import json
 import pygame
 
+
 pygame.init()
 POPCORN_GREEN_BAR_PNG = "/home/ivan/Desktop/my_project/source/popcorn/greenbar.png"
 DARK_GREEN = (2, 62, 16)
@@ -25,22 +26,22 @@ class Coordinate:
         pass
 
 
-class Level:
+class Level():
     def __init__(self):
-        self.left_x_brick = []
-        self.up_y_brick = []
-        self.brick_difficulty = []
+        self.brick_x = []
+        self.brick_y = []
+        self.brick_break = []
+        
 
     def load(self):
-        y = []
-        with open('data2.txt') as json_file:
+
+        with open('data2.json') as json_file:
             data = json.load(json_file)
-            for p in data['level4']:
-                self.left_x_brick = p['brick_x']
-                self.up_y_brick = p['brick_y']
-                self.brick_difficulty = p['brick_break']
-            y = json.dumps('level1') 
-            print(y)  
+            levelFromfile: Level = Level()
+            x = json.loads(data, object_hook=lambda d: Level(**d))
+            levelFromfile = data
+            
+        pass
 
 
 class BaseGameObject:
@@ -48,7 +49,7 @@ class BaseGameObject:
     def __init__(self):
         self.level = Level()
         self.level.load()
-        pass
+        
 
     pass
 
