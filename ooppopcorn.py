@@ -32,12 +32,15 @@ class Level:
         self.brick_difficulty = []
 
     def load(self):
+        y = []
         with open('data2.txt') as json_file:
             data = json.load(json_file)
             for p in data['level4']:
                 self.left_x_brick = p['brick_x']
                 self.up_y_brick = p['brick_y']
                 self.brick_difficulty = p['brick_break']
+            y = json.dumps('level1') 
+            print(y)  
 
 
 class BaseGameObject:
@@ -45,7 +48,6 @@ class BaseGameObject:
     def __init__(self):
         self.level = Level()
         self.level.load()
-        # print(self.level.LEVEL1_Y_BRICK)
         pass
 
     pass
@@ -57,12 +59,13 @@ class Brick(BaseGameObject):
         self.offset_x = BRICK_OFFSET_X
         self.offset_y = BRICK_OFFSET_Y
         super().__init__()
-        print(self.level.left_x_brick)
-        print(self.level.up_y_brick)
-        print(self.level.brick_difficulty)
-
-    def print_massive(self):
-        print(self.level.left_x_brick)
+ 
+    def remove(self):
+        self.level.left_x_brick.pop(0)
+        self.level.up_y_brick.pop(0)
+        self.level.brick_difficulty.pop(0)
+        number_of_bricks = len(self.level.left_x_brick)
+        return number_of_bricks
         
     def draw(self, screen: pygame.Surface, pygame: pygame):
         brick_coordinate = Coordinate()
@@ -84,6 +87,7 @@ class Brick(BaseGameObject):
         return True
 
 class Stick:
+    
     def move(self, screen: pygame.Surface):
         stick_position = Coordinate()
         # remove hardcoded position
@@ -107,17 +111,7 @@ class Game:
         self.icon = self.my_pygame.image.load(POPCORN_GREEN_BAR_PNG)
         self.my_pygame.display.set_icon(self.icon)
         self.stick_img = self.my_pygame.image.load(POPCORN_GREEN_BAR_PNG)
-        #self.stick = Stick()
         
-        #self.player = Player(self.stick)
-         
-
-    def get_ball(self):
-        coords = ball.move(game.screen)
-        self.ball_coordinate.x = coords[0]
-        self.ball_coordinate.y = coords[1]
-        return self.ball_coordinate
-
     def get_mouse(self):
         coords = game.my_pygame.mouse.get_pos()
         self.mouse_coordinate.x = coords[0]
@@ -135,10 +129,7 @@ class Game:
 game = Game()
 bricks = Brick()
 stick = Stick()
-#f.print_massive()
-
 clock = pygame.time.Clock()
-
 while game.running:
     game.begin_update(game.screen)
     for event in game.my_pygame.event.get():
@@ -148,14 +139,12 @@ while game.running:
             if event.key == game.my_pygame.K_q:
                 game.running = False
             if event.key == game.my_pygame.K_z:
-                ball2.kill()
-                # ball3.kill()
+                bricks.remove()
             if event.key == game.my_pygame.K_x:
-                ball.move_up_left = True
-                ball2.move_up_right = True
+                bricks.remove()
             if event.key == game.my_pygame.K_c:
-                ball.move_up_left = True
-                #ball3.move_up_left = True
+                bricks.remove()
+                
     bricks.draw(game.screen, pygame)
     stick.move(game.screen)
     # ball3.move(game.screen)
