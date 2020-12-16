@@ -31,19 +31,17 @@ class Level():
         self.brick_x = []
         self.brick_y = []
         self.brick_break = []
-        
+        self.curtent_level = 0
 
     def load(self):
-
-        with open('data2.json') as json_file:
+        _level = ['level1', 'level2', 'level3', 'level4']
+        with open('levels.json') as json_file:
             data = json.load(json_file)
             #levelFromfile: Level = Level()
-            self.brick_x = data['brick_x']
-            self.brick_y = data['brick_y']
-            self.brick_break = data['brick_break']
-            #x = json.loads(data, object_hook=lambda d: Level(**d))
-            #levelFromfile = data.dump()
-            
+            self.brick_x = data[_level[self.curtent_level]][0]['brick_x']
+            self.brick_y = data[_level[self.curtent_level]][0]['brick_y']
+            self.brick_break = data[_level[self.curtent_level]][0]['brick_break']
+ 
         pass
 
 
@@ -68,7 +66,10 @@ class Brick(BaseGameObject):
         self.level.brick_x.pop(0)
         self.level.brick_y.pop(0)
         self.level.brick_break.pop(0)
-        number_of_bricks = len(self.level.left_x_brick)
+        number_of_bricks = len(self.level.brick_x)
+        if number_of_bricks == 100:
+            self.level.curtent_level += 1
+            self.level.load()
         return number_of_bricks
         
     def draw(self, screen: pygame.Surface, pygame: pygame):
@@ -134,6 +135,7 @@ game = Game()
 bricks = Brick()
 stick = Stick()
 clock = pygame.time.Clock()
+ 
 while game.running:
     game.begin_update(game.screen)
     for event in game.my_pygame.event.get():
@@ -148,10 +150,7 @@ while game.running:
                 bricks.remove()
             if event.key == game.my_pygame.K_c:
                 bricks.remove()
-                
     bricks.draw(game.screen, pygame)
-    stick.move(game.screen)
-    # ball3.move(game.screen)
-     
+    stick.move(game.screen) 
     game.end_update(game.my_pygame)
     clock.tick(200)
