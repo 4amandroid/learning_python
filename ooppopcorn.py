@@ -37,9 +37,12 @@ class Level():
 
         with open('data2.json') as json_file:
             data = json.load(json_file)
-            levelFromfile: Level = Level()
-            x = json.loads(data, object_hook=lambda d: Level(**d))
-            levelFromfile = data
+            #levelFromfile: Level = Level()
+            self.brick_x = data['brick_x']
+            self.brick_y = data['brick_y']
+            self.brick_break = data['brick_break']
+            #x = json.loads(data, object_hook=lambda d: Level(**d))
+            #levelFromfile = data.dump()
             
         pass
 
@@ -62,19 +65,19 @@ class Brick(BaseGameObject):
         super().__init__()
  
     def remove(self):
-        self.level.left_x_brick.pop(0)
-        self.level.up_y_brick.pop(0)
-        self.level.brick_difficulty.pop(0)
+        self.level.brick_x.pop(0)
+        self.level.brick_y.pop(0)
+        self.level.brick_break.pop(0)
         number_of_bricks = len(self.level.left_x_brick)
         return number_of_bricks
         
     def draw(self, screen: pygame.Surface, pygame: pygame):
         brick_coordinate = Coordinate()
         color_brick = LIGHT_GREEN
-        for i in range(self.level.left_x_brick.__len__()):
-            brick_coordinate.x = self.level.left_x_brick[i]
-            brick_coordinate.y = self.level.up_y_brick[i]
-            _p = self.level.brick_difficulty[i]
+        for i in range(self.level.brick_x.__len__()):
+            brick_coordinate.x = self.level.brick_x[i]
+            brick_coordinate.y = self.level.brick_y[i]
+            _p = self.level.brick_break[i]
             if _p == 1 or _p == 2:
                 color_brick = LIGHT_GREEN
             elif _p == 3 or _p == 4:
