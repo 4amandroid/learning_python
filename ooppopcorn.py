@@ -27,6 +27,7 @@ class Coordinate:
 
 
 class Level():
+    levels = ['level1', 'level2', 'level3', 'level4']
     def __init__(self):
         self.brick_x = []
         self.brick_y = []
@@ -34,16 +35,25 @@ class Level():
         self.curtent_level = 0
 
     def load(self):
-        _level = ['level1', 'level2', 'level3', 'level4']
+        #levels = ['level1', 'level2', 'level3', 'level4']
         with open('levels.json') as json_file:
             data = json.load(json_file)
             #levelFromfile: Level = Level()
-            self.brick_x = data[_level[self.curtent_level]][0]['brick_x']
-            self.brick_y = data[_level[self.curtent_level]][0]['brick_y']
-            self.brick_break = data[_level[self.curtent_level]][0]['brick_break']
+            self.brick_x = data[self.levels[self.curtent_level]][0]['brick_x']
+            self.brick_y = data[self.levels[self.curtent_level]][0]['brick_y']
+            self.brick_break = data[self.levels[self.curtent_level]][0]['brick_break']
  
         pass
-
+    def save(self):
+        data = {}
+        data[self.levels[self.curtent_level]].append({
+            'brick_x': self.brick_x,
+            'brick_y': self.brick_y,
+            'brick_break': self.brick_break
+        })
+        with open('saved.json', 'w') as outfile:
+            json.dump(data, outfile)
+        pass
 
 class BaseGameObject:
 
@@ -67,7 +77,7 @@ class Brick(BaseGameObject):
         self.level.brick_y.pop(0)
         self.level.brick_break.pop(0)
         number_of_bricks = len(self.level.brick_x)
-        if number_of_bricks == 100:
+        if number_of_bricks == 100: #replace with number_of_brick-unbreakable_brick
             self.level.curtent_level += 1
             self.level.load()
         return number_of_bricks
