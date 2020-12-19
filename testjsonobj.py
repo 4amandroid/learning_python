@@ -1,40 +1,34 @@
 import json
-class Person():
+from types import SimpleNamespace
 
-    def __init__(self, name, age):
+class Level:
+    brick_y = []
+    brick_break = []
+    brick_x = []
 
-        self.name = name
-
-        self.age = age
+    def Load(self, level_number: int):
+        """
+        load level by number using self generated number from array
+        """
+        with open('data2.json') as json_file:
+            level = Level()
+            level = json.loads(json_file.read(), object_hook=lambda d: SimpleNamespace(**d))
+            return level[level_number]
+l = Level()
+l: Level = l.Load(0)
+print('----------------brick_break------------')
+print(l.brick_break)
+print('----------------brick_x------------')
+print(l.brick_x)
+print('----------------brick_y------------')
+print(l.brick_y)
+        
      
-class Level():
-    def __init__(self):
-        self.brick_x = []
-        self.brick_y = []
-        self.brick_break = []
-        self.curtent_level = 0
 
-    def load(self):
-        _level = ['level1', 'level2', 'level3', 'level4']
-        with open('levels.json') as json_file:
-            data = json.loads(json_file)
-            level_ = Level(**data) 
-            print(level_.brick_x)
     
 
-p = Level()
-p.load
-print(p.brick_x)
- 
- 
-person_string = '{"name": "Bob", "age": 25}'
 
 
-person_dict = json.loads(person_string)
-
-person_object = Person(**person_dict)
-
-
-print(person_object)
-print(person_object.name)
-print(person_object.age)
+# Parse JSON into an object with attributes corresponding to dict keys.
+# x = json.loads(data, object_hook=lambda d: SimpleNamespace(**d))
+# print(x.name, x.hometown.name, x.hometown.id)
