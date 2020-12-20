@@ -23,7 +23,9 @@ class Level:
             # foreach attribute
             for atribute_name in atribute_names:
                 # set value for self instance and attibute by name
-                # remove this nosence when find a better way to do this :), it works 
+                # remove this nosence when find a better way to do this :), it works
+                # here you may do some checks for equality between json file and level object
+                # and throws exception in case they not equal 
                 object.__setattr__(self, atribute_name, level.__dict__[atribute_name])
             pass
         
