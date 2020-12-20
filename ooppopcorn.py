@@ -45,15 +45,18 @@ class Level():
  
         pass
     def save(self):
-        data = {}
-        data[self.levels[self.curtent_level]].append({
-            'brick_x': self.brick_x,
-            'brick_y': self.brick_y,
-            'brick_break': self.brick_break
-        })
-        with open('saved.json', 'w') as outfile:
-            json.dump(data, outfile)
-        pass
+        
+        for i in self.levels:
+            data = {}
+            data[i] = [] #self.levels[self.curtent_level]
+            data[i].append({
+                'brick_x': self.brick_x,
+                'brick_y': self.brick_y,
+                'brick_break': self.brick_break
+            })
+            with open('saved.json', 'w') as outfile:
+                json.dump(data, outfile)
+        
 
 class BaseGameObject:
 
@@ -80,6 +83,8 @@ class Brick(BaseGameObject):
         if number_of_bricks == 100: #replace with number_of_brick-unbreakable_brick
             self.level.curtent_level += 1
             self.level.load()
+            self.level.levels.pop(0)
+            self.level.save()
         return number_of_bricks
         
     def draw(self, screen: pygame.Surface, pygame: pygame):
@@ -154,6 +159,8 @@ while game.running:
         if event.type == game.my_pygame.KEYDOWN:
             if event.key == game.my_pygame.K_q:
                 game.running = False
+                #s = Level()
+                #s.save()
             if event.key == game.my_pygame.K_z:
                 bricks.remove()
             if event.key == game.my_pygame.K_x:

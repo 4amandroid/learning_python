@@ -29,9 +29,9 @@ make_level = Make_level()
 make_level.make()
 data = {}
 data['level1'] = []
-data['level2'] = []
+'''data['level2'] = []
 data['level3'] = []
-data['level4'] = []
+data['level4'] = []'''
 data['level1'].append({
     'brick_x': make_level.LEVEL1_X_BRICK,
     'brick_y': make_level.LEVEL1_Y_BRICK,
