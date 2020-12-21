@@ -1,0 +1,7 @@
+{
+    "name": "John Smith",
+    "hometown": {
+        "name": "New York",
+        "id": 123
+    }
+}

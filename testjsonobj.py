@@ -1,3 +1,4 @@
+
 #import json
 '''class Person():
 
@@ -75,6 +76,8 @@ class OurObject:
 x = json.dumps(dict_)
 y = json.loads(x, object_hook=lambda d: OurObject(**d))
 print(y)'''
+ 
+ 
 import json
 from types import SimpleNamespace
 
@@ -99,10 +102,14 @@ l = Level()
 
 # this is ugly shortcut for assigning all atributes at one line instead of one by one
 # should be refactored later, not importatnt for now
-l: Level = l.Load(0)
+l: Level = l.Load(1)
 print('----------------brick_break------------')
 print(l.brick_break)
 print('----------------brick_x------------')
 print(l.brick_x)
 print('----------------brick_y------------')
+ 
 print(l.brick_y)     
+ 
+print(l.brick_y)
+ 
