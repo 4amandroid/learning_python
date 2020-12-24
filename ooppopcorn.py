@@ -1,6 +1,6 @@
 import json
 import pygame
-
+from ClkassBall import Ball
 
 pygame.init()
 POPCORN_GREEN_BAR_PNG = "/home/ivan/Desktop/my_project/source/popcorn/greenbar.png"
@@ -150,7 +150,7 @@ game = Game()
 bricks = Brick()
 stick = Stick()
 clock = pygame.time.Clock()
- 
+ball1 = Ball()
 while game.running:
     game.begin_update(game.screen)
     for event in game.my_pygame.event.get():
@@ -167,6 +167,7 @@ while game.running:
                 bricks.remove()
             if event.key == game.my_pygame.K_c:
                 bricks.remove()
+    ball1.move            
     bricks.draw(game.screen, pygame)
     stick.move(game.screen) 
     game.end_update(game.my_pygame)
