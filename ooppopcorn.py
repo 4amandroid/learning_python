@@ -1,6 +1,7 @@
 import json
 import pygame
-from ClkassBall import Ball
+#from ClkassBall import Ball
+from stick import Stick
 
 pygame.init()
 POPCORN_GREEN_BAR_PNG = "/home/ivan/Desktop/my_project/source/popcorn/greenbar.png"
@@ -105,7 +106,7 @@ class Brick(BaseGameObject):
             pygame.draw.rect(screen, color_brick,
                              (brick_coordinate.x, brick_coordinate.y, self.offset_x, self.offset_y))
         return True
-
+'''
 class Stick:
     
     def move(self, screen: pygame.Surface):
@@ -116,7 +117,7 @@ class Stick:
             stick_position.x = (RIGHT_WALL_X - STICK_LENGHT)
         screen.blit(game.stick_img, (stick_position.x, STICK_Y_POSITION))
         return stick_position.x
-    pass       
+    pass  '''     
 
 
 class Game:
@@ -167,7 +168,7 @@ while game.running:
                 bricks.remove()
             if event.key == game.my_pygame.K_c:
                 bricks.remove()
-    ball1.move            
+    ball1.move(game.screen)            
     bricks.draw(game.screen, pygame)
     stick.move(game.screen) 
     game.end_update(game.my_pygame)

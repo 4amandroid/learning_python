@@ -1,4 +1,5 @@
 import pygame
+from coordinate import Coordinate
 RED = (255, 0, 0, 0)
 STEP_X = 1
 STEP_Y = 1
