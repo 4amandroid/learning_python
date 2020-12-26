@@ -1,8 +1,12 @@
-import json
+ # import json
 import pygame
-
-
+from Stick import Stick
+from Config import *
+ # from types import SimpleNamespace
+from Level import Level
+from BaseGameObject import BaseGameObject
 pygame.init()
+'''
 POPCORN_GREEN_BAR_PNG = "/home/ivan/Desktop/my_project/source/popcorn/greenbar.png"
 DARK_GREEN = (2, 62, 16)
 GREEN = (0, 255, 0)
@@ -16,6 +20,7 @@ BRICK_OFFSET_Y = 40
 RIGHT_WALL_X = 1000
 STICK_LENGHT = 107
 STICK_Y_POSITION = 550
+'''  
 class Coordinate:
     x: int = 0
     y: int = 0
@@ -25,32 +30,43 @@ class Coordinate:
         self.y: int = y
         pass
 
-
+'''
 class Level():
     levels = ['level1', 'level2', 'level3', 'level4']
     def __init__(self):
         self.brick_x = []
         self.brick_y = []
         self.brick_break = []
-        self.curtent_level = 0
-
-    def load(self):
-        #levels = ['level1', 'level2', 'level3', 'level4']
-        with open('levels.json') as json_file:
-            data = json.load(json_file)
-            #levelFromfile: Level = Level()
-            self.brick_x = data[self.levels[self.curtent_level]][0]['brick_x']
-            self.brick_y = data[self.levels[self.curtent_level]][0]['brick_y']
-            self.brick_break = data[self.levels[self.curtent_level]][0]['brick_break']
- 
-        pass
+        self.current_level = 0
+        
+    def load(self, level_number: int):
+         
+        with open('data2.json') as json_file:
+            # get arrays foreach object in json (all levels)
+            levels_info = json.loads(json_file.read(), object_hook=lambda d: SimpleNamespace(**d))
+            
+            # get arrays for specific level
+            level = levels_info[level_number]
+            
+            # extract an attite names from level collection (should be equivalent as a class attibutes)
+            atribute_names = [a for a in dir(level) if not a.startswith('__') and not callable(getattr(level, a))]
+            
+            # foreach attribute
+            for atribute_name in atribute_names:
+  
+                # here you may do some checks for equality between json file and level object
+                # and throws exception in case they not equal 
+                object.__setattr__(self, atribute_name, level.__dict__[atribute_name])
+            pass
+            
+     
     def save(self):
         
-        for i in self.levels:
+        for i in self.levels: #don't works
             data = {}
             data[i] = [] #self.levels[self.curtent_level]
             data[i].append({
-                'brick_x': self.brick_x,
+                'brick_x': self.brick_x, 
                 'brick_y': self.brick_y,
                 'brick_break': self.brick_break
             })
@@ -62,11 +78,11 @@ class BaseGameObject:
 
     def __init__(self):
         self.level = Level()
-        self.level.load()
+        self.level.load(sel)
         
 
     pass
-
+'''
 
 class Brick(BaseGameObject):
     
@@ -81,8 +97,8 @@ class Brick(BaseGameObject):
         self.level.brick_break.pop(0)
         number_of_bricks = len(self.level.brick_x)
         if number_of_bricks == 100: #replace with number_of_brick-unbreakable_brick
-            self.level.curtent_level += 1
-            self.level.load()
+            self.level.current_level += 1
+            self.level.load(self.level.current_level)
             self.level.levels.pop(0)
             self.level.save()
         return number_of_bricks
@@ -105,7 +121,7 @@ class Brick(BaseGameObject):
             pygame.draw.rect(screen, color_brick,
                              (brick_coordinate.x, brick_coordinate.y, self.offset_x, self.offset_y))
         return True
-
+'''
 class Stick:
     
     def move(self, screen: pygame.Surface):
@@ -117,7 +133,7 @@ class Stick:
         screen.blit(game.stick_img, (stick_position.x, STICK_Y_POSITION))
         return stick_position.x
     pass       
-
+'''
 
 class Game:
     running = True
