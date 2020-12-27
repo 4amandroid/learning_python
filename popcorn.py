@@ -3,6 +3,8 @@ from Stick import Stick
 from Config import *
 from Brick import Brick
 from Coordinate import Coordinate
+import compileall
+compileall.compile_dir("./")
 pygame.init()
 
 class Game:
@@ -11,6 +13,7 @@ class Game:
     ball_coordinate = Coordinate()
 
     def __init__(self):
+        
         self.my_pygame = pygame
         self.screen = self.my_pygame.display.set_mode((1000, 600))
         self.my_pygame.display.set_caption("")
