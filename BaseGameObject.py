@@ -7,7 +7,7 @@ class CoordinateOf:
 
 class BaseGameObject:
 
-    coordinates = [len([a for a in dir(CoordinateOf) if not a.startswith('__') and not callable(getattr(CoordinateOf, a))])]
+    coordinates = {len([a for a in dir(CoordinateOf) if not a.startswith('__') and not callable(getattr(CoordinateOf, a))])}
     coordinateOf = CoordinateOf()
 
     def __init__(self):
@@ -16,5 +16,5 @@ class BaseGameObject:
         self.coordinateOf = CoordinateOf()
         self.level = Level()
         self.level.load(self.level.current_level)
-        self.coordinates[self.coordinateOf.brick]
+        self.coordinates[self.coordinateOf.brick] = []
     pass

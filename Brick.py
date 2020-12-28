@@ -29,13 +29,14 @@ class Brick(BaseGameObject):
         
     def draw(self, screen: pygame.Surface, pygame: pygame):
         for i in range(self.level.brick_x.__len__()):
-            self.coordinates[self.coordinateOf.brick] = Coordinate(self.level.brick_x[i], self.level.brick_y[i])
+            self.coordinates[self.coordinateOf.brick].append(Coordinate(self.level.brick_x[i], self.level.brick_y[i]))
+            
             brick_break = {value:key for key in self.brick_color for value in self.brick_color[key]}
             
             # remove using pygame drawing here
             pygame.draw.rect(screen, 
                              brick_break[self.level.brick_break[i]],
-                             (self.coordinates[self.coordinateOf.brick].x, 
-                              self.coordinates[self.coordinateOf.brick].y, 
+                             (self.coordinates[self.coordinateOf.brick][i].x, 
+                              self.coordinates[self.coordinateOf.brick][i].y, 
                               self.offset.x, self.offset.y))
         return True
