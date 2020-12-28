@@ -11,6 +11,6 @@ class Stick:
         stick_position.x = pygame.mouse.get_pos()[0]
         if stick_position.x > (RIGHT_WALL_X - STICK_LENGHT):
             stick_position.x = (RIGHT_WALL_X - STICK_LENGHT)
-        screen.blit(pygame.image.load(POPCORN_GREEN_BAR_PNG), (stick_position.x, STICK_Y_POSITION))
+        screen.blit(pygame.image.load(STICK_TEXTURE), (stick_position.x, STICK_Y_POSITION))
         return stick_position.x
     pass       
