@@ -1,20 +1,20 @@
 from Coordinate import Coordinate
 from Level import Level
 
-class Base_discriminator:
+class CoordinateOf:
     brick = 0
     stick = 1
 
 class BaseGameObject:
 
-    coordinates = [10]
-    descriminator = Base_discriminator()
+    coordinates = [len([a for a in dir(CoordinateOf) if not a.startswith('__') and not callable(getattr(CoordinateOf, a))])]
+    coordinateOf = CoordinateOf()
 
     def __init__(self):
-        self.coordinates = [Coordinate() for i in range(10)]
+        self.coordinates = [Coordinate() for i in range(len([a for a in dir(CoordinateOf) if not a.startswith('__') and not callable(getattr(CoordinateOf, a))]))]
             
-        self.descriminator = Base_discriminator()
+        self.coordinateOf = CoordinateOf()
         self.level = Level()
         self.level.load(self.level.current_level)
-        self.coordinates[self.descriminator.brick]
+        self.coordinates[self.coordinateOf.brick]
     pass

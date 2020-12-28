@@ -2,22 +2,18 @@ import pygame
 from Config import *
 from BaseGameObject import BaseGameObject
 from Coordinate import Coordinate
+from BrickOffset import *
 
-class Brick_Offset():
-    x: int = 0
-    y: int = 0
-    
-    def __init__(self, x: int, y: int) -> None:
-        self.x = x
-        self.y = y
 
 class Brick(BaseGameObject):
 
     def __init__(self):
-        self.offset = Brick_Offset(BRICK_OFFSET_X, BRICK_OFFSET_Y)
-        
-        
         super().__init__()
+        self.offset = BrickOffset(BRICK_OFFSET_X, BRICK_OFFSET_Y)
+        self.brick_color = {COLOR_LIGHT_GREEN : [0, 1, 2], 
+                            COLOR_GREEN: [3, 4], 
+                            COLOR_DARK_GREEN: [5, 6], 
+                            COLOR_WHITE: [7]}
  
     def remove(self):
         self.level.brick_x.pop(0)
@@ -32,21 +28,14 @@ class Brick(BaseGameObject):
         return number_of_bricks
         
     def draw(self, screen: pygame.Surface, pygame: pygame):
-        
-        color_brick = COLOR_LIGHT_GREEN
         for i in range(self.level.brick_x.__len__()):
-            self.coordinates[self.descriminator.brick].x = self.level.brick_x[i]
-            self.coordinates[self.descriminator.brick].y = self.level.brick_y[i]
-            brick_break = self.level.brick_break[i]
-            if brick_break == 1 or brick_break == 2:
-                color_brick = COLOR_LIGHT_GREEN
-            elif brick_break == 3 or brick_break == 4:
-                color_brick = COLOR_GREEN
-            elif brick_break == 5 or brick_break == 6:
-                color_brick = COLOR_DARK_GREEN
-            elif brick_break == 7:
-                color_brick = COLOR_WHITE
+            self.coordinates[self.coordinateOf.brick] = Coordinate(self.level.brick_x[i], self.level.brick_y[i])
+            brick_break = {value:key for key in self.brick_color for value in self.brick_color[key]}
+            
             # remove using pygame drawing here
-            pygame.draw.rect(screen, color_brick,
-                             (self.coordinates[self.descriminator.brick].x, self.coordinates[self.descriminator.brick].y, self.offset.x, self.offset.y))
+            pygame.draw.rect(screen, 
+                             brick_break[self.level.brick_break[i]],
+                             (self.coordinates[self.coordinateOf.brick].x, 
+                              self.coordinates[self.coordinateOf.brick].y, 
+                              self.offset.x, self.offset.y))
         return True
