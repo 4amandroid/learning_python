@@ -1,3 +1,7 @@
+import pygame
+from Config import *
+from Coordinate import Coordinate 
+from Stick import Stick
 class Ball:
     def __init__(self):
         self.ball_x = 600
@@ -12,7 +16,7 @@ class Ball:
         self.move_down_left = False
         self.move_up_right = False
         self.move_up_left = False
-        self.color = RED
+        self.color = COLOR_RED
 
     def kill(self):
         self.move_down_right = False
@@ -22,12 +26,12 @@ class Ball:
 
     def move(self, screen: pygame.Surface):
         stick_left_point = Coordinate()
-        stick_left_point.x = Player.move_stick(self, game.screen)
+        stick_left_point.x = Stick.move(self, screen)
         brick_left_point = Coordinate()
         brick_right_point = Coordinate()
 
         if (self.ball_x > stick_left_point.x) and (self.ball_x < (stick_left_point.x+STICK_LENGHT)):
-            if (self.ball_y + self.ball_radius) == STICK_Y_POS:  # TODO: Replace number with const
+            if (self.ball_y + self.ball_radius) == STICK_Y_POSITION:  # TODO: Replace number with const
                 if self.move_down_right:
                     self.move_down_right = False
                     self.move_up_right = True

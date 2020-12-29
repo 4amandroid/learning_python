@@ -4,6 +4,7 @@ from Stick import Stick
 from Config import *
 from Brick import Brick
 from Coordinate import Coordinate
+from Ball import Ball
 import compileall
 compileall.compile_dir("./")
 
@@ -31,7 +32,7 @@ class Game:
     def end_update(self, my_pygame: pygame):
         my_pygame.display.update()
         return True
-
+ball = Ball()
 game = Game()
 bricks = Brick()
 stick = Stick()
@@ -53,7 +54,7 @@ while game.running:
                 bricks.remove()
             if event.key == K_c:
                 bricks.remove()
-                
+    #ball.move(game.screen)           
     bricks.draw(game.screen, pygame)
     
     stick.move(game.screen) 
