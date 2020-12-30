@@ -61,6 +61,36 @@ while game.running:
     ball.move(game.screen) 
     bricks.draw(game.screen, pygame)
     
+    """
+    class collision_info:
+        # https://docs.python.org/3/library/enum.html
+        directionFrom : enum.up_left
+                        enum.up_right
+                        enum.down_left
+                        enum.down.right
+                        
+        directionTo   : enum.up_left # може да мине без единия...
+                        enum.up_right
+                        enum.down_left
+                        enum.down.right
+                        
+        object_type : wall/brick/stick
+        
+    
+    ball.move_to(inital_direction)
+    for brick in bricks:                                                        # обхожда тухла по тухла
+        for visibleObject in (stick, brick, wall):                              # https://www.geeksforgeeks.org/polymorphism-in-python/
+            if visibleObject.collision(ball.get_current_position()):            # всеки обект който наследява общия клас има метод collision
+                collision_info = visibleObject.get_collision_info()             # информацията в един обект с полета които са за след колизията
+                if collision_info.object_type = brick and brick.hardess = 1:
+                    brick.kill()
+            # save old data for collision_info to compare
+            ball.move_to(collision_info)
+            
+
+                    
+    """
+    
     #stick.move(game.screen) 
     game.end_update(game.my_pygame)
     clock.tick(200)
