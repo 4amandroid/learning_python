@@ -26,13 +26,14 @@ class Game:
         return Coordinate(game.my_pygame.mouse.get_pos())
 
     def begin_update(self, screen: pygame.Surface):
-        screen.fill((95, 222, 146))
+        screen.fill((0, 0, 0))
         return True
 
     def end_update(self, my_pygame: pygame):
         my_pygame.display.update()
         return True
 ball = Ball()
+ball.move_up_right = True
 game = Game()
 bricks = Brick()
 stick = Stick()
@@ -54,9 +55,12 @@ while game.running:
                 bricks.remove()
             if event.key == K_c:
                 bricks.remove()
-    #ball.move(game.screen)           
+    #ball.move(game.screen) 
+    ball.level_brick_x = bricks.level.brick_x
+    ball.level_brick_y = bricks.level.brick_y  
+    ball.move(game.screen) 
     bricks.draw(game.screen, pygame)
     
-    stick.move(game.screen) 
+    #stick.move(game.screen) 
     game.end_update(game.my_pygame)
     clock.tick(200)
