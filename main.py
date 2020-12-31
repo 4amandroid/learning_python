@@ -1,7 +1,7 @@
 from typing import List, Tuple
 import pygame
 
-POPCORN_GREEN_BAR_PNG = "/home/ivan/Desktop/my_project/source/popcorn/greenbar.png"
+POPCORN_GREEN_BAR_PNG = "greenbar.png"
 pygame.init()
 STEP_X = 1
 STEP_Y = 1
@@ -364,7 +364,7 @@ class Game:
 
     def begin_update(self, screen: pygame.Surface):
         try:
-            screen.fill((95, 222, 146, 0))
+            screen.fill((255, 255 , 255, 255))
         except:
             return False
         else:
@@ -406,7 +406,7 @@ while game.running:
             if event.key == game.my_pygame.K_c:
                 ball.move_up_left = True
                 #ball3.move_up_left = True
-    ball2.move(game.screen)
+    # ball2.move(game.screen)
     # ball3.move(game.screen)
     op.prnt_text(game.screen)
     ball.move(game.screen)
