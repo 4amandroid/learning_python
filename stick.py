@@ -1,4 +1,3 @@
-from ooppopcorn import game
 class Stick:
     
     def move(self, screen: pygame.Surface):

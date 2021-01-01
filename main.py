@@ -1,7 +1,7 @@
 from typing import List, Tuple
 import pygame
 
-POPCORN_GREEN_BAR_PNG = "/home/ivan/Desktop/my_project/source/popcorn/greenbar.png"
+POPCORN_GREEN_BAR_PNG = "greenbar.png"
 pygame.init()
 STEP_X = 1
 STEP_Y = 1
