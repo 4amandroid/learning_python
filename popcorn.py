@@ -17,8 +17,9 @@ class Game:
     def __init__(self):
         pygame.init()
         self.my_pygame = pygame
+        self.my_pygame1 = pygame
         self.screen: pygame.Surface = self.my_pygame.display.set_mode((1000, 600))
-        self.screen1 = self.my_pygame.display.set_mode((1000, 600))
+        self.screen1 = self.my_pygame1.display.set_mode((1000, 600))
         self.icon = self.my_pygame.image.load(STICK_TEXTURE)
         self.my_pygame.display.set_icon(self.icon)
         self.stick_img = self.my_pygame.image.load(STICK_TEXTURE)
@@ -27,7 +28,7 @@ class Game:
         return Coordinate(game.my_pygame.mouse.get_pos())
 
     def begin_update(self, screen: pygame.Surface):
-        self.screen.fill((0, 0, 0))
+        self.screen1.fill((0, 0, 0))
         return True
 
     def end_update(self, my_pygame: pygame):
@@ -41,7 +42,7 @@ stick = Stick()
 clock = pygame.time.Clock()
  
 while game.running:
-    game.begin_update(game.screen1)
+    game.begin_update(game.screen)
     for event in game.my_pygame.event.get():
         if event.type == QUIT:
             game.running = False
