@@ -1,8 +1,9 @@
 import pygame
+from Config import *
 import random
-
-WIDTH = 360
-HEIGHT = 480
+from Level import Level
+from BaseGameObject import BaseGameObject
+ 
 FPS = 30
 
 # define colors
@@ -20,21 +21,28 @@ pygame.display.set_caption("My Game")
 clock = pygame.time.Clock()
  
 
-class Player(pygame.sprite.Sprite):
+class Brick(pygame.sprite.Sprite,BaseGameObject):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((50, 50))
+        self.image = pygame.Surface((BRICK_OFFSET_X, BRICK_OFFSET_Y))
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
-
+        
     def update(self):
         self.rect.x += 5
         if self.rect.left > WIDTH:
             self.rect.right = 0
+            
+'''objs = [MyClass() for i in range(10)]
+for obj in objs:
+    other_object.add(obj)
+
+objs[0].do_sth()'''            
 all_sprites = pygame.sprite.Group()
-player = Player()
-all_sprites.add(player)
+for i in range(10):
+    brick = Brick()
+all_sprites.add(brick)
 # Game loop
 running = True
 while running:
