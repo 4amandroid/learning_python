@@ -1,40 +1,37 @@
 import pygame
+from pygame.sprite import Sprite, Group
+from pygame.time import Clock
+from pygame.color import Color
+from pygame import Surface
+
 from Config import *
-import random
 from Level import Level
-from BaseGameObject import BaseGameObject
  
 FPS = 30
 
-# define colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
+#define colors
+WHITE = Color(255, 255, 255)
+BLACK = Color(0, 0, 0)
+RED = Color(255, 0, 0)
+GREEN = Color(0, 255, 0)
+BLUE = Color(0, 0, 255)
 
 # initialize pygame and create window
 pygame.init()
 pygame.mixer.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("My Game")
-clock = pygame.time.Clock()
+clock = Clock()
  
 
-class Brick(pygame.sprite.Sprite):
+class Brick(Sprite):
     def __init__(self):
         super().__init__()
-        #pygame.sprite.Sprite.__init__(self)
-        
-        self.image = pygame.Surface((BRICK_OFFSET_X, BRICK_OFFSET_Y))
+        self.image = Surface((BRICK_OFFSET_X, BRICK_OFFSET_Y))
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH / 2, HEIGHT / 2)
-        #print(self.level.brick_x)
-    def update(self):
-        self.rect.x += 5
-        if self.rect.left > WIDTH:
-            self.rect.right = 0
+        self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+    
             
 '''objs = [MyClass() for i in range(10)]
 for obj in objs:
@@ -44,7 +41,7 @@ objs[0].do_sth()'''
 level=Level()
 level.load(0)
 print(level.brick_x)      
-all_bricks = pygame.sprite.Group()
+all_bricks = Group()
 brick = [Brick() for i in range(level.brick_x.__len__())]
 #brick = Brick()
 for i in range(level.brick_x.__len__()):
@@ -53,7 +50,7 @@ for i in range(level.brick_x.__len__()):
     brick[i].rect.y = level.brick_y[i]
 # Game loop
 running = True
-p=0
+
 while running:
     # keep loop running at the right speed
     clock.tick(FPS)
@@ -64,11 +61,9 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
-                brick[p].kill()
-                p +=1 
+                brick[all_bricks.__len__()-1].kill()
+                brick[all_bricks.__len__()-1].remove()
 
-    # Update
-    all_bricks.update()
     # Draw / render
     screen.fill(BLACK)
     all_bricks.draw(screen)
