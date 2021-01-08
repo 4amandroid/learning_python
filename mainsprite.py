@@ -7,7 +7,7 @@ from pygame import Surface
 from Config import *
 from Level import Level
  
-FPS = 30
+FPS = 50
 
 #define colors
 WHITE = Color(255, 255, 255)
@@ -36,17 +36,31 @@ class Brick(Sprite):
 class Ball(Sprite):
     def __init__(self):
         super().__init__()
-        self.color = GREEN
+        self.x_speed = 2
+        self.y_speed = 2
+        self.color = RED
         #self.ball_x = self.ball_y = 100
-        self.ball_radius = 15
+        self.ball_radius = 10
         self.image = Surface((self.ball_radius*2, self.ball_radius*2))
         #self.image.fill(GREEN)
         self.image.set_colorkey(BACKGRAUND_COLOR)
         pygame.draw.circle(self.image, self.color, (self.ball_radius,self.ball_radius), self.ball_radius)
         self.rect = self.image.get_rect()
         self.rect.center = (self.ball_radius, self.ball_radius)
-    def update(self, *args, **kwargs) -> None:
-        return super().update(*args, **kwargs)               
+    def update(self) -> None:
+        self.rect.x += self.x_speed
+        self.rect.y += self.y_speed
+        if self.rect.bottom >= SCREEN_HEIGHT or self.rect.top <= 0:
+            self.y_speed *= -1
+        if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
+            self.x_speed *= -1    
+        #pygame.sprite.spritecollide(all_balls,all_bricks,True)
+        pass   
+    
+class Colission(Ball,Brick):
+    def __init__(self):
+        super().__init__()
+    pass                
 '''objs = [MyClass() for i in range(10)]
 for obj in objs:
     other_object.add(obj)
@@ -65,6 +79,8 @@ for i in range(level.brick_x.__len__()):
     all_bricks.add(brick[i])
     brick[i].rect.x = level.brick_x[i]
     brick[i].rect.y = level.brick_y[i]
+    
+
 # Game loop
 running = True
 
@@ -80,11 +96,15 @@ while running:
             if event.key == pygame.K_q:
                 brick[all_bricks.__len__()-1].kill()
                 brick[all_bricks.__len__()-1].remove()
-
+    for _brick in all_bricks:
+        if ball.rect.colliderect(_brick.rect):
+            _brick.kill()
+            print('colision')    
     # Draw / render
     screen.fill(BLACK)
     all_bricks.draw(brick_screen)
     all_balls.draw(screen)
+    all_balls.update()
     # *after* drawing everything, flip the display
     pygame.display.flip()
 
