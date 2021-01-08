@@ -11,7 +11,7 @@ FPS = 30
 
 #define colors
 WHITE = Color(255, 255, 255)
-BLACK = Color(0, 0, 0)
+BACKGRAUND_COLOR = BLACK = Color(0, 0, 0)
 RED = Color(255, 0, 0)
 GREEN = Color(0, 255, 0)
 BLUE = Color(0, 0, 255)
@@ -20,6 +20,7 @@ BLUE = Color(0, 0, 255)
 pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+brick_screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("My Game")
 clock = Clock()
  
@@ -32,7 +33,20 @@ class Brick(Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
     
-            
+class Ball(Sprite):
+    def __init__(self):
+        super().__init__()
+        self.color = GREEN
+        #self.ball_x = self.ball_y = 100
+        self.ball_radius = 15
+        self.image = Surface((self.ball_radius*2, self.ball_radius*2))
+        #self.image.fill(GREEN)
+        self.image.set_colorkey(BACKGRAUND_COLOR)
+        pygame.draw.circle(self.image, self.color, (self.ball_radius,self.ball_radius), self.ball_radius)
+        self.rect = self.image.get_rect()
+        self.rect.center = (self.ball_radius, self.ball_radius)
+    def update(self, *args, **kwargs) -> None:
+        return super().update(*args, **kwargs)               
 '''objs = [MyClass() for i in range(10)]
 for obj in objs:
     other_object.add(obj)
@@ -40,7 +54,10 @@ for obj in objs:
 objs[0].do_sth()'''     
 level=Level()
 level.load(0)
-print(level.brick_x)      
+#print(level.brick_x)      
+all_balls = Group()
+ball = Ball()
+all_balls.add(ball)
 all_bricks = Group()
 brick = [Brick() for i in range(level.brick_x.__len__())]
 #brick = Brick()
@@ -66,7 +83,8 @@ while running:
 
     # Draw / render
     screen.fill(BLACK)
-    all_bricks.draw(screen)
+    all_bricks.draw(brick_screen)
+    all_balls.draw(screen)
     # *after* drawing everything, flip the display
     pygame.display.flip()
 
