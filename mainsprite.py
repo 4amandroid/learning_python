@@ -21,6 +21,7 @@ pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 brick_screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+#brick_screen = pygame.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("My Game")
 clock = Clock()
  
@@ -40,7 +41,7 @@ class Ball(Sprite):
         self.y_speed = 2
         self.color = RED
         #self.ball_x = self.ball_y = 100
-        self.ball_radius = 10
+        self.ball_radius = 5
         self.image = Surface((self.ball_radius*2, self.ball_radius*2))
         #self.image.fill(GREEN)
         self.image.set_colorkey(BACKGRAUND_COLOR)
@@ -83,7 +84,7 @@ for i in range(level.brick_x.__len__()):
 
 # Game loop
 running = True
-
+tolerance = 5 # ror test
 while running:
     # keep loop running at the right speed
     clock.tick(FPS)
@@ -98,8 +99,13 @@ while running:
                 brick[all_bricks.__len__()-1].remove()
     for _brick in all_bricks:
         if ball.rect.colliderect(_brick.rect):
-            _brick.kill()
-            print('colision')    
+            
+            if ball.rect.bottom - _brick.rect.top <= tolerance:
+                ball.y_speed *= -1
+            if ball.rect.top - _brick.rect.bottom <= tolerance:
+                ball.y_speed *= -1    
+            _brick.kill()   
+            
     # Draw / render
     screen.fill(BLACK)
     all_bricks.draw(brick_screen)
