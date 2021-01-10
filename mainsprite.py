@@ -62,15 +62,21 @@ class Ball(Sprite):
 class Stick(Sprite):
     def __init__(self) -> None:
         super().__init__()
-        self.image = pygame.image.load(STICK_TEXTURE)
-        self.image = Surface((107,22))
-        self.image = self.image.get_rect() 
+        self.image = Surface((107, 22))
+        self.image.fill(GREEN)
+        self.image.set_colorkey(BACKGRAUND_COLOR)
+        #pygame.draw.circle(self.image, self.color, (self.ball_radius,self.ball_radius), self.ball_radius)
+        self.rect = self.image.get_rect()
+        self.rect.center = (53, 11)
+        #self.image = pygame.image.load(STICK_TEXTURE)
+        #self.image = Surface((107,22))
+        #self.image = self.image.get_rect() 
         
     def update(self):
-        self.image.rect.x = pygame.mouse.get_pos()[0]
-        self.image.rect.y = STICK_Y_POSITION
-        if self.image.rect.right >= SCREEN_WIDTH:
-            self.image.rect.riht = SCREEN_WIDTH - 107
+        self.rect.x = pygame.mouse.get_pos()[0]
+        self.rect.y = STICK_Y_POSITION
+        if self.rect.right >= SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH #- STICK_LENGHT
          
     pass             
     
@@ -92,7 +98,18 @@ class Colissions():
                 if abs(_brick.rect.left - ball.rect.right) < self.tolerance and ball.x_speed > 0:  
                     ball.x_speed *= -1
                 _brick.kill()   
-                 
+    
+    def stick_detect(self):
+        if ball.rect.colliderect(stick.rect):
+            if abs(stick.rect.top - ball.rect.bottom) < self.tolerance and ball.y_speed > 0:
+                    ball.y_speed *= -1
+            if abs(stick.rect.bottom - ball.rect.top) < self.tolerance and ball.y_speed < 0:
+                    ball.y_speed *= -1 
+            if abs(stick.rect.right - ball.rect.left) < self.tolerance and ball.x_speed < 0:  
+                    ball.x_speed *= -1   
+            if abs(stick.rect.left - ball.rect.right) < self.tolerance and ball.x_speed > 0:  
+                    ball.x_speed *= -1
+            
     pass                
 '''objs = [MyClass() for i in range(10)]
 for obj in objs:
@@ -132,7 +149,8 @@ while running:
             if event.key == pygame.K_q:
                 brick[all_bricks.__len__()-1].kill()
                 brick[all_bricks.__len__()-1].remove()
-    colision.brick_detect()            
+    colision.brick_detect()   
+    colision.stick_detect()         
     '''for _brick in all_bricks:
         if ball.rect.colliderect(_brick.rect):
             
@@ -148,8 +166,8 @@ while running:
     all_balls.draw(screen)
     
     all_balls.update()
-    #all_sticks.draw(screen)
-    #all_sticks.update()
+    all_sticks.draw(screen)
+    all_sticks.update()
     # *after* drawing everything, flip the display
     pygame.display.flip()
 
