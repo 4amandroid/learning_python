@@ -33,6 +33,7 @@ class Brick(Sprite):
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        
     
 class Ball(Sprite):
     
@@ -46,6 +47,7 @@ class Ball(Sprite):
         self.image = Surface((self.ball_radius*2, self.ball_radius*2))
         #self.image.fill(GREEN)
         self.image.set_colorkey(BACKGRAUND_COLOR)
+        
         pygame.draw.circle(self.image, self.color, (self.ball_radius,self.ball_radius), self.ball_radius)
         self.rect = self.image.get_rect()
         self.rect.center = (self.ball_radius, self.ball_radius)
@@ -64,10 +66,12 @@ class Stick(Sprite):
         super().__init__()
         self.image = Surface((107, 22))
         self.image.fill(GREEN)
+        self.stick_image = pygame.image.load(STICK_TEXTURE)
+        self.image.blit(self.stick_image,(0,0))
         self.image.set_colorkey(BACKGRAUND_COLOR)
         #pygame.draw.circle(self.image, self.color, (self.ball_radius,self.ball_radius), self.ball_radius)
         self.rect = self.image.get_rect()
-        self.rect.center = (53, 11)
+        #self.rect.center = (53, 11)
         #self.image = pygame.image.load(STICK_TEXTURE)
         #self.image = Surface((107,22))
         #self.image = self.image.get_rect() 
