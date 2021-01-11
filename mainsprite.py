@@ -33,7 +33,7 @@ class Brick(Sprite):
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
-        
+    
     
 class Ball(Sprite):
     
@@ -42,10 +42,8 @@ class Ball(Sprite):
         self.x_speed = 2
         self.y_speed = 2
         self.color = RED
-        #self.ball_x = self.ball_y = 100
         self.ball_radius = 5
         self.image = Surface((self.ball_radius*2, self.ball_radius*2))
-        #self.image.fill(GREEN)
         self.image.set_colorkey(BACKGRAUND_COLOR)
         
         pygame.draw.circle(self.image, self.color, (self.ball_radius,self.ball_radius), self.ball_radius)
@@ -69,12 +67,7 @@ class Stick(Sprite):
         self.stick_image = pygame.image.load(STICK_TEXTURE)
         self.image.blit(self.stick_image,(0,0))
         self.image.set_colorkey(BACKGRAUND_COLOR)
-        #pygame.draw.circle(self.image, self.color, (self.ball_radius,self.ball_radius), self.ball_radius)
         self.rect = self.image.get_rect()
-        #self.rect.center = (53, 11)
-        #self.image = pygame.image.load(STICK_TEXTURE)
-        #self.image = Surface((107,22))
-        #self.image = self.image.get_rect() 
         
     def update(self):
         self.rect.x = pygame.mouse.get_pos()[0]
@@ -84,13 +77,13 @@ class Stick(Sprite):
          
     pass             
     
-class Colissions():
+class BallColissions():
     def __init__(self):
        
         self.tolerance = 5
         
     def brick_detect(self):    
-        for _brick in all_bricks:
+        for _brick in game.all_bricks:
             if ball.rect.colliderect(_brick.rect):
                 
                 if abs(_brick.rect.top - ball.rect.bottom) < self.tolerance and ball.y_speed > 0:
@@ -102,7 +95,9 @@ class Colissions():
                 if abs(_brick.rect.left - ball.rect.right) < self.tolerance and ball.x_speed > 0:  
                     ball.x_speed *= -1
                 _brick.kill()   
-    
+                print(game.all_bricks.__len__)
+                if game.all_bricks.__len__ == 100:
+                    game.level.current_level += 1
     def stick_detect(self):
         if ball.rect.colliderect(stick.rect):
             if abs(stick.rect.top - ball.rect.bottom) < self.tolerance and ball.y_speed > 0:
@@ -115,58 +110,65 @@ class Colissions():
                     ball.x_speed *= -1
             
     pass                
-'''objs = [MyClass() for i in range(10)]
-for obj in objs:
-    other_object.add(obj)
-
-objs[0].do_sth()'''     
-level=Level()
-level.load(0)
+class BaseGameObject():
+    pass
+class Game():
+    def __init__(self):
+        #self.current_level = 0
+        self.level = Level()
+        self.level.load(self.level.current_level)
+        self.all_bricks = Group()
+    #def reload(self):
+        self.brick = [Brick() for i in range(self.level.brick_x.__len__())]
+        for i in range(self.level.brick_x.__len__()):
+            self.all_bricks.add(self.brick[i])
+            self.brick[i].rect.x = self.level.brick_x[i]
+            self.brick[i].rect.y = self.level.brick_y[i]
+        pass    
+    
+    
+    pass    
+game = Game()
+#level=Level()
+#game.level.load(0)
 #print(level.brick_x)     
-colision = Colissions() 
+ball_colision = BallColissions() 
 all_balls = Group()
 ball = Ball()
 all_balls.add(ball)
-all_bricks = Group()
-brick = [Brick() for i in range(level.brick_x.__len__())]
+#all_bricks = Group()
+#brick = [Brick() for i in range(game.level.brick_x.__len__())]
 #brick = Brick()
-for i in range(level.brick_x.__len__()):
+'''for i in range(game.level.brick_x.__len__()):
     all_bricks.add(brick[i])
-    brick[i].rect.x = level.brick_x[i]
-    brick[i].rect.y = level.brick_y[i]
+    brick[i].rect.x = game.level.brick_x[i]
+    brick[i].rect.y = game.level.brick_y[i]'''
     
 stick = Stick()
 all_sticks=Group()
 all_sticks.add(stick)
 # Game loop
 running = True
-#tolerance = 5 # ror test
+ 
 while running:
-    # keep loop running at the right speed
+     
     clock.tick(FPS)
-    # Process input (events)
+     
     for event in pygame.event.get():
-        # check for closing window
+         
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
-                brick[all_bricks.__len__()-1].kill()
-                brick[all_bricks.__len__()-1].remove()
-    colision.brick_detect()   
-    colision.stick_detect()         
-    '''for _brick in all_bricks:
-        if ball.rect.colliderect(_brick.rect):
-            
-            if ball.rect.bottom - _brick.rect.top <= tolerance:
-                ball.y_speed *= -1
-            if ball.rect.top - _brick.rect.bottom <= tolerance:
-                ball.y_speed *= -1    
-            _brick.kill()  ''' 
+                game.brick[game.all_bricks.__len__()-1].kill()
+                game.brick[game.all_bricks.__len__()-1].remove()
+    ball_colision.brick_detect()   
+    ball_colision.stick_detect()         
+     
             
     # Draw / render
     screen.fill(BLACK)
-    all_bricks.draw(brick_screen)
+    game.all_bricks.draw(brick_screen)
     all_balls.draw(screen)
     
     all_balls.update()
