@@ -32,7 +32,7 @@ class Brick(Sprite):
         self.image = Surface((BRICK_OFFSET_X, BRICK_OFFSET_Y))
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
-        self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        #self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
     
     
 class Ball(Sprite):
@@ -98,7 +98,8 @@ class BallColissions():
                 print(len(game.all_bricks))
                 if len(game.all_bricks) == 100:
                     game.level.current_level += 1
-                    game.load() 
+                    game.load_next_level
+                    () 
     def stick_detect(self):
         if ball.rect.colliderect(stick.rect):
             if abs(stick.rect.top - ball.rect.bottom) < self.tolerance and ball.y_speed > 0:
@@ -117,7 +118,7 @@ class Game():
     def __init__(self):
         #self.current_level = 0
         self.level = Level()
-    def load(self):   
+    def load_next_level(self):   
         self.level.load(self.level.current_level)
         self.all_bricks = Group()
     
@@ -131,7 +132,7 @@ class Game():
     
     pass    
 game = Game()
-game.load()
+game.load_next_level()
 #level=Level()
 #game.level.load(0)
 #print(level.brick_x)     
