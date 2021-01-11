@@ -30,6 +30,7 @@ class Brick(Sprite):
     def __init__(self):
         super().__init__()
         self.image = Surface((BRICK_OFFSET_X, BRICK_OFFSET_Y))
+        
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         #self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
@@ -79,37 +80,38 @@ class Stick(Sprite):
     
 class BallColissions():
     def __init__(self):
-       
+        self.all_balls = Group()
+        self.ball = Ball()
+        self.all_balls.add(self.ball)
         self.tolerance = 5
         
     def brick_detect(self):    
         for _brick in game.all_bricks:
-            if ball.rect.colliderect(_brick.rect):
+            if self.ball.rect.colliderect(_brick.rect):
                 
-                if abs(_brick.rect.top - ball.rect.bottom) < self.tolerance and ball.y_speed > 0:
-                    ball.y_speed *= -1
-                if abs(_brick.rect.bottom - ball.rect.top) < self.tolerance and ball.y_speed < 0:
-                    ball.y_speed *= -1 
-                if abs(_brick.rect.right - ball.rect.left) < self.tolerance and ball.x_speed < 0:  
-                    ball.x_speed *= -1   
-                if abs(_brick.rect.left - ball.rect.right) < self.tolerance and ball.x_speed > 0:  
-                    ball.x_speed *= -1
+                if abs(_brick.rect.top - self.ball.rect.bottom) < self.tolerance and self.ball.y_speed > 0:
+                    self.ball.y_speed *= -1
+                if abs(_brick.rect.bottom - self.ball.rect.top) < self.tolerance and self.ball.y_speed < 0:
+                    self.ball.y_speed *= -1 
+                if abs(_brick.rect.right - self.ball.rect.left) < self.tolerance and self.ball.x_speed < 0:  
+                    self.ball.x_speed *= -1   
+                if abs(_brick.rect.left - self.ball.rect.right) < self.tolerance and self.ball.x_speed > 0:  
+                    self.ball.x_speed *= -1
                 _brick.kill()   
                 print(len(game.all_bricks))
                 if len(game.all_bricks) == 100:
                     game.level.current_level += 1
-                    game.load_next_level
-                    () 
+                    game.load_next_level() 
     def stick_detect(self):
-        if ball.rect.colliderect(stick.rect):
-            if abs(stick.rect.top - ball.rect.bottom) < self.tolerance and ball.y_speed > 0:
-                    ball.y_speed *= -1
-            if abs(stick.rect.bottom - ball.rect.top) < self.tolerance and ball.y_speed < 0:
-                    ball.y_speed *= -1 
-            if abs(stick.rect.right - ball.rect.left) < self.tolerance and ball.x_speed < 0:  
-                    ball.x_speed *= -1   
-            if abs(stick.rect.left - ball.rect.right) < self.tolerance and ball.x_speed > 0:  
-                    ball.x_speed *= -1
+        if self.ball.rect.colliderect(stick.rect):
+            if abs(stick.rect.top - self.ball.rect.bottom) < self.tolerance and self.ball.y_speed > 0:
+                    self.ball.y_speed *= -1
+            if abs(stick.rect.bottom - self.ball.rect.top) < self.tolerance and self.ball.y_speed < 0:
+                    self.ball.y_speed *= -1 
+            if abs(stick.rect.right - self.ball.rect.left) < self.tolerance and self.ball.x_speed < 0:  
+                    self.ball.x_speed *= -1   
+            if abs(stick.rect.left - self.ball.rect.right) < self.tolerance and self.ball.x_speed > 0:  
+                    self.ball.x_speed *= -1
             
     pass                
 class BaseGameObject():
@@ -118,6 +120,7 @@ class Game():
     def __init__(self):
         #self.current_level = 0
         self.level = Level()
+        
     def load_next_level(self):   
         self.level.load(self.level.current_level)
         self.all_bricks = Group()
@@ -137,9 +140,9 @@ game.load_next_level()
 #game.level.load(0)
 #print(level.brick_x)     
 ball_colision = BallColissions() 
-all_balls = Group()
-ball = Ball()
-all_balls.add(ball)
+#all_balls = Group()
+#ball = Ball()
+#all_balls.add(ball)
 #all_bricks = Group()
 #brick = [Brick() for i in range(game.level.brick_x.__len__())]
 #brick = Brick()
@@ -173,9 +176,9 @@ while running:
     # Draw / render
     screen.fill(BLACK)
     game.all_bricks.draw(brick_screen)
-    all_balls.draw(screen)
+    ball_colision.all_balls.draw(screen)
     
-    all_balls.update()
+    ball_colision.all_balls.update()
     all_sticks.draw(screen)
     all_sticks.update()
     # *after* drawing everything, flip the display
