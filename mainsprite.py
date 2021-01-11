@@ -95,9 +95,10 @@ class BallColissions():
                 if abs(_brick.rect.left - ball.rect.right) < self.tolerance and ball.x_speed > 0:  
                     ball.x_speed *= -1
                 _brick.kill()   
-                print(game.all_bricks.__len__)
-                if game.all_bricks.__len__ == 100:
+                print(len(game.all_bricks))
+                if len(game.all_bricks) == 100:
                     game.level.current_level += 1
+                    game.load() 
     def stick_detect(self):
         if ball.rect.colliderect(stick.rect):
             if abs(stick.rect.top - ball.rect.bottom) < self.tolerance and ball.y_speed > 0:
@@ -116,9 +117,10 @@ class Game():
     def __init__(self):
         #self.current_level = 0
         self.level = Level()
+    def load(self):   
         self.level.load(self.level.current_level)
         self.all_bricks = Group()
-    #def reload(self):
+    
         self.brick = [Brick() for i in range(self.level.brick_x.__len__())]
         for i in range(self.level.brick_x.__len__()):
             self.all_bricks.add(self.brick[i])
@@ -129,6 +131,7 @@ class Game():
     
     pass    
 game = Game()
+game.load()
 #level=Level()
 #game.level.load(0)
 #print(level.brick_x)     
