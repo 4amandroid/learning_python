@@ -29,14 +29,27 @@ clock = Clock()
 class Brick(Sprite):
     def __init__(self):
         super().__init__()
+        self.brick_hardnes :int= 0
         self.image = Surface((BRICK_OFFSET_X, BRICK_OFFSET_Y))
         self.brick_image = pygame.image.load('brick.png')
-        self.image.blit(self.brick_image,(0,0))
+        #self.image.blit(self.brick_image,(0,0))
         self.image.set_colorkey(BACKGRAUND_COLOR)
         
         #self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         #self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+    def paint(self,brick_hardnes:int):
+        self.brick_hardnes = brick_hardnes
+        if self.brick_hardnes == 1:
+            self.brick_image = pygame.image.load('brick.png')
+        if self.brick_hardnes == 2:
+            self.brick_image = pygame.image.load('brick1.png')    
+        if self.brick_hardnes == 3:
+            self.brick_image = pygame.image.load('brick2.png') 
+        if self.brick_hardnes == 4:
+            self.brick_image = pygame.image.load('brick3.png')    
+        self.image.blit(self.brick_image,(0,0))      
+        pass
     
     
 class Ball(Sprite):
@@ -53,6 +66,7 @@ class Ball(Sprite):
         pygame.draw.circle(self.image, self.color, (self.ball_radius,self.ball_radius), self.ball_radius)
         self.rect = self.image.get_rect()
         self.rect.center = (self.ball_radius, self.ball_radius)
+        self.rect.y = 550 
     def update(self) -> None:
         self.rect.x += self.x_speed
         self.rect.y += self.y_speed
@@ -100,7 +114,12 @@ class BallColissions():
                     self.ball.x_speed *= -1   
                 if abs(_brick.rect.left - self.ball.rect.right) < self.tolerance and self.ball.x_speed > 0:  
                     self.ball.x_speed *= -1
-                _brick.kill()   
+                if _brick.brick_hardnes == 1:    
+                    _brick.kill() 
+                if _brick.brick_hardnes > 1 and _brick.brick_hardnes < 4:
+                    _brick.brick_hardnes -= 1
+                    _brick.paint(_brick.brick_hardnes) 
+                print(_brick.brick_hardnes)
                 print(len(game.all_bricks))
                 if len(game.all_bricks) == 100:
                     game.level.current_level += 1
@@ -133,6 +152,8 @@ class Game():
             self.all_bricks.add(self.brick[i])
             self.brick[i].rect.x = self.level.brick_x[i]
             self.brick[i].rect.y = self.level.brick_y[i]
+            self.brick[i].brick_hardnes = self.level.brick_break[i]
+            self.brick[i].paint(self.brick[i].brick_hardnes)
         pass    
     
     
@@ -157,6 +178,7 @@ ball_colision = BallColissions()
 stick = Stick()
 all_sticks=Group()
 all_sticks.add(stick)
+
 # Game loop
 running = True
  
