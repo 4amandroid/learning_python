@@ -30,8 +30,11 @@ class Brick(Sprite):
     def __init__(self):
         super().__init__()
         self.image = Surface((BRICK_OFFSET_X, BRICK_OFFSET_Y))
+        self.brick_image = pygame.image.load('brick.png')
+        self.image.blit(self.brick_image,(0,0))
+        self.image.set_colorkey(BACKGRAUND_COLOR)
         
-        self.image.fill(GREEN)
+        #self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         #self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
     
