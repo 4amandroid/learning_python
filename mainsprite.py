@@ -15,6 +15,7 @@ BACKGRAUND_COLOR = BLACK = Color(0, 0, 0)
 RED = Color(255, 0, 0)
 GREEN = Color(0, 255, 0)
 BLUE = Color(0, 0, 255)
+BRICK_IMAGE = ['brick.png','brick1.png','brick2.png','brick3.png']
 
 # initialize pygame and create window
 pygame.init()
@@ -40,14 +41,15 @@ class Brick(Sprite):
         #self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
     def paint(self,brick_hardnes:int):
         self.brick_hardnes = brick_hardnes
-        if self.brick_hardnes == 1:
+        self.brick_image = pygame.image.load(BRICK_IMAGE[brick_hardnes-1])
+        '''if self.brick_hardnes == 1:
             self.brick_image = pygame.image.load('brick.png')
         if self.brick_hardnes == 2:
             self.brick_image = pygame.image.load('brick1.png')    
         if self.brick_hardnes == 3:
             self.brick_image = pygame.image.load('brick2.png') 
         if self.brick_hardnes == 4:
-            self.brick_image = pygame.image.load('brick3.png')    
+            self.brick_image = pygame.image.load('brick3.png')'''    
         self.image.blit(self.brick_image,(0,0))      
         pass
     
@@ -57,7 +59,7 @@ class Ball(Sprite):
     def __init__(self):
         super().__init__()
         self.x_speed = 2
-        self.y_speed = 2
+        self.y_speed = 2.3
         self.color = RED
         self.ball_radius = 5
         self.image = Surface((self.ball_radius*2, self.ball_radius*2))
