@@ -17,9 +17,7 @@ class Game:
     def __init__(self):
         pygame.init()
         self.my_pygame = pygame
-        self.my_pygame1 = pygame
         self.screen: pygame.Surface = self.my_pygame.display.set_mode((1000, 600))
-        self.screen1 = self.my_pygame1.display.set_mode((1000, 600))
         self.icon = self.my_pygame.image.load(STICK_TEXTURE)
         self.my_pygame.display.set_icon(self.icon)
         self.stick_img = self.my_pygame.image.load(STICK_TEXTURE)
@@ -28,7 +26,7 @@ class Game:
         return Coordinate(game.my_pygame.mouse.get_pos())
 
     def begin_update(self, screen: pygame.Surface):
-        self.screen1.fill((0, 0, 0))
+        screen.fill((0, 0, 0))
         return True
 
     def end_update(self, my_pygame: pygame):
@@ -60,7 +58,7 @@ while game.running:
     #ball.move(game.screen) 
     ball.level_brick_x = bricks.level.brick_x
     ball.level_brick_y = bricks.level.brick_y  
-    ball.move(game.screen1) 
+    ball.move(game.screen) 
     bricks.draw(game.screen, pygame)
     
     """
@@ -95,4 +93,4 @@ while game.running:
     
     #stick.move(game.screen) 
     game.end_update(game.my_pygame)
-    clock.tick(220)
+    clock.tick(200)

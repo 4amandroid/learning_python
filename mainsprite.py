@@ -126,6 +126,7 @@ class BallColissions():
                 if len(game.all_bricks) == 100:
                     game.level.current_level += 1
                     game.load_next_level() 
+                return True    
     def stick_detect(self):
         if self.ball.rect.colliderect(stick.rect):
             if abs(stick.rect.top - self.ball.rect.bottom) < self.tolerance and self.ball.y_speed > 0:
@@ -196,7 +197,9 @@ while running:
             if event.key == pygame.K_q:
                 game.brick[game.all_bricks.__len__()-1].kill()
                 game.brick[game.all_bricks.__len__()-1].remove()
-    ball_colision.brick_detect()   
+    if ball_colision.brick_detect():
+        print('redraw')
+        game.all_bricks.draw(brick_screen)   
     ball_colision.stick_detect()         
      
             
