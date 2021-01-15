@@ -16,6 +16,7 @@ RED = Color(255, 0, 0)
 GREEN = Color(0, 255, 0)
 BLUE = Color(0, 0, 255)
 BRICK_IMAGE = ['brick.png','brick1.png','brick2.png','brick3.png']
+BORDER_LOCATION = [(20,SCREEN_HEIGHT),(20,SCREEN_HEIGHT),(SCREEN_WIDTH,60)]
 
 # initialize pygame and create window
 pygame.init()
@@ -26,7 +27,17 @@ brick_screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("My Game")
 clock = Clock()
  
-
+class Border(Sprite):
+    def __init__(self): 
+        super().__init__()
+        self.image = Surface((20,SCREEN_WIDTH)) #TODO hardcore remove
+        self.rect = self.image.get_rect()
+        self.image.fill(GREEN)
+        #self.rect.x = 0
+        #self.rect.y = 0
+        self.right_border = Surface((5,SCREEN_HEIGHT))
+        self.right_border.fill(GREEN)
+    pass
 class Brick(Sprite):
     def __init__(self):
         super().__init__()
@@ -167,6 +178,15 @@ game.load_next_level()
 #game.level.load(0)
 #print(level.brick_x)     
 ball_colision = BallColissions() 
+border = Border()
+border = [Border() for i in range(BORDER_LOCATION.__len__())]
+all_borders = Group()
+for i in range(BORDER_LOCATION.__len__()):
+    all_borders.add(border[i])
+    border[i].rect.topleft= BORDER_LOCATION[i]
+    #border[i].rect.topleft= BORDER_LOCATION[i]
+    #brick[i].rect.y = game.level.brick_y[i]
+#all_borders.add(border)
 #all_balls = Group()
 #ball = Ball()
 #all_balls.add(ball)
@@ -199,7 +219,7 @@ while running:
                 game.brick[game.all_bricks.__len__()-1].remove()
     if ball_colision.brick_detect():
         print('redraw')
-        game.all_bricks.draw(brick_screen)   
+        
     ball_colision.stick_detect()         
      
             
@@ -207,7 +227,10 @@ while running:
     screen.fill(BLACK)
     game.all_bricks.draw(brick_screen)
     ball_colision.all_balls.draw(screen)
-    
+    all_borders.draw(screen)
+    all_borders.update()
+    #border.left_border.blit(screen,(0,0))
+    #border.left_border.update()
     ball_colision.all_balls.update()
     all_sticks.draw(screen)
     all_sticks.update()
