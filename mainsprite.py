@@ -134,7 +134,7 @@ class BallColissions():
                     _brick.paint(_brick.brick_hardnes) 
                 print(_brick.brick_hardnes)
                 print(len(game.all_bricks))
-                if len(game.all_bricks) == 100:
+                if len(game.all_bricks) == 5:
                     game.level.current_level += 1
                     game.load_next_level() 
                 return True    
@@ -148,7 +148,18 @@ class BallColissions():
                     self.ball.x_speed *= -1   
             if abs(stick.rect.left - self.ball.rect.right) < self.tolerance and self.ball.x_speed > 0:  
                     self.ball.x_speed *= -1
-            
+    def border_detect(self):
+        for _border in all_borders:
+            if self.ball.rect.colliderect(_border):
+                if abs(_border.rect.top - self.ball.rect.bottom) < self.tolerance and self.ball.y_speed > 0:
+                    self.ball.y_speed *= -1
+                if abs(_border.rect.bottom - self.ball.rect.top) < self.tolerance and self.ball.y_speed < 0:
+                    self.ball.y_speed *= -1 
+                if abs(_border.rect.right - self.ball.rect.left) < self.tolerance and self.ball.x_speed < 0:  
+                    self.ball.x_speed *= -1   
+                if abs(_border.rect.left - self.ball.rect.right) < self.tolerance and self.ball.x_speed > 0:  
+                    self.ball.x_speed *= -1
+                
     pass                
 class BaseGameObject():
     pass
@@ -222,7 +233,8 @@ while running:
     if ball_colision.brick_detect():
         print('redraw')
         
-    ball_colision.stick_detect()         
+    ball_colision.stick_detect()    
+    ball_colision.border_detect()     
      
             
     # Draw / render
