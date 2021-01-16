@@ -16,7 +16,7 @@ RED = Color(255, 0, 0)
 GREEN = Color(0, 255, 0)
 BLUE = Color(0, 0, 255)
 BRICK_IMAGE = ['brick.png','brick1.png','brick2.png','brick3.png']
-BORDER_LOCATION = [(20,SCREEN_HEIGHT),(20,SCREEN_HEIGHT),(SCREEN_WIDTH,60)]
+BORDER_LOCATION = [(0,0),(SCREEN_WIDTH-20,0),(0,0)]
 
 # initialize pygame and create window
 pygame.init()
@@ -35,8 +35,8 @@ class Border(Sprite):
         self.image.fill(GREEN)
         #self.rect.x = 0
         #self.rect.y = 0
-        self.right_border = Surface((5,SCREEN_HEIGHT))
-        self.right_border.fill(GREEN)
+        #self.right_border = Surface((5,SCREEN_HEIGHT))
+        #self.right_border.fill(GREEN)
     pass
 class Brick(Sprite):
     def __init__(self):
@@ -184,6 +184,8 @@ all_borders = Group()
 for i in range(BORDER_LOCATION.__len__()):
     all_borders.add(border[i])
     border[i].rect.topleft= BORDER_LOCATION[i]
+border[2].image =Surface((SCREEN_WIDTH,30))
+border[2].image.fill(GREEN)
     #border[i].rect.topleft= BORDER_LOCATION[i]
     #brick[i].rect.y = game.level.brick_y[i]
 #all_borders.add(border)
