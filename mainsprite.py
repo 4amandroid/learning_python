@@ -134,7 +134,7 @@ class BallColissions():
                     _brick.paint(_brick.brick_hardnes) 
                 print(_brick.brick_hardnes)
                 print(len(game.all_bricks))
-                if len(game.all_bricks) == 5:
+                if len(game.all_bricks) == 65:
                     game.level.current_level += 1
                     game.load_next_level() 
                 return True    
@@ -150,7 +150,7 @@ class BallColissions():
                     self.ball.x_speed *= -1
     def border_detect(self):
         for _border in all_borders:
-            if self.ball.rect.colliderect(_border):
+            if self.ball.rect.colliderect(_border.rect):
                 if abs(_border.rect.top - self.ball.rect.bottom) < self.tolerance and self.ball.y_speed > 0:
                     self.ball.y_speed *= -1
                 if abs(_border.rect.bottom - self.ball.rect.top) < self.tolerance and self.ball.y_speed < 0:
@@ -192,11 +192,14 @@ ball_colision = BallColissions()
 border = Border()
 border = [Border() for i in range(BORDER_LOCATION.__len__())]
 all_borders = Group()
+
+border[2].image =Surface((SCREEN_WIDTH,35))
+border[2].rect = border[2].image.get_rect()
+#border[2].rect.topleft = (100,100)
+border[2].image.fill(GREEN)
 for i in range(BORDER_LOCATION.__len__()):
     all_borders.add(border[i])
-    border[i].rect.topleft= BORDER_LOCATION[i]
-border[2].image =Surface((SCREEN_WIDTH,30))
-border[2].image.fill(GREEN)
+    border[i].rect.topleft = BORDER_LOCATION[i]
     #border[i].rect.topleft= BORDER_LOCATION[i]
     #brick[i].rect.y = game.level.brick_y[i]
 #all_borders.add(border)
