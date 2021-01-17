@@ -138,40 +138,22 @@ class BallColision():
                     self.ball.x_speed *= -1   
                 if abs(_brick.rect.left - self.ball.rect.right) < self.tolerance and self.ball.x_speed > 0:  
                     self.ball.x_speed *= -1
-                if _brick.brick_hardnes == 1:    
-                    _brick.kill() 
-                if _brick.brick_hardnes > 1 and _brick.brick_hardnes < 4:
-                    _brick.brick_hardnes -= 1
-                    _brick.paint(_brick.brick_hardnes) 
-                print(_brick.brick_hardnes)
-                print(len(game.all_bricks))
+                if _brick.type_of_object == 'brick':
+                    if _brick.brick_hardnes == 1:    
+                        _brick.kill() 
+                    if _brick.brick_hardnes > 1 and _brick.brick_hardnes < 4:
+                        _brick.brick_hardnes -= 1
+                        _brick.paint(_brick.brick_hardnes) 
+                    print(_brick.brick_hardnes)
+                    print(len(game.all_bricks))
+                if _brick.type_of_object == 'stick'    
                 if len(game.all_bricks) == 65:
                     game.level.current_level += 1
                     game.load_next_level() 
+                    game.load_all_visual_object()
                 print(_brick.type_of_object)    
                 return _brick.rect
-    def stick_detect(self):
-        if self.ball.rect.colliderect(stick.rect):
-            if abs(stick.rect.top - self.ball.rect.bottom) < self.tolerance and self.ball.y_speed > 0:
-                    self.ball.y_speed *= -1
-            if abs(stick.rect.bottom - self.ball.rect.top) < self.tolerance and self.ball.y_speed < 0:
-                    self.ball.y_speed *= -1 
-            if abs(stick.rect.right - self.ball.rect.left) < self.tolerance and self.ball.x_speed < 0:  
-                    self.ball.x_speed *= -1   
-            if abs(stick.rect.left - self.ball.rect.right) < self.tolerance and self.ball.x_speed > 0:  
-                    self.ball.x_speed *= -1
-    def border_detect(self):
-        for _border in all_borders:
-            if self.ball.rect.colliderect(_border.rect):
-                if abs(_border.rect.top - self.ball.rect.bottom) < self.tolerance and self.ball.y_speed > 0:
-                    self.ball.y_speed *= -1
-                if abs(_border.rect.bottom - self.ball.rect.top) < self.tolerance and self.ball.y_speed < 0:
-                    self.ball.y_speed *= -1 
-                if abs(_border.rect.right - self.ball.rect.left) < self.tolerance and self.ball.x_speed < 0:  
-                    self.ball.x_speed *= -1   
-                if abs(_border.rect.left - self.ball.rect.right) < self.tolerance and self.ball.x_speed > 0:  
-                    self.ball.x_speed *= -1
-                print(_border.type_of_object)    
+    
                 
     pass                
 class BaseGameObject():
@@ -180,7 +162,16 @@ class Game():
     def __init__(self):
         #self.current_level = 0
         self.level = Level()
-        
+        self.border = Border()
+        self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
+        self.border[2].image =Surface((SCREEN_WIDTH,35))
+        self.border[2].rect = self.border[2].image.get_rect()
+        self.border[2].image.fill(GREEN)
+        self.all_borders = Group()
+        self.stick = Stick()
+        for i in range(BORDER_LOCATION.__len__()):
+            self.all_borders.add(self.border[i])
+            self.border[i].rect.topleft = BORDER_LOCATION[i]
     def load_next_level(self):   
         self.level.load(self.level.current_level)
         self.all_bricks = Group()
@@ -193,26 +184,31 @@ class Game():
             self.brick[i].brick_hardnes = self.level.brick_break[i]
             self.brick[i].paint(self.brick[i].brick_hardnes)
         pass    
-    
+    def load_all_visual_object(self):
+        for _border in self.all_borders:
+            self.all_bricks.add(_border)
+        self.all_bricks.add(self.stick)
+        pass
     
     pass    
 game = Game()
 game.load_next_level()
+game.load_all_visual_object()
 #level=Level()
 #game.level.load(0)
 #print(level.brick_x)     
 ball_colision = BallColision() 
-border = Border()
-border = [Border() for i in range(BORDER_LOCATION.__len__())]
-all_borders = Group()
+#border = Border()
+#border = [Border() for i in range(BORDER_LOCATION.__len__())]
+#all_borders = Group()
 
-border[2].image =Surface((SCREEN_WIDTH,35))
-border[2].rect = border[2].image.get_rect()
+#border[2].image =Surface((SCREEN_WIDTH,35))
+#border[2].rect = border[2].image.get_rect()
 #border[2].rect.topleft = (100,100)
-border[2].image.fill(GREEN)
-for i in range(BORDER_LOCATION.__len__()):
-    all_borders.add(border[i])
-    border[i].rect.topleft = BORDER_LOCATION[i]
+#border[2].image.fill(GREEN)
+#for i in range(BORDER_LOCATION.__len__()):
+ #   all_borders.add(border[i])
+#    border[i].rect.topleft = BORDER_LOCATION[i]
     
     
     #border[i].rect.topleft= BORDER_LOCATION[i]
@@ -229,8 +225,8 @@ for i in range(BORDER_LOCATION.__len__()):
     brick[i].rect.x = game.level.brick_x[i]
     brick[i].rect.y = game.level.brick_y[i]'''
     
-stick = Stick()
-all_borders.add(stick)
+#stick = Stick()
+#all_borders.add(stick)
 #all_sticks=Group()
 #all_sticks.add(stick)
 
@@ -255,7 +251,7 @@ while running:
   
         
     #ball_colision.stick_detect()    
-    ball_colision.border_detect()     
+    #ball_colision.border_detect()     
     
      
             
@@ -263,8 +259,8 @@ while running:
     screen.fill(BLACK)
     game.all_bricks.draw(brick_screen)
     ball_colision.all_balls.draw(screen)
-    all_borders.draw(screen)
-    all_borders.update()
+    #all_borders.draw(screen)
+    #all_borders.update()
     #border.left_border.blit(screen,(0,0))
     #border.left_border.update()
     ball_colision.all_balls.update()
