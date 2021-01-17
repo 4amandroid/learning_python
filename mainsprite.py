@@ -33,6 +33,7 @@ class Border(Sprite):
         self.image = Surface((20,SCREEN_WIDTH)) #TODO hardcore remove
         self.rect = self.image.get_rect()
         self.image.fill(GREEN)
+        self.type_of_object = 'border'
         #self.rect.x = 0
         #self.rect.y = 0
         #self.right_border = Surface((5,SCREEN_HEIGHT))
@@ -49,6 +50,7 @@ class Brick(Sprite):
         
         #self.image.fill(GREEN)
         self.rect = self.image.get_rect()
+        self.type_of_object = 'brick'
         #self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
     def paint(self,brick_hardnes:int):
         self.brick_hardnes = brick_hardnes
@@ -99,6 +101,7 @@ class Stick(Sprite):
         self.image.blit(self.stick_image,(0,0))
         self.image.set_colorkey(BACKGRAUND_COLOR)
         self.rect = self.image.get_rect()
+        self.type_of_object = 'stick' 
         
     def update(self):
         self.rect.x = pygame.mouse.get_pos()[0]
@@ -145,7 +148,7 @@ class BallColision():
                 if len(game.all_bricks) == 65:
                     game.level.current_level += 1
                     game.load_next_level() 
-                print(_brick)    
+                print(_brick.type_of_object)    
                 return _brick.rect
     def stick_detect(self):
         if self.ball.rect.colliderect(stick.rect):
@@ -168,6 +171,7 @@ class BallColision():
                     self.ball.x_speed *= -1   
                 if abs(_border.rect.left - self.ball.rect.right) < self.tolerance and self.ball.x_speed > 0:  
                     self.ball.x_speed *= -1
+                print(_border.type_of_object)    
                 
     pass                
 class BaseGameObject():
@@ -210,6 +214,7 @@ for i in range(BORDER_LOCATION.__len__()):
     all_borders.add(border[i])
     border[i].rect.topleft = BORDER_LOCATION[i]
     
+    
     #border[i].rect.topleft= BORDER_LOCATION[i]
     #brick[i].rect.y = game.level.brick_y[i]
 #all_borders.add(border)
@@ -225,8 +230,9 @@ for i in range(BORDER_LOCATION.__len__()):
     brick[i].rect.y = game.level.brick_y[i]'''
     
 stick = Stick()
-all_sticks=Group()
-all_sticks.add(stick)
+all_borders.add(stick)
+#all_sticks=Group()
+#all_sticks.add(stick)
 
 # Game loop
 running = True
@@ -248,7 +254,7 @@ while running:
     
   
         
-    ball_colision.stick_detect()    
+    #ball_colision.stick_detect()    
     ball_colision.border_detect()     
     
      
@@ -262,8 +268,8 @@ while running:
     #border.left_border.blit(screen,(0,0))
     #border.left_border.update()
     ball_colision.all_balls.update()
-    all_sticks.draw(screen)
-    all_sticks.update()
+    #all_sticks.draw(screen)
+    #all_sticks.update()
     # *after* drawing everything, flip the display
     pygame.display.flip()
 
