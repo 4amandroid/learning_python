@@ -107,14 +107,22 @@ class Stick(Sprite):
             self.rect.right = SCREEN_WIDTH #- STICK_LENGHT
          
     pass             
-    
-class BallColissions():
+ 
+class Colision_info():
+    x: int = 0
+    y: int = 0
+
+    def __init__(self, x:int=0, y=0):
+        self.x: int = x
+        self.y: int = y
+    pass  
+class BallColision():
     def __init__(self):
         self.all_balls = Group()
         self.ball = Ball()
         self.all_balls.add(self.ball)
         self.tolerance = 5
-        
+      
     def brick_detect(self):    
         for _brick in game.all_bricks:
             if self.ball.rect.colliderect(_brick.rect):
@@ -137,7 +145,8 @@ class BallColissions():
                 if len(game.all_bricks) == 65:
                     game.level.current_level += 1
                     game.load_next_level() 
-                return True    
+                print(_brick)    
+                return _brick.rect
     def stick_detect(self):
         if self.ball.rect.colliderect(stick.rect):
             if abs(stick.rect.top - self.ball.rect.bottom) < self.tolerance and self.ball.y_speed > 0:
@@ -188,7 +197,7 @@ game.load_next_level()
 #level=Level()
 #game.level.load(0)
 #print(level.brick_x)     
-ball_colision = BallColissions() 
+ball_colision = BallColision() 
 border = Border()
 border = [Border() for i in range(BORDER_LOCATION.__len__())]
 all_borders = Group()
@@ -200,6 +209,7 @@ border[2].image.fill(GREEN)
 for i in range(BORDER_LOCATION.__len__()):
     all_borders.add(border[i])
     border[i].rect.topleft = BORDER_LOCATION[i]
+    
     #border[i].rect.topleft= BORDER_LOCATION[i]
     #brick[i].rect.y = game.level.brick_y[i]
 #all_borders.add(border)
@@ -233,11 +243,14 @@ while running:
             if event.key == pygame.K_q:
                 game.brick[game.all_bricks.__len__()-1].kill()
                 game.brick[game.all_bricks.__len__()-1].remove()
-    if ball_colision.brick_detect():
-        print('redraw')
+        
+    ball_colision.brick_detect()
+    
+  
         
     ball_colision.stick_detect()    
     ball_colision.border_detect()     
+    
      
             
     # Draw / render
