@@ -101,32 +101,32 @@ class BallColision():
         self.tolerance = 4
       
     def detect(self):    
-        for _brick in game.all_visual_object:
-            if self.ball.rect.colliderect(_brick.rect):
+        for visual_object in game.all_visual_objects:
+            if self.ball.rect.colliderect(visual_object.rect):
                 
-                if abs(_brick.rect.top - self.ball.rect.bottom) < self.tolerance and self.ball.y_speed > 0:
+                if abs( visual_object.rect.top - self.ball.rect.bottom) < self.tolerance and self.ball.y_speed > 0:
                     self.ball.y_speed *= -1
-                if abs(_brick.rect.bottom - self.ball.rect.top) < self.tolerance and self.ball.y_speed < 0:
+                if abs( visual_object.rect.bottom - self.ball.rect.top) < self.tolerance and self.ball.y_speed < 0:
                     self.ball.y_speed *= -1 
-                if abs(_brick.rect.right - self.ball.rect.left) < self.tolerance and self.ball.x_speed < 0:  
+                if abs(visual_object.rect.right - self.ball.rect.left) < self.tolerance and self.ball.x_speed < 0:  
                     self.ball.x_speed *= -1   
-                if abs(_brick.rect.left - self.ball.rect.right) < self.tolerance and self.ball.x_speed > 0:  
+                if abs(visual_object.rect.left - self.ball.rect.right) < self.tolerance and self.ball.x_speed > 0:  
                     self.ball.x_speed *= -1
-                if _brick.type_of_object == 'brick':
-                    if _brick.brick_hardnes == 1:    
-                        _brick.kill() 
-                    if _brick.brick_hardnes > 1 and _brick.brick_hardnes < 4:
-                        _brick.brick_hardnes -= 1
-                        _brick.paint(_brick.brick_hardnes) 
-                    print(_brick.brick_hardnes)
+                if visual_object.type_of_object == 'brick':
+                    if visual_object.brick_hardnes == 1:    
+                        visual_object.kill() 
+                    if visual_object.brick_hardnes > 1 and visual_object.brick_hardnes < 4:
+                        visual_object.brick_hardnes -= 1
+                        visual_object.paint(visual_object.brick_hardnes) 
+                    print(visual_object.brick_hardnes)
                     print(len(game.all_bricks))
                  
-                if len(game.all_visual_object) == 15:
+                if len(game.all_visual_objects) == 15:
                     game.level.current_level += 1
                     game.load_next_level() 
                     game.load_all_visual_object()
-                print(_brick.type_of_object)    
-                return _brick.rect
+                print(visual_object.type_of_object)    
+                return visual_object.rect
     
                 
     pass                
@@ -148,9 +148,9 @@ class Game():
         for i in range(BORDER_LOCATION.__len__()):
             self.all_borders.add(self.border[i])
             self.border[i].rect.topleft = BORDER_LOCATION[i]
-        self.all_visual_object = Group() 
-        self.all_visual_object.add(self.all_sticks)   
-        self.all_visual_object.add(self.all_borders)  
+        self.all_visual_objects = Group() 
+        self.all_visual_objects.add(self.all_sticks)   
+        self.all_visual_objects.add(self.all_borders)  
     def load_next_level(self):   
         self.level.load(self.level.current_level)
         self.all_bricks = Group()
@@ -158,7 +158,7 @@ class Game():
         self.brick = [Brick() for i in range(self.level.brick_x.__len__())]
         for i in range(self.level.brick_x.__len__()):
             self.all_bricks.add(self.brick[i])
-            self.all_visual_object.add(self.all_bricks)
+            self.all_visual_objects.add(self.all_bricks)
             self.brick[i].rect.x = self.level.brick_x[i]
             self.brick[i].rect.y = self.level.brick_y[i]
             self.brick[i].brick_hardnes = self.level.brick_break[i]
