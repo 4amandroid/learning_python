@@ -146,7 +146,7 @@ class BallColision():
                         _brick.paint(_brick.brick_hardnes) 
                     print(_brick.brick_hardnes)
                     print(len(game.all_bricks))
-                if _brick.type_of_object == 'stick'    
+                 
                 if len(game.all_bricks) == 65:
                     game.level.current_level += 1
                     game.load_next_level() 
@@ -169,6 +169,8 @@ class Game():
         self.border[2].image.fill(GREEN)
         self.all_borders = Group()
         self.stick = Stick()
+        self.all_sticks = Group()
+        self.all_sticks.add(self.stick)
         for i in range(BORDER_LOCATION.__len__()):
             self.all_borders.add(self.border[i])
             self.border[i].rect.topleft = BORDER_LOCATION[i]
@@ -260,10 +262,11 @@ while running:
     game.all_bricks.draw(brick_screen)
     ball_colision.all_balls.draw(screen)
     #all_borders.draw(screen)
-    #all_borders.update()
+    game.all_borders.update()
     #border.left_border.blit(screen,(0,0))
     #border.left_border.update()
     ball_colision.all_balls.update()
+    game.all_sticks.update()
     #all_sticks.draw(screen)
     #all_sticks.update()
     # *after* drawing everything, flip the display
