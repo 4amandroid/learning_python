@@ -10,11 +10,8 @@ from Level import Level
 FPS = 100
 
 #define colors
-WHITE = Color(255, 255, 255)
+ 
 BACKGRAUND_COLOR = BLACK = Color(0, 0, 0)
-RED = Color(255, 0, 0)
-GREEN = Color(0, 255, 0)
-BLUE = Color(0, 0, 255)
 BRICK_IMAGE = ['brick.png','brick1.png','brick2.png','brick3.png']
 BORDER_LOCATION = [(0,0),(SCREEN_WIDTH-20,0),(0,0)]
 
@@ -23,7 +20,7 @@ pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 brick_screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-#brick_screen = pygame.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+ 
 pygame.display.set_caption("My Game")
 clock = Clock()
  
@@ -32,12 +29,9 @@ class Border(Sprite):
         super().__init__()
         self.image = Surface((20,SCREEN_WIDTH)) #TODO hardcore remove
         self.rect = self.image.get_rect()
-        self.image.fill(GREEN)
+        self.image.fill(COLOR_GREEN)
         self.type_of_object = 'border'
-        #self.rect.x = 0
-        #self.rect.y = 0
-        #self.right_border = Surface((5,SCREEN_HEIGHT))
-        #self.right_border.fill(GREEN)
+         
     pass
 class Brick(Sprite):
     def __init__(self):
@@ -45,24 +39,12 @@ class Brick(Sprite):
         self.brick_hardnes :int= 0
         self.image = Surface((BRICK_OFFSET_X, BRICK_OFFSET_Y))
         self.brick_image = pygame.image.load('brick.png')
-        #self.image.blit(self.brick_image,(0,0))
         self.image.set_colorkey(BACKGRAUND_COLOR)
-        
-        #self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.type_of_object = 'brick'
-        #self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
     def paint(self,brick_hardnes:int):
         self.brick_hardnes = brick_hardnes
         self.brick_image = pygame.image.load(BRICK_IMAGE[brick_hardnes-1])
-        '''if self.brick_hardnes == 1:
-            self.brick_image = pygame.image.load('brick.png')
-        if self.brick_hardnes == 2:
-            self.brick_image = pygame.image.load('brick1.png')    
-        if self.brick_hardnes == 3:
-            self.brick_image = pygame.image.load('brick2.png') 
-        if self.brick_hardnes == 4:
-            self.brick_image = pygame.image.load('brick3.png')'''    
         self.image.blit(self.brick_image,(0,0))      
         pass
     
@@ -73,7 +55,7 @@ class Ball(Sprite):
         super().__init__()
         self.x_speed = 2
         self.y_speed = 2.3
-        self.color = RED
+        self.color = COLOR_RED
         self.ball_radius = 5
         self.image = Surface((self.ball_radius*2, self.ball_radius*2))
         self.image.set_colorkey(BACKGRAUND_COLOR)
@@ -96,7 +78,7 @@ class Stick(Sprite):
     def __init__(self) -> None:
         super().__init__()
         self.image = Surface((107, 22))
-        self.image.fill(GREEN)
+        #self.image.fill(GREEN)
         self.stick_image = pygame.image.load(STICK_TEXTURE)
         self.image.blit(self.stick_image,(0,0))
         self.image.set_colorkey(BACKGRAUND_COLOR)
@@ -111,14 +93,7 @@ class Stick(Sprite):
          
     pass             
  
-class Colision_info():
-    x: int = 0
-    y: int = 0
-
-    def __init__(self, x:int=0, y=0):
-        self.x: int = x
-        self.y: int = y
-    pass  
+ 
 class BallColision():
     def __init__(self):
         self.all_balls = Group()
@@ -166,7 +141,7 @@ class Game():
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
         self.border[2].image =Surface((SCREEN_WIDTH,35))
         self.border[2].rect = self.border[2].image.get_rect()
-        self.border[2].image.fill(GREEN)
+        self.border[2].image.fill(COLOR_GREEN)
         self.all_borders = Group()
         self.stick = Stick()
         self.all_sticks = Group()
@@ -196,41 +171,11 @@ class Game():
 game = Game()
 game.load_next_level()
 game.load_all_visual_object()
-#level=Level()
-#game.level.load(0)
-#print(level.brick_x)     
+  
 ball_colision = BallColision() 
-#border = Border()
-#border = [Border() for i in range(BORDER_LOCATION.__len__())]
-#all_borders = Group()
-
-#border[2].image =Surface((SCREEN_WIDTH,35))
-#border[2].rect = border[2].image.get_rect()
-#border[2].rect.topleft = (100,100)
-#border[2].image.fill(GREEN)
-#for i in range(BORDER_LOCATION.__len__()):
- #   all_borders.add(border[i])
-#    border[i].rect.topleft = BORDER_LOCATION[i]
+  
     
-    
-    #border[i].rect.topleft= BORDER_LOCATION[i]
-    #brick[i].rect.y = game.level.brick_y[i]
-#all_borders.add(border)
-#all_balls = Group()
-#ball = Ball()
-#all_balls.add(ball)
-#all_bricks = Group()
-#brick = [Brick() for i in range(game.level.brick_x.__len__())]
-#brick = Brick()
-'''for i in range(game.level.brick_x.__len__()):
-    all_bricks.add(brick[i])
-    brick[i].rect.x = game.level.brick_x[i]
-    brick[i].rect.y = game.level.brick_y[i]'''
-    
-#stick = Stick()
-#all_borders.add(stick)
-#all_sticks=Group()
-#all_sticks.add(stick)
+ 
 
 # Game loop
 running = True
@@ -240,7 +185,6 @@ while running:
     clock.tick(FPS)
      
     for event in pygame.event.get():
-         
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
@@ -248,28 +192,14 @@ while running:
                 game.brick[game.all_bricks.__len__()-1].kill()
                 game.brick[game.all_bricks.__len__()-1].remove()
         
-    ball_colision.brick_detect()
-    
-  
-        
-    #ball_colision.stick_detect()    
-    #ball_colision.border_detect()     
-    
-     
-            
+    ball_colision.brick_detect()        
     # Draw / render
     screen.fill(BLACK)
     game.all_bricks.draw(brick_screen)
     ball_colision.all_balls.draw(screen)
-    #all_borders.draw(screen)
     game.all_borders.update()
-    #border.left_border.blit(screen,(0,0))
-    #border.left_border.update()
     ball_colision.all_balls.update()
     game.all_sticks.update()
-    #all_sticks.draw(screen)
-    #all_sticks.update()
-    # *after* drawing everything, flip the display
     pygame.display.flip()
 
 pygame.quit()
