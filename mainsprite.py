@@ -68,17 +68,16 @@ class Ball(Sprite):
         self.rect.x += self.x_speed
         self.rect.y += self.y_speed
         if self.rect.bottom >= SCREEN_HEIGHT or self.rect.top <= 0:
-            self.y_speed *= -1
-        if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
-            self.x_speed *= -1    
-        #pygame.sprite.spritecollide(ball,all_bricks,True)
+            self.y_speed *= -1 # will be removed
+        #if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
+        #    self.x_speed *= -1    
+         
         pass
 
 class Stick(Sprite):
     def __init__(self) -> None:
         super().__init__()
         self.image = Surface((107, 22))
-        #self.image.fill(GREEN)
         self.stick_image = pygame.image.load(STICK_TEXTURE)
         self.image.blit(self.stick_image,(0,0))
         self.image.set_colorkey(BACKGRAUND_COLOR)
@@ -99,10 +98,10 @@ class BallColision():
         self.all_balls = Group()
         self.ball = Ball()
         self.all_balls.add(self.ball)
-        self.tolerance = 5
+        self.tolerance = 4
       
-    def brick_detect(self):    
-        for _brick in game.all_bricks:
+    def detect(self):    
+        for _brick in game.all_visual_object:
             if self.ball.rect.colliderect(_brick.rect):
                 
                 if abs(_brick.rect.top - self.ball.rect.bottom) < self.tolerance and self.ball.y_speed > 0:
@@ -122,7 +121,7 @@ class BallColision():
                     print(_brick.brick_hardnes)
                     print(len(game.all_bricks))
                  
-                if len(game.all_bricks) == 65:
+                if len(game.all_visual_object) == 15:
                     game.level.current_level += 1
                     game.load_next_level() 
                     game.load_all_visual_object()
@@ -140,7 +139,7 @@ class Game():
         self.border = Border()
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
         self.border[2].image =Surface((SCREEN_WIDTH,35))
-        self.border[2].rect = self.border[2].image.get_rect()
+        self.border[2].rect = self.border[2].image.get_rect()#TODO tthink something else
         self.border[2].image.fill(COLOR_GREEN)
         self.all_borders = Group()
         self.stick = Stick()
@@ -149,6 +148,9 @@ class Game():
         for i in range(BORDER_LOCATION.__len__()):
             self.all_borders.add(self.border[i])
             self.border[i].rect.topleft = BORDER_LOCATION[i]
+        self.all_visual_object = Group() 
+        self.all_visual_object.add(self.all_sticks)   
+        self.all_visual_object.add(self.all_borders)  
     def load_next_level(self):   
         self.level.load(self.level.current_level)
         self.all_bricks = Group()
@@ -156,6 +158,7 @@ class Game():
         self.brick = [Brick() for i in range(self.level.brick_x.__len__())]
         for i in range(self.level.brick_x.__len__()):
             self.all_bricks.add(self.brick[i])
+            self.all_visual_object.add(self.all_bricks)
             self.brick[i].rect.x = self.level.brick_x[i]
             self.brick[i].rect.y = self.level.brick_y[i]
             self.brick[i].brick_hardnes = self.level.brick_break[i]
@@ -173,10 +176,6 @@ game.load_next_level()
 game.load_all_visual_object()
   
 ball_colision = BallColision() 
-  
-    
- 
-
 # Game loop
 running = True
  
@@ -192,7 +191,7 @@ while running:
                 game.brick[game.all_bricks.__len__()-1].kill()
                 game.brick[game.all_bricks.__len__()-1].remove()
         
-    ball_colision.brick_detect()        
+    ball_colision.detect()        
     # Draw / render
     screen.fill(COLOR_BLACK)
     game.all_bricks.draw(brick_screen)
