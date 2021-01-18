@@ -11,7 +11,7 @@ FPS = 100
 
 #define colors
  
-BACKGRAUND_COLOR = BLACK = Color(0, 0, 0)
+BACKGRAUND_COLOR = COLOR_BLACK #= Color(0, 0, 0)
 BRICK_IMAGE = ['brick.png','brick1.png','brick2.png','brick3.png']
 BORDER_LOCATION = [(0,0),(SCREEN_WIDTH-20,0),(0,0)]
 
@@ -194,7 +194,7 @@ while running:
         
     ball_colision.brick_detect()        
     # Draw / render
-    screen.fill(BLACK)
+    screen.fill(COLOR_BLACK)
     game.all_bricks.draw(brick_screen)
     ball_colision.all_balls.draw(screen)
     game.all_borders.update()
