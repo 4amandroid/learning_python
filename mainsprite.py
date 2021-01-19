@@ -1,3 +1,4 @@
+ 
 import pygame
 from pygame.sprite import Sprite, Group
 from pygame.time import Clock
@@ -10,10 +11,16 @@ from Level import Level
 FPS = 100
 
 #define colors
- 
+TOP_LEFT_SURFACE = (0,0) 
 BACKGROUND_COLOR = COLOR_BLACK #= Color(0, 0, 0)                        #!!! one color = another color ?
 BRICK_IMAGE = ['brick.png','brick1.png','brick2.png','brick3.png']      #!!! use function to load names e.g. brick+level+.png
-BORDER_LOCATION = [(0,0),(SCREEN_WIDTH-20,0),(0,0)]                     #!!! remove magic numbers
+BORDER_LOCATION = [(0,0),(SCREEN_WIDTH-20,0),(0,0)] #!!! remove magic numbers
+UP_BORDER_NUMBER = 2
+UP_BORDER_HEIGHT = 35
+SIDE_BORDER_WIDTH = 20
+BALL_X_SPEED = 2
+BALL_Y_SPEED = 2.3
+
 
 # initialize pygame and create window
 #!!! above should be only in game constructor (__init__)
@@ -28,25 +35,25 @@ clock = Clock()
 class Border(Sprite):
     def __init__(self): 
         super().__init__()
-        self.image = Surface((20,SCREEN_WIDTH)) #TODO hardcore remove
+        self.image = Surface((SIDE_BORDER_WIDTH, SCREEN_WIDTH))  
         self.rect = self.image.get_rect()
         self.image.fill(COLOR_GREEN)
-        self.type_of_object = 'border' #!!! always use build in functions to do this: type(self).__name__
+        
          
-    pass
+   
 class Brick(Sprite):
     def __init__(self):
         super().__init__()
-        self.brick_hardnes :int= 0
+        self.brick_hardness :int= 0
         self.image = Surface((BRICK_OFFSET_X, BRICK_OFFSET_Y))
         self.brick_image = pygame.image.load('brick.png')
-        self.image.set_colorkey(BACKGROUND_COLOR)   #!!! typo - streetsidesoftware.code-spell-checker
+        self.image.set_colorkey(BACKGROUND_COLOR)   
         self.rect = self.image.get_rect()           
-        self.type_of_object = 'brick'               #!!! always use build in functions to do this: type(self).__name__
-    def paint(self,brick_hardnes:int):              #!!! typo - streetsidesoftware.code-spell-checker
-        self.brick_hardnes = brick_hardnes          #!!! typo - streetsidesoftware.code-spell-checker
-        self.brick_image = pygame.image.load(BRICK_IMAGE[brick_hardnes-1])
-        self.image.blit(self.brick_image,(0,0))      
+           
+    def paint(self,brick_hardness:int):               
+        self.brick_hardness = brick_hardness           
+        self.brick_image = pygame.image.load(BRICK_IMAGE[brick_hardness-1])
+        self.image.blit(self.brick_image,TOP_LEFT_SURFACE)      
         pass
     
     
@@ -54,26 +61,26 @@ class Ball(Sprite):
     
     def __init__(self):
         super().__init__()
-        self.x_speed = 2            #!!! avoid magic numbers
-        self.y_speed = 2.3          #!!! avoid magic numbers
+        self.x_speed = BALL_X_SPEED           
+        self.y_speed = BALL_Y_SPEED          
         self.color = COLOR_RED
-        self.ball_radius = 5        #!!! avoid magic numbers
+        self.ball_radius = BALL_RADIUS         
         self.image = Surface((self.ball_radius*2, self.ball_radius*2))
         self.image.set_colorkey(BACKGROUND_COLOR)
         
         pygame.draw.circle(self.image, self.color, (self.ball_radius,self.ball_radius), self.ball_radius)
         self.rect = self.image.get_rect()
         self.rect.center = (self.ball_radius, self.ball_radius)
-        self.rect.y = 550           #!!! avoid magic numbers
+        self.rect.y = STICK_Y_POSITION         
     def update(self) -> None:
-        self.rect.x += self.x_speed #!!! coordinate += speed :) time-space continuum? :)
-        self.rect.y += self.y_speed #!!! very strange hack - rect coordinates are integer but it is assigned from speed float(2.3) :)
+        self.rect.x += int(self.x_speed) #!!! coordinate += speed :) time-space continuum? :)
+        self.rect.y += int(self.y_speed)  
         if self.rect.bottom >= SCREEN_HEIGHT or self.rect.top <= 0:
             self.y_speed *= -1 # will be removed
         #if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
         #    self.x_speed *= -1    
          
-        pass                        #!!! method definition is declared as return None but pass? should be return None instead
+        
 
 class Stick(Sprite):
     def __init__(self) -> None:
@@ -83,16 +90,15 @@ class Stick(Sprite):
         self.image.blit(self.stick_image,(0,0))
         self.image.set_colorkey(BACKGROUND_COLOR)
         self.rect = self.image.get_rect()
-        self.type_of_object = 'stick'               #!!! always use build in functions to do this: type(self).__name__
+         
         
     def update(self):
         self.rect.x = pygame.mouse.get_pos()[0]     #!!! mouse should return coordinate object: Coordinate(pygame.mouse.get_pos()).x
         self.rect.y = STICK_Y_POSITION
         if self.rect.right >= SCREEN_WIDTH:
-            self.rect.right = SCREEN_WIDTH #- STICK_LENGHT
+            self.rect.right = SCREEN_WIDTH  
          
-    pass                                            #!!! make some research when is correct to return None and when to pass.
-                                                    #!!! this should be identical at all
+    
  
  
 class BallColision():
@@ -114,7 +120,7 @@ class BallColision():
                     self.ball.x_speed *= -1   
                 if abs(visual_object.rect.left - self.ball.rect.right) < self.tolerance and self.ball.x_speed > 0:  
                     self.ball.x_speed *= -1
-                if visual_object.type_of_object == 'brick': #!!! always use build in functions to do this: type(self).__name__
+                if isinstance(visual_object, Brick): #!!! always use build in functions to do this: type(self).__name__
                     if visual_object.brick_hardnes == 1:    
                         visual_object.kill() 
                     if visual_object.brick_hardnes > 1 and visual_object.brick_hardnes < 4: #!!! if 1 <= visual_object.brick_hardnes <= 4:
@@ -127,12 +133,26 @@ class BallColision():
                     game.level.current_level += 1           #!!! unacceptable! game and level logic is no place here
                     game.load_next_level() 
                     game.load_all_visual_object()
-                print(visual_object.type_of_object)    
+                print(type(visual_object))    
                 return visual_object.rect
     
                 
     pass                
 class BaseGameObject():
+    def __init__(self):
+        self.brick = Brick()
+        self.all_bricks = Group()
+        
+        
+        self.border = Border()
+        self.all_borders = Group()
+        self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
+        self.border[UP_BORDER_NUMBER].image =Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
+        self.border[UP_BORDER_NUMBER].rect = self.border[UP_BORDER_NUMBER].image.get_rect()#TODO think something else
+        self.border[UP_BORDER_NUMBER].image.fill(COLOR_GREEN)      
+                         
+        self.stick = Stick()
+        self.all_sticks = Group
     pass
 class Game():
     def __init__(self):
@@ -141,7 +161,7 @@ class Game():
         self.border = Border()
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
         self.border[2].image =Surface((SCREEN_WIDTH,35))                        #!!! avoid magic numbers
-        self.border[2].rect = self.border[2].image.get_rect()#TODO tthink something else
+        self.border[2].rect = self.border[2].image.get_rect()#TODO think something else
         self.border[2].image.fill(COLOR_GREEN)                                  #!!! avoid magic numbers
         self.all_borders = Group()                                              #!!! avoid magic numbers
         self.stick = Stick()
@@ -150,6 +170,7 @@ class Game():
         for i in range(BORDER_LOCATION.__len__()):
             self.all_borders.add(self.border[i])
             self.border[i].rect.topleft = BORDER_LOCATION[i]
+            self.all_borders.add(self.border[i])
         self.all_visual_objects = Group() 
         self.all_visual_objects.add(self.all_sticks)   
         self.all_visual_objects.add(self.all_borders)  
