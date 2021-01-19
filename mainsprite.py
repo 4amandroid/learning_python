@@ -11,7 +11,7 @@ FPS = 100
 
 #define colors
  
-BACKGRAUND_COLOR = COLOR_BLACK #= Color(0, 0, 0)                        #!!! one color = another color ?
+BACKGROUND_COLOR = COLOR_BLACK #= Color(0, 0, 0)                        #!!! one color = another color ?
 BRICK_IMAGE = ['brick.png','brick1.png','brick2.png','brick3.png']      #!!! use function to load names e.g. brick+level+.png
 BORDER_LOCATION = [(0,0),(SCREEN_WIDTH-20,0),(0,0)]                     #!!! remove magic numbers
 
@@ -40,7 +40,7 @@ class Brick(Sprite):
         self.brick_hardnes :int= 0
         self.image = Surface((BRICK_OFFSET_X, BRICK_OFFSET_Y))
         self.brick_image = pygame.image.load('brick.png')
-        self.image.set_colorkey(BACKGRAUND_COLOR)   #!!! typo - streetsidesoftware.code-spell-checker
+        self.image.set_colorkey(BACKGROUND_COLOR)   #!!! typo - streetsidesoftware.code-spell-checker
         self.rect = self.image.get_rect()           
         self.type_of_object = 'brick'               #!!! always use build in functions to do this: type(self).__name__
     def paint(self,brick_hardnes:int):              #!!! typo - streetsidesoftware.code-spell-checker
@@ -59,7 +59,7 @@ class Ball(Sprite):
         self.color = COLOR_RED
         self.ball_radius = 5        #!!! avoid magic numbers
         self.image = Surface((self.ball_radius*2, self.ball_radius*2))
-        self.image.set_colorkey(BACKGRAUND_COLOR)
+        self.image.set_colorkey(BACKGROUND_COLOR)
         
         pygame.draw.circle(self.image, self.color, (self.ball_radius,self.ball_radius), self.ball_radius)
         self.rect = self.image.get_rect()
@@ -81,7 +81,7 @@ class Stick(Sprite):
         self.image = Surface((107, 22))             #!!! avoid magic numbers
         self.stick_image = pygame.image.load(STICK_TEXTURE)
         self.image.blit(self.stick_image,(0,0))
-        self.image.set_colorkey(BACKGRAUND_COLOR)
+        self.image.set_colorkey(BACKGROUND_COLOR)
         self.rect = self.image.get_rect()
         self.type_of_object = 'stick'               #!!! always use build in functions to do this: type(self).__name__
         
