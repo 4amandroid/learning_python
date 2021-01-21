@@ -11,13 +11,14 @@ from Level import Level
 FPS = 100
 
 #define colors
+SIDE_BORDER_WIDTH = 20
 TOP_LEFT_SURFACE = (0,0) 
 BACKGROUND_COLOR = COLOR_BLACK #= Color(0, 0, 0)                        #!!! one color = another color ?
 BRICK_IMAGE = ['brick.png','brick1.png','brick2.png','brick3.png']      #!!! use function to load names e.g. brick+level+.png
-BORDER_LOCATION = [(0,0),(SCREEN_WIDTH-20,0),(0,0)] #!!! remove magic numbers
+BORDER_LOCATION = [TOP_LEFT_SURFACE,(SCREEN_WIDTH-SIDE_BORDER_WIDTH,0),TOP_LEFT_SURFACE] #!!! remove magic numbers
 UP_BORDER_NUMBER = 2
 UP_BORDER_HEIGHT = 35
-SIDE_BORDER_WIDTH = 20
+
 BALL_X_SPEED = 2
 BALL_Y_SPEED = 2.3
 
@@ -93,6 +94,7 @@ class Stick(Sprite):
          
         
     def update(self):
+ 
         self.rect.x = pygame.mouse.get_pos()[0]     #!!! mouse should return coordinate object: Coordinate(pygame.mouse.get_pos()).x
         self.rect.y = STICK_Y_POSITION
         if self.rect.right >= SCREEN_WIDTH:
@@ -152,11 +154,14 @@ class BaseGameObject():
         self.border[UP_BORDER_NUMBER].image.fill(COLOR_GREEN)      
                          
         self.stick = Stick()
-        self.all_sticks = Group
+        self.all_sticks = Group()
+        self.all_sticks.add(self.stick)
+        
+        
     pass
 class Game():
     def __init__(self):
-        #self.current_level = 0
+        self.current_level = 0
         self.level = Level()
         self.border = Border()
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
