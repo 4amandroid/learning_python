@@ -21,6 +21,7 @@ UP_BORDER_HEIGHT = 35
 
 BALL_X_SPEED = 2
 BALL_Y_SPEED = 2.3
+DEFAULT_NUMBERS_OFF_BALLS = 2
 
 
 # initialize pygame and create window
@@ -73,7 +74,7 @@ class Ball(Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (self.ball_radius, self.ball_radius)
         self.rect.y = STICK_Y_POSITION         
-    def update(self) -> None:
+    def update(self):
         self.rect.x += int(self.x_speed) #!!! coordinate += speed :) time-space continuum? :)
         self.rect.y += int(self.y_speed)  
         if self.rect.bottom >= SCREEN_HEIGHT or self.rect.top <= 0:
@@ -84,7 +85,7 @@ class Ball(Sprite):
         
 
 class Stick(Sprite):
-    def __init__(self) -> None:
+    def __init__(self):
         super().__init__()
         self.image = Surface((107, 22))             #!!! avoid magic numbers
         self.stick_image = pygame.image.load(STICK_TEXTURE)
@@ -140,13 +141,17 @@ class BallColision():
     
                 
     pass                
-class BaseGameObject():
+class AllVisualObject():
     def __init__(self):
+        self.number_of_balls = DEFAULT_NUMBERS_OFF_BALLS
+        self.ball=Ball()
+        self.all_balls = Group()
+        self.ball = [Ball() for i in range(self.number_of_balls)]
+        
         self.brick = Brick()
         self.all_bricks = Group()
         
-        
-        self.border = Border()
+        self.border = Border()    # All over the game stationary object
         self.all_borders = Group()
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
         self.border[UP_BORDER_NUMBER].image =Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
