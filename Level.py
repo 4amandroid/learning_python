@@ -7,7 +7,7 @@ class Level():
         self.brick_x = []
         self.brick_y = []
         self.brick_break = []
-        self.current_level = 0
+        #self.current_level = 0
         
     def load(self, level_number: int):
         """

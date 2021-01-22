@@ -143,10 +143,12 @@ class BallColision():
     pass                
 class AllVisualObject():
     def __init__(self):
+        self.level=Level()
+        self.current_level = 0
         self.number_of_balls = DEFAULT_NUMBERS_OFF_BALLS
         self.ball=Ball()
         self.all_balls = Group()
-        self.ball = [Ball() for i in range(self.number_of_balls)]
+        self.ball = [Ball() for i in range(self.number_of_balls)] #think to move num_of_ball in Game
         
         self.brick = Brick()
         self.all_bricks = Group()
@@ -160,51 +162,26 @@ class AllVisualObject():
                          
         self.stick = Stick()
         self.all_sticks = Group()
-        self.all_sticks.add(self.stick)
-        
-        
-    pass
-class Game():
-    def __init__(self):
-        self.current_level = 0
-        self.level = Level()
-        self.border = Border()
-        self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
-        self.border[2].image =Surface((SCREEN_WIDTH,35))                        #!!! avoid magic numbers
-        self.border[2].rect = self.border[2].image.get_rect()#TODO think something else
-        self.border[2].image.fill(COLOR_GREEN)                                  #!!! avoid magic numbers
-        self.all_borders = Group()                                              #!!! avoid magic numbers
-        self.stick = Stick()
-        self.all_sticks = Group()
-        self.all_sticks.add(self.stick)
-        for i in range(BORDER_LOCATION.__len__()):
-            self.all_borders.add(self.border[i])
-            self.border[i].rect.topleft = BORDER_LOCATION[i]
-            self.all_borders.add(self.border[i])
-        self.all_visual_objects = Group() 
-        self.all_visual_objects.add(self.all_sticks)   
-        self.all_visual_objects.add(self.all_borders)  
-    def load_next_level(self):                                                  #!!! use camelCase for method names
-        self.level.load(self.level.current_level)
-        self.all_bricks = Group()                                               #!!! refactor this to single responsibility 
-    
+        self.all_sticks.add(self.stick) # remake for more sticks
+    def loadLevel(self):                                                
+        self.level.load(self.current_level)
         self.brick = [Brick() for i in range(self.level.brick_x.__len__())]
         for i in range(self.level.brick_x.__len__()):
             self.all_bricks.add(self.brick[i])
-            self.all_visual_objects.add(self.all_bricks)
             self.brick[i].rect.x = self.level.brick_x[i]
             self.brick[i].rect.y = self.level.brick_y[i]
             self.brick[i].brick_hardnes = self.level.brick_break[i]
-            self.brick[i].paint(self.brick[i].brick_hardnes)
-        pass    
-    def load_all_visual_object(self):                                           #!!! use camelCase for method names
-                                                                                #!!! this method should have array of sprite objects?
-        for _border in self.all_borders:
-            self.all_bricks.add(_border)                                        #!!! all_bricks but border?
-        self.all_bricks.add(self.stick)                                         #!!! all_bricks but stick?
-        pass
+             
+        
+     
+class Game():
+    def __init__(self):
+        self.current_level = 0 
+        self.all_visual_objects = Group() 
+        self.all_visual_objects.add(self.all_sticks)   
+        self.all_visual_objects.add(self.all_borders)  
     
-    pass    
+        
 game = Game()
 game.load_next_level()              #!!! why next level?
 game.load_all_visual_object()
