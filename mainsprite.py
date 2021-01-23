@@ -121,12 +121,12 @@ class BallColision():
                 if abs(visual_object.rect.left - self.ball.rect.right) < self.tolerance and self.ball.x_speed > 0:  
                     self.ball.x_speed *= -1
                 if isinstance(visual_object, Brick): #!!! always use build in functions to do this: type(self).__name__
-                    if visual_object.brick_hardnes == 1:    
+                    if visual_object.brick_hardness == 1:    
                         visual_object.kill() 
-                    if visual_object.brick_hardnes > 1 and visual_object.brick_hardnes < 4: #!!! if 1 <= visual_object.brick_hardnes <= 4:
-                        visual_object.brick_hardnes -= 1
-                        visual_object.paint(visual_object.brick_hardnes) 
-                    print(visual_object.brick_hardnes)
+                    if visual_object.brick_hardness > 1 and visual_object.brick_hardness < 4: #!!! if 1 <= visual_object.brick_hardnes <= 4:
+                        visual_object.brick_hardness -= 1
+                        visual_object.paint(visual_object.brick_hardness) 
+                    print(visual_object.brick_hardness)
                     print(len(game.all_bricks))
                  
                 if len(game.all_visual_objects) == 15:      #!!! avoid magic numbers
@@ -139,20 +139,7 @@ class BallColision():
                 
     pass                
 class BaseGameObject():
-    def __init__(self):
-        self.brick = Brick()
-        self.all_bricks = Group()
-        
-        
-        self.border = Border()
-        self.all_borders = Group()
-        self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
-        self.border[UP_BORDER_NUMBER].image =Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
-        self.border[UP_BORDER_NUMBER].rect = self.border[UP_BORDER_NUMBER].image.get_rect()#TODO think something else
-        self.border[UP_BORDER_NUMBER].image.fill(COLOR_GREEN)      
-                         
-        self.stick = Stick()
-        self.all_sticks = Group
+     
     pass
 class Game():
     def __init__(self):
@@ -160,9 +147,9 @@ class Game():
         self.level = Level()
         self.border = Border()
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
-        self.border[2].image =Surface((SCREEN_WIDTH,35))                        #!!! avoid magic numbers
-        self.border[2].rect = self.border[2].image.get_rect()#TODO think something else
-        self.border[2].image.fill(COLOR_GREEN)                                  #!!! avoid magic numbers
+        self.border[UP_BORDER_NUMBER].image =Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
+        self.border[UP_BORDER_NUMBER].rect = self.border[UP_BORDER_NUMBER].image.get_rect()#TODO think something else
+        self.border[UP_BORDER_NUMBER].image.fill(COLOR_GREEN)      
         self.all_borders = Group()                                              #!!! avoid magic numbers
         self.stick = Stick()
         self.all_sticks = Group()
@@ -172,8 +159,8 @@ class Game():
             self.border[i].rect.topleft = BORDER_LOCATION[i]
             self.all_borders.add(self.border[i])
         self.all_visual_objects = Group() 
-        self.all_visual_objects.add(self.all_sticks)   
-        self.all_visual_objects.add(self.all_borders)  
+        #self.all_visual_objects.add(self.all_sticks)   
+        #self.all_visual_objects.add(self.all_borders)  
     def load_next_level(self):                                                  #!!! use camelCase for method names
         self.level.load(self.level.current_level)
         self.all_bricks = Group()                                               #!!! refactor this to single responsibility 
@@ -184,14 +171,15 @@ class Game():
             self.all_visual_objects.add(self.all_bricks)
             self.brick[i].rect.x = self.level.brick_x[i]
             self.brick[i].rect.y = self.level.brick_y[i]
-            self.brick[i].brick_hardnes = self.level.brick_break[i]
-            self.brick[i].paint(self.brick[i].brick_hardnes)
+            self.brick[i].brick_hardness = self.level.brick_break[i]
+            self.brick[i].paint(self.brick[i].brick_hardness)
         pass    
     def load_all_visual_object(self):                                           #!!! use camelCase for method names
                                                                                 #!!! this method should have array of sprite objects?
-        for _border in self.all_borders:
-            self.all_bricks.add(_border)                                        #!!! all_bricks but border?
-        self.all_bricks.add(self.stick)                                         #!!! all_bricks but stick?
+        #for _border in self.all_borders:
+        #    self.all_bricks.add(_border)                                        #!!! all_bricks but border?
+        self.all_visual_objects.add(self.stick)  
+        self.all_visual_objects.add(self.all_borders)#!!! all_bricks but stick?
         pass
     
     pass    
@@ -219,9 +207,9 @@ while running:
     # Draw / render
     #!!! above code smells. Looks like procedure approach. Something is NotImplemented maybe...
     screen.fill(COLOR_BLACK)
-    game.all_bricks.draw(brick_screen)
+    game.all_visual_objects.draw(brick_screen)
     ball_colision.all_balls.draw(screen)
-    game.all_borders.update()
+    #game.all_visual_objects.update()
     ball_colision.all_balls.update()
     game.all_sticks.update()
     pygame.display.flip()
