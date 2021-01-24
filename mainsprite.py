@@ -46,7 +46,7 @@ class Brick(Sprite):
         super().__init__()
         self.brick_hardness :int= 0
         self.image = Surface((BRICK_OFFSET_X, BRICK_OFFSET_Y))
-        self.brick_image = pygame.image.load('brick.png')
+        #self.brick_image = pygame.image.load('brick.png')
         self.image.set_colorkey(BACKGROUND_COLOR)   
         self.rect = self.image.get_rect()           
            
@@ -179,7 +179,7 @@ class Game():
         #for _border in self.all_borders:
         #    self.all_bricks.add(_border)                                        #!!! all_bricks but border?
         self.all_visual_objects.add(self.stick)  
-        self.all_visual_objects.add(self.all_borders)#!!! all_bricks but stick?
+        self.all_visual_objects.add(self.all_borders) 
         pass
     
     pass    
