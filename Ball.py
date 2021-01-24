@@ -28,7 +28,7 @@ class Ball:
 
     def move(self, screen: pygame.Surface):
         stick_left_point = Coordinate()
-        stick_left_point.x = Stick.move(self, screen)
+        stick_left_point.x = Stick.move(screen)
         brick_left_point = Coordinate()
         brick_right_point = Coordinate()
 
