@@ -1,21 +1,19 @@
-#test branch
 from typing import Any
 import pygame
 from pygame.sprite import Sprite, Group
 from pygame.time import Clock
 from pygame.color import Color
 from pygame import Surface
-
 from Config import *
 from Level import Level
 
 class Border(Sprite):
-    def __init__(self): 
+    def __init__(self) -> None: 
         super().__init__()
         self.image = Surface((SIDE_BORDER_WIDTH, SCREEN_WIDTH))  
         self.rect = self.image.get_rect()
         self.image.fill(COLOR_GREEN)
-   
+        
 class Brick(Sprite):
     def __init__(self):
         super().__init__()
@@ -25,16 +23,16 @@ class Brick(Sprite):
         self.image.set_colorkey(BACKGROUND_COLOR)   
         self.rect = self.image.get_rect()           
            
-    def paint(self,brick_hardness:int):               
+
+    def paint(self,brick_hardness:int) -> None:               
         self.brick_hardness = brick_hardness           
         self.brick_image = pygame.image.load(BRICK_IMAGE[brick_hardness-1])
         self.image.blit(self.brick_image,TOP_LEFT_SURFACE)      
-        pass
-    
+        
     
 class Ball(Sprite):
     
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.x_speed = BALL_X_SPEED           
         self.y_speed = BALL_Y_SPEED          
@@ -42,11 +40,12 @@ class Ball(Sprite):
         self.ball_radius = BALL_RADIUS         
         self.image = Surface((self.ball_radius*2, self.ball_radius*2))
         self.image.set_colorkey(BACKGROUND_COLOR)
-        
         pygame.draw.circle(self.image, self.color, (self.ball_radius,self.ball_radius), self.ball_radius)
         self.rect = self.image.get_rect()
         self.rect.center = (self.ball_radius, self.ball_radius)
-        self.rect.y = STICK_Y_POSITION         
+        self.rect.y = STICK_Y_POSITION
+        
+
     def update(self) -> None:
         self.rect.x += int(self.x_speed) #!!! coordinate += speed :) time-space continuum? :)
         self.rect.y += int(self.y_speed)  
@@ -54,10 +53,9 @@ class Ball(Sprite):
             self.y_speed *= -1 # will be removed
         if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
             self.x_speed *= -1    
-         
-        
 
 class Stick(Sprite):
+
     def __init__(self) -> None:
         super().__init__()
         self.image = Surface((107, 22))             #!!! avoid magic numbers
@@ -65,13 +63,13 @@ class Stick(Sprite):
         self.image.blit(self.stick_image,TOP_LEFT_SURFACE)
         self.image.set_colorkey(BACKGROUND_COLOR)
         self.rect = self.image.get_rect()
-         
         
-    def update(self):
+    def update(self) -> None:
         self.rect.x = pygame.mouse.get_pos()[0]     #!!! mouse should return coordinate object: Coordinate(pygame.mouse.get_pos()).x
         self.rect.y = STICK_Y_POSITION
         if self.rect.right >= SCREEN_WIDTH:
             self.rect.right = SCREEN_WIDTH  
+        
 class Game():
     def __init__(self):
         #self.current_level = 0
@@ -103,7 +101,6 @@ class Game():
         self.initGraphics(SCREEN_WIDTH, SCREEN_HEIGHT)
         
         
-        
     def initGraphics(self, screen_width: int, screen_height: int) -> None:
             pygame.init()
             pygame.mixer.init()
@@ -124,18 +121,14 @@ class Game():
             self.brick[i].brick_hardness = self.level.brick_break[i]
             self.brick[i].paint(self.brick[i].brick_hardness)
         pass    
-    def load_all_visual_object(self):                                           #!!! use camelCase for method names
-                                                                                 
-        #for _border in self.all_borders:
-        #    self.all_bricks.add(_border)   
+    
+    def load_all_visual_object(self) -> None:                                           #!!! use camelCase for method names
         self.all_visual_objects.add(self.all_bricks)                                     
         self.all_visual_objects.add(self.stick)  
         self.all_visual_objects.add(self.all_borders) 
-        pass
-    
     pass    
 
-    def collideDetect(self):    
+    def collideDetect(self) -> None:    
         for visual_object in game.all_visual_objects:   #!!! unacceptable! game is no place here
             for _ball in self.all_balls:
                 if _ball.rect.colliderect(visual_object.rect):#!!! extract ifs as separate method for now
@@ -162,7 +155,6 @@ class Game():
                            game.load_all_visual_object()
                         print(type(visual_object))    
                         return visual_object.rect
-    pass   
 
 game = Game()
 game.load_next_level()              #!!! why next level?
