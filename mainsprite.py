@@ -1,4 +1,5 @@
 #test branch
+from typing import Any
 import pygame
 from pygame.sprite import Sprite, Group
 from pygame.time import Clock
@@ -24,25 +25,12 @@ BALL_Y_SPEED = 2.3 #TODO make speed random
 DEFAULT_NUMBER_OF_BALLS = 5
 COLISION_TOLERANCE = 4
 
-
-# initialize pygame and create window
-#!!! above should be only in game constructor (__init__)
-pygame.init()
-pygame.mixer.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-brick_screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
- 
-pygame.display.set_caption("My Game")
-clock = Clock()
- 
 class Border(Sprite):
     def __init__(self): 
         super().__init__()
         self.image = Surface((SIDE_BORDER_WIDTH, SCREEN_WIDTH))  
         self.rect = self.image.get_rect()
         self.image.fill(COLOR_GREEN)
-        
-         
    
 class Brick(Sprite):
     def __init__(self):
@@ -125,6 +113,19 @@ class Game():
         self.ball = [Ball() for i in range(self.number_of_balls)] #think to move num_of_ball in Game
         self.all_balls.add(self.ball)               #!!! is this be always one object of ball? 
         self.tolerance = COLISION_TOLERANCE
+        self.clock = Clock()
+        self.screen = None
+        self.brick_screen = None
+        self.initGraphics(SCREEN_WIDTH, SCREEN_HEIGHT)
+        
+        
+        
+    def initGraphics(self, screen_width: int, screen_height: int) -> None:
+            pygame.init()
+            pygame.mixer.init()
+            self.screen = pygame.display.set_mode((screen_width, screen_height))
+            self.brick_screen = pygame.display.set_mode((screen_width, screen_height))
+            pygame.display.set_caption("My Game")    
         
     def load_next_level(self):                                                  #!!! use camelCase for method names
         self.level.load(self.level.current_level)
@@ -187,7 +188,7 @@ running = True
  
 while running:
      
-    clock.tick(FPS)                 #!!! is FPS is frame per second?
+    game.clock.tick(FPS)                 #!!! is FPS is frame per second?
      
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -200,9 +201,9 @@ while running:
     game.collideDetect()        
     # Draw / render
     #!!! above code smells. Looks like procedure approach. Something is NotImplemented maybe...
-    screen.fill(COLOR_BLACK)
-    game.all_visual_objects.draw(brick_screen)
-    game.all_balls.draw(screen)
+    game.screen.fill(COLOR_BLACK)
+    game.all_visual_objects.draw(game.brick_screen)
+    game.all_balls.draw(game.screen)
     #game.all_visual_objects.update()
     game.all_balls.update()
     game.all_sticks.update()
