@@ -20,6 +20,7 @@ UP_BORDER_HEIGHT = 35
 SIDE_BORDER_WIDTH = 20
 BALL_X_SPEED = 2
 BALL_Y_SPEED = 2.3
+DEFAULT_NUMBER_OF_BALLS = 3
 
 
 # initialize pygame and create window
@@ -77,8 +78,8 @@ class Ball(Sprite):
         self.rect.y += int(self.y_speed)  
         if self.rect.bottom >= SCREEN_HEIGHT or self.rect.top <= 0:
             self.y_speed *= -1 # will be removed
-        #if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
-        #    self.x_speed *= -1    
+        if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
+            self.x_speed *= -1    
          
         
 
@@ -103,38 +104,40 @@ class Stick(Sprite):
  
 class BallColision():
     def __init__(self):
+        self.number_of_balls = DEFAULT_NUMBER_OF_BALLS
         self.all_balls = Group()
         self.ball = Ball()
+        self.ball = [Ball() for i in range(self.number_of_balls)] #think to move num_of_ball in Game
         self.all_balls.add(self.ball)               #!!! is this be always one object of ball? 
         self.tolerance = 4
       
     def detect(self):    
         for visual_object in game.all_visual_objects:   #!!! unacceptable! game is no place here
-            if self.ball.rect.colliderect(visual_object.rect):
-                #!!! extract ifs as separate method for now
-                if abs( visual_object.rect.top - self.ball.rect.bottom) < self.tolerance and self.ball.y_speed > 0:
-                    self.ball.y_speed *= -1
-                if abs( visual_object.rect.bottom - self.ball.rect.top) < self.tolerance and self.ball.y_speed < 0:
-                    self.ball.y_speed *= -1 
-                if abs(visual_object.rect.right - self.ball.rect.left) < self.tolerance and self.ball.x_speed < 0:  
-                    self.ball.x_speed *= -1   
-                if abs(visual_object.rect.left - self.ball.rect.right) < self.tolerance and self.ball.x_speed > 0:  
-                    self.ball.x_speed *= -1
-                if isinstance(visual_object, Brick): #!!! always use build in functions to do this: type(self).__name__
-                    if visual_object.brick_hardness == 1:    
-                        visual_object.kill() 
-                    if visual_object.brick_hardness > 1 and visual_object.brick_hardness < 4: #!!! if 1 <= visual_object.brick_hardnes <= 4:
-                        visual_object.brick_hardness -= 1
+            for _ball in self.all_balls:
+                if _ball.rect.colliderect(visual_object.rect):#!!! extract ifs as separate method for now
+                    if abs(visual_object.rect.top - _ball.rect.bottom) < self.tolerance and _ball.y_speed > 0:
+                        _ball.y_speed *= -1
+                    if abs(visual_object.rect.bottom - _ball.rect.top) < self.tolerance and _ball.y_speed < 0:
+                        _ball.y_speed *= -1 
+                    if abs(visual_object.rect.right - _ball.rect.left) < self.tolerance and _ball.x_speed < 0:  
+                        _ball.x_speed *= -1   
+                    if abs(visual_object.rect.left - _ball.rect.right) < self.tolerance and _ball.x_speed > 0:  
+                        _ball.x_speed *= -1
+                    if isinstance(visual_object, Brick): #!!! always use build in functions to do this: type(self).__name__
+                        if visual_object.brick_hardness == 1:    
+                            visual_object.kill() 
+                        if visual_object.brick_hardness > 1 and visual_object.brick_hardness < 4: #!!! if 1 <= visual_object.brick_hardnes <= 4:
+                            visual_object.brick_hardness -= 1
                         visual_object.paint(visual_object.brick_hardness) 
-                    print(visual_object.brick_hardness)
-                    print(len(game.all_bricks))
+                        print(visual_object.brick_hardness)
+                        print(len(game.all_bricks))
                  
-                if len(game.all_visual_objects) == 15:      #!!! avoid magic numbers
-                    game.level.current_level += 1           #!!! unacceptable! game and level logic is no place here
-                    game.load_next_level() 
-                    game.load_all_visual_object()
-                print(type(visual_object))    
-                return visual_object.rect
+                        if len(game.all_visual_objects) == 15:      #num_of_bricks - unbrakeble_bricks
+                           game.level.current_level += 1           #!!! unacceptable! game and level logic is no place here
+                           game.load_next_level() 
+                           game.load_all_visual_object()
+                        print(type(visual_object))    
+                        return visual_object.rect
     
                 
     pass                
