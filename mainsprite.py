@@ -8,22 +8,6 @@ from pygame import Surface
 
 from Config import *
 from Level import Level
- 
-FPS = 100
-
-#define colors
-TOP_LEFT_SURFACE = (0,0) 
-BACKGROUND_COLOR = (0, 0, 0)                         
-BRICK_IMAGE = ['brick.png','brick1.png','brick2.png','brick3.png']      #!!! use function to load names e.g. brick+level+.png
-SIDE_BORDER_WIDTH = 20
-BORDER_LOCATION = [TOP_LEFT_SURFACE,(SCREEN_WIDTH-SIDE_BORDER_WIDTH, UP_WALL_Y),TOP_LEFT_SURFACE]  
-UP_BORDER_NUMBER = 2
-UP_BORDER_HEIGHT = 35
-
-BALL_X_SPEED = 2
-BALL_Y_SPEED = 2.3 #TODO make speed random
-DEFAULT_NUMBER_OF_BALLS = 5
-COLISION_TOLERANCE = 4
 
 class Border(Sprite):
     def __init__(self): 
