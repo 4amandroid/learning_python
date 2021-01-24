@@ -14,6 +14,7 @@ class Border(Sprite):
         self.rect = self.image.get_rect()
         self.image.fill(COLOR_GREEN)
         
+        
 class Brick(Sprite):
     def __init__(self):
         super().__init__()
@@ -72,45 +73,53 @@ class Stick(Sprite):
         
 class Game():
     def __init__(self):
-        #self.current_level = 0
+        # create instances of core game objects
         self.level = Level()
         self.border = Border()
+        self.ball = Ball()
+        self.stick = Stick()
+        
+        # initialize core game objects
+        self.__initializeBorderFrame()
+        self.__initializeBalls(DEFAULT_NUMBER_OF_BALLS)
+        self.__initSticks()
+        
+        
+        self.tolerance = COLISION_TOLERANCE
+        self.clock = Clock()
+        self.__initializeGraphics(SCREEN_WIDTH, SCREEN_HEIGHT)
+        
+    def __initializeBorderFrame(self) -> None:
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
         self.border[UP_BORDER_NUMBER].image =Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
         self.border[UP_BORDER_NUMBER].rect = self.border[UP_BORDER_NUMBER].image.get_rect()#TODO think something else
-        self.border[UP_BORDER_NUMBER].image.fill(COLOR_GREEN)      
+        self.border[UP_BORDER_NUMBER].image.fill(COLOR_GREEN)     
         self.all_borders = Group()    
         self.all_borders.add(self.border)
-        self.stick = Stick()
-        self.all_sticks = Group()
-        self.all_sticks.add(self.stick)
+    
+    def __initializeBalls(self, number_of_balls: int) -> None:
+        self.number_of_balls = DEFAULT_NUMBER_OF_BALLS
+        self.all_balls = Group()
+        self.ball = [Ball() for i in range(number_of_balls)] #think to move num_of_ball in Game
+        self.all_balls.add(self.ball) 
         for i in range(BORDER_LOCATION.__len__()):
             self.all_borders.add(self.border[i])
             self.border[i].rect.topleft = BORDER_LOCATION[i]
-            #self.all_borders.add(self.border[i])
-        self.all_visual_objects = Group() 
-        self.number_of_balls = DEFAULT_NUMBER_OF_BALLS
-        self.all_balls = Group()
-        self.ball = Ball()
-        self.ball = [Ball() for i in range(self.number_of_balls)] #think to move num_of_ball in Game
-        self.all_balls.add(self.ball)               #!!! is this be always one object of ball? 
-        self.tolerance = COLISION_TOLERANCE
-        self.clock = Clock()
-        self.screen = None
-        self.brick_screen = None
-        self.initGraphics(SCREEN_WIDTH, SCREEN_HEIGHT)
-        
-        
-    def initGraphics(self, screen_width: int, screen_height: int) -> None:
+    
+    def __initSticks(self) -> None:
+        self.all_sticks = Group()
+        self.all_sticks.add(self.stick)
+            
+    def __initializeGraphics(self, screen_width: int, screen_height: int) -> None:
             pygame.init()
             pygame.mixer.init()
             self.screen = pygame.display.set_mode((screen_width, screen_height))
             self.brick_screen = pygame.display.set_mode((screen_width, screen_height))
             pygame.display.set_caption("My Game")    
         
-    def load_next_level(self):                                                  #!!! use camelCase for method names
+    def loadNextLevel(self):                                                  
         self.level.load(self.level.current_level)
-        self.all_bricks = Group()                                               #!!! refactor this to single responsibility 
+        self.all_bricks = Group()                                              
     
         self.brick = [Brick() for i in range(self.level.brick_x.__len__())]
         for i in range(self.level.brick_x.__len__()):
@@ -120,13 +129,12 @@ class Game():
             self.brick[i].rect.y = self.level.brick_y[i]
             self.brick[i].brick_hardness = self.level.brick_break[i]
             self.brick[i].paint(self.brick[i].brick_hardness)
-        pass    
     
-    def load_all_visual_object(self) -> None:                                           #!!! use camelCase for method names
+    def load_all_visual_object(self) -> None:        
+        self.all_visual_objects = Group() 
         self.all_visual_objects.add(self.all_bricks)                                     
         self.all_visual_objects.add(self.stick)  
         self.all_visual_objects.add(self.all_borders) 
-    pass    
 
     def collideDetect(self) -> None:    
         for visual_object in game.all_visual_objects:   #!!! unacceptable! game is no place here
@@ -146,18 +154,15 @@ class Game():
                         if visual_object.brick_hardness > 1 and visual_object.brick_hardness < 4: #!!! if 1 <= visual_object.brick_hardnes <= 4:
                             visual_object.brick_hardness -= 1
                         visual_object.paint(visual_object.brick_hardness) 
-                        print(visual_object.brick_hardness)
-                        print(len(game.all_bricks))
-                 
+                        
                         if len(game.all_visual_objects) == 15:      #num_of_bricks - unbrakeble_bricks
                            game.level.current_level += 1           #!!! unacceptable! game and level logic is no place here
                            game.load_next_level() 
                            game.load_all_visual_object()
-                        print(type(visual_object))    
-                        return visual_object.rect
+                        
 
 game = Game()
-game.load_next_level()              #!!! why next level?
+game.loadNextLevel()              #!!! why next level?
 game.load_all_visual_object()
 # Game loop
 running = True
@@ -169,10 +174,6 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_q:
-                game.brick[game.all_bricks.__len__()-1].kill()
-                game.brick[game.all_bricks.__len__()-1].remove()
         
     game.collideDetect()        
     # Draw / render
