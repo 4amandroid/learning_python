@@ -70,6 +70,11 @@ class Stick(Sprite):
         self.rect.y = STICK_Y_POSITION
         if self.rect.right >= SCREEN_WIDTH:
             self.rect.right = SCREEN_WIDTH  
+
+class CollisionInfo:
+    def __init__(self, ball, visual_object):
+        self.ball = ball
+        self.visual_object = visual_object
         
 class Game():
     def __init__(self):
@@ -88,6 +93,8 @@ class Game():
         self.tolerance = COLISION_TOLERANCE
         self.clock = Clock()
         self.__initializeGraphics(SCREEN_WIDTH, SCREEN_HEIGHT)
+        
+        self.collisionInfo = None
         
     def __initializeBorderFrame(self) -> None:
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
@@ -134,40 +141,51 @@ class Game():
             self.brick[i].brick_hardness = self.level.brick_break[i]
             self.brick[i].paint(self.brick[i].brick_hardness)
     
-    def load_all_visual_object(self) -> None:        
+    def getAllVisualObject(self) -> None:        
         self.all_visual_objects = Group() 
-        self.all_visual_objects.add(self.all_bricks)                                     
+        self.all_visual_objects.add(self.all_bricks)
         self.all_visual_objects.add(self.stick)  
-        self.all_visual_objects.add(self.all_borders) 
+        self.all_visual_objects.add(self.all_borders)
+        
+    def changeDirection(self, ball, visual_object):
+        if abs(visual_object.rect.top - ball.rect.bottom) < self.tolerance and ball.y_speed > 0:
+          ball.y_speed *= -1
+        if abs(visual_object.rect.bottom - ball.rect.top) < self.tolerance and ball.y_speed < 0:
+            ball.y_speed *= -1 
+        if abs(visual_object.rect.right - ball.rect.left) < self.tolerance and ball.x_speed < 0:  
+            ball.x_speed *= -1   
+        if abs(visual_object.rect.left - ball.rect.right) < self.tolerance and ball.x_speed > 0:  
+            ball.x_speed *= -1
+        pass
 
-    def collideDetect(self) -> None:    
+    def collideDetect(self):    
         for visual_object in self.all_visual_objects:   #!!! unacceptable! game is no place here
-            for _ball in self.all_balls:
-                if _ball.rect.colliderect(visual_object.rect):#!!! extract ifs as separate method for now
-                    if abs(visual_object.rect.top - _ball.rect.bottom) < self.tolerance and _ball.y_speed > 0:
-                        _ball.y_speed *= -1
-                    if abs(visual_object.rect.bottom - _ball.rect.top) < self.tolerance and _ball.y_speed < 0:
-                        _ball.y_speed *= -1 
-                    if abs(visual_object.rect.right - _ball.rect.left) < self.tolerance and _ball.x_speed < 0:  
-                        _ball.x_speed *= -1   
-                    if abs(visual_object.rect.left - _ball.rect.right) < self.tolerance and _ball.x_speed > 0:  
-                        _ball.x_speed *= -1
-                    if isinstance(visual_object, Brick):  
-                        if visual_object.brick_hardness == 1:    
-                            visual_object.kill() 
-                        if visual_object.brick_hardness > 1 and visual_object.brick_hardness < 4: #!!! if 1 <= visual_object.brick_hardnes <= 4:
-                            visual_object.brick_hardness -= 1
-                        visual_object.paint(visual_object.brick_hardness) 
-                        print(visual_object.brick_hardness)
-                        if len(game.all_visual_objects) == 5:      #num_of_bricks - unbrakeble_bricks
-                           game.level.current_level += 1           #!!! unacceptable! game and level logic is no place here
-                           game.loadNextLevel() 
-                           game.load_all_visual_object()
+            for ball in self.all_balls:
+                if ball.rect.colliderect(visual_object.rect):#!!! extract ifs as separate method for now
+                    return CollisionInfo(ball, visual_object)
+                    
+                else:
+                    self.collisionInfo = None
+                    
+        
+                    
+                    # self.changeDirection(ball, visual_object)
+                    # if isinstance(visual_object, Brick):  
+                    #     if visual_object.brick_hardness == min(game.level.brick_break):    
+                    #         visual_object.kill() 
+                    #     else:
+                    #         visual_object.brick_hardness -= 1
+                    #     visual_object.paint(visual_object.brick_hardness) 
+                        # print(visual_object.brick_hardness)
+                        # if len(game.all_visual_objects) == 5:      #num_of_bricks - unbrakeble_bricks
+                        #    game.level.current_level += 1           #!!! unacceptable! game and level logic is no place here
+                        #    game.loadNextLevel() 
+                        #    game.getAllVisualObject()
                         
 
 game = Game()
 game.loadNextLevel()              #!!! why next level?
-game.load_all_visual_object()
+game.getAllVisualObject()
 # Game loop
 running = True
  
@@ -178,10 +196,17 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    game.collisionInfo = game.collideDetect()
+    if game.collisionInfo is not None:
         
-    game.collideDetect()        
+        if isinstance(game.collisionInfo.visual_object, Brick): #!!! tuk nikoga ne e instancia na brick - triabva da se oprawi
+            if game.collisionInfo.visual_object.brick_hardness == min(game.level.brick_break):    
+                game.collisionInfo.visual_object.kill() 
+            else:
+                game.collisionInfo.visual_object.brick_hardness -= 1
+            game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
     # Draw / render
-    #!!! above code smells. Looks like procedure approach. Something is NotImplemented maybe...
+    
     game.screen.fill(COLOR_BLACK)
     game.all_visual_objects.draw(game.brick_screen)
     game.all_balls.draw(game.screen)
