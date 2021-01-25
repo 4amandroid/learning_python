@@ -198,7 +198,7 @@ while running:
             running = False
     game.collisionInfo = game.collideDetect()
     if game.collisionInfo is not None:
-        
+        game.changeDirection(game.collisionInfo.ball, game.collisionInfo.visual_object)
         if isinstance(game.collisionInfo.visual_object, Brick): #!!! tuk nikoga ne e instancia na brick - triabva da se oprawi
             if game.collisionInfo.visual_object.brick_hardness == min(game.level.brick_break):    
                 game.collisionInfo.visual_object.kill() 
