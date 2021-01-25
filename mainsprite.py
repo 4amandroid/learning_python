@@ -93,18 +93,22 @@ class Game():
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
         self.border[UP_BORDER_NUMBER].image =Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
         self.border[UP_BORDER_NUMBER].rect = self.border[UP_BORDER_NUMBER].image.get_rect()#TODO think something else
-        self.border[UP_BORDER_NUMBER].image.fill(COLOR_GREEN)     
+        self.border[UP_BORDER_NUMBER].image.fill(COLOR_GREEN)  
         self.all_borders = Group()    
+        for i in range(BORDER_LOCATION.__len__()):
+            self.all_borders.add(self.border[i])
+            self.border[i].rect.topleft = BORDER_LOCATION[i]  
         self.all_borders.add(self.border)
     
     def __initializeBalls(self, number_of_balls: int) -> None:
         self.number_of_balls = DEFAULT_NUMBER_OF_BALLS
         self.all_balls = Group()
-        self.ball = [Ball() for i in range(number_of_balls)] #think to move num_of_ball in Game
+         
+        self.ball = [Ball() for i in range(number_of_balls)]  
+        for i in range(number_of_balls):
+            self.ball[i].rect.x = i*10  # this will be removed
         self.all_balls.add(self.ball) 
-        for i in range(BORDER_LOCATION.__len__()):
-            self.all_borders.add(self.border[i])
-            self.border[i].rect.topleft = BORDER_LOCATION[i]
+        
     
     def __initSticks(self) -> None:
         self.all_sticks = Group()
@@ -137,7 +141,7 @@ class Game():
         self.all_visual_objects.add(self.all_borders) 
 
     def collideDetect(self) -> None:    
-        for visual_object in game.all_visual_objects:   #!!! unacceptable! game is no place here
+        for visual_object in self.all_visual_objects:   #!!! unacceptable! game is no place here
             for _ball in self.all_balls:
                 if _ball.rect.colliderect(visual_object.rect):#!!! extract ifs as separate method for now
                     if abs(visual_object.rect.top - _ball.rect.bottom) < self.tolerance and _ball.y_speed > 0:
@@ -154,10 +158,10 @@ class Game():
                         if visual_object.brick_hardness > 1 and visual_object.brick_hardness < 4: #!!! if 1 <= visual_object.brick_hardnes <= 4:
                             visual_object.brick_hardness -= 1
                         visual_object.paint(visual_object.brick_hardness) 
-                        
-                        if len(game.all_visual_objects) == 15:      #num_of_bricks - unbrakeble_bricks
+                        print(visual_object.brick_hardness)
+                        if len(game.all_visual_objects) == 5:      #num_of_bricks - unbrakeble_bricks
                            game.level.current_level += 1           #!!! unacceptable! game and level logic is no place here
-                           game.load_next_level() 
+                           game.loadNextLevel() 
                            game.load_all_visual_object()
                         
 
