@@ -6,6 +6,7 @@ from pygame.color import Color
 from pygame import Surface
 from Config import *
 from Level import Level
+from random import *
 
 class Border(Sprite):
     def __init__(self) -> None: 
@@ -35,8 +36,8 @@ class Ball(Sprite):
     
     def __init__(self) -> None:
         super().__init__()
-        self.x_speed = BALL_X_SPEED           
-        self.y_speed = BALL_Y_SPEED          
+        self.x_speed = choice(BALL_X_SPEED)           
+        self.y_speed = choice(BALL_Y_SPEED)          
         self.color = COLOR_RED
         self.ball_radius = BALL_RADIUS         
         self.image = Surface((self.ball_radius*2, self.ball_radius*2))
@@ -99,7 +100,7 @@ class Game():
     def __initializeBorderFrame(self) -> None:
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
         self.border[UP_BORDER_NUMBER].image =Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
-        self.border[UP_BORDER_NUMBER].rect = self.border[UP_BORDER_NUMBER].image.get_rect()#TODO think something else
+        self.border[UP_BORDER_NUMBER].rect = self.border[UP_BORDER_NUMBER].image.get_rect() 
         self.border[UP_BORDER_NUMBER].image.fill(COLOR_GREEN)  
         self.all_borders = Group()    
         for i in range(BORDER_LOCATION.__len__()):
@@ -110,10 +111,7 @@ class Game():
     def __initializeBalls(self, number_of_balls: int) -> None:
         self.number_of_balls = DEFAULT_NUMBER_OF_BALLS
         self.all_balls = Group()
-         
         self.ball = [Ball() for i in range(number_of_balls)]  
-        for i in range(number_of_balls):
-            self.ball[i].rect.x = i*10  # this will be removed
         self.all_balls.add(self.ball) 
         
     
