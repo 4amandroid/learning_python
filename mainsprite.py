@@ -6,7 +6,7 @@ from pygame.color import Color
 from pygame import Surface
 from Config import *
 from Level import Level
-from random import *
+from random import choice
 
 class Border(Sprite):
     def __init__(self) -> None: 
@@ -201,7 +201,8 @@ while running:
             if game.collisionInfo.visual_object.brick_hardness == min(game.level.brick_break):    
                 game.collisionInfo.visual_object.kill() 
             else:
-                game.collisionInfo.visual_object.brick_hardness -= 1
+                if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
+                    game.collisionInfo.visual_object.brick_hardness -= 1
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
     # Draw / render
     
