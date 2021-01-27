@@ -138,6 +138,7 @@ class Game():
             self.brick[i].rect.y = self.level.brick_y[i]
             self.brick[i].brick_hardness = self.level.brick_break[i]
             self.brick[i].paint(self.brick[i].brick_hardness)
+        self.number_of_unbreakable_bricks = self.level.brick_break.count(max(self.level.brick_break))     
         
     def getAllVisualObject(self) -> None:        
         self.all_visual_objects = Group() 
@@ -199,13 +200,17 @@ while running:
         game.changeDirection(game.collisionInfo.ball, game.collisionInfo.visual_object)
         if isinstance(game.collisionInfo.visual_object, Brick): #!!! tuk nikoga ne e instancia na brick - triabva da se oprawi
             if game.collisionInfo.visual_object.brick_hardness == min(game.level.brick_break):    
-                game.collisionInfo.visual_object.kill() 
+                game.collisionInfo.visual_object.kill()
+                if len(game.all_bricks) == game.number_of_unbreakable_bricks:
+                    game.level.current_level += 1
+                    game.loadNextLevel()
+                    game.getAllVisualObject()
             else:
                 if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
                     game.collisionInfo.visual_object.brick_hardness -= 1
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
-    number_of_unbrakeable_bricks = game.level.brick_break.count(max(game.level.brick_break)) 
-    print(number_of_unbrakeable_bricks)  #mahni me    
+    #number_of_unbrakeable_bricks = game.level.brick_break.count(max(game.level.brick_break)) 
+    print(game.number_of_unbreakable_bricks)  #mahni me    
     # Draw / render
     print(game.all_bricks.__len__) ##mahni me
     print(len(game.all_bricks))   #mahni me 
