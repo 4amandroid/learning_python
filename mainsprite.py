@@ -129,7 +129,7 @@ class Game():
     def loadNextLevel(self):                                                  
         self.level.load(self.level.current_level)
         self.all_bricks = Group()                                              
-    
+         
         self.brick = [Brick() for i in range(self.level.brick_x.__len__())]
         for i in range(self.level.brick_x.__len__()):
             self.all_bricks.add(self.brick[i])
@@ -138,7 +138,7 @@ class Game():
             self.brick[i].rect.y = self.level.brick_y[i]
             self.brick[i].brick_hardness = self.level.brick_break[i]
             self.brick[i].paint(self.brick[i].brick_hardness)
-    
+        
     def getAllVisualObject(self) -> None:        
         self.all_visual_objects = Group() 
         self.all_visual_objects.add(self.all_bricks)
@@ -204,7 +204,11 @@ while running:
                 if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
                     game.collisionInfo.visual_object.brick_hardness -= 1
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
+    number_of_unbrakeable_bricks = game.level.brick_break.count(max(game.level.brick_break)) 
+    print(number_of_unbrakeable_bricks)  #mahni me    
     # Draw / render
+    print(game.all_bricks.__len__) ##mahni me
+    print(len(game.all_bricks))   #mahni me 
     
     game.screen.fill(COLOR_BLACK)
     game.all_visual_objects.draw(game.brick_screen)
