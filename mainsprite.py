@@ -105,10 +105,12 @@ class Game():
         self.border[UP_BORDER_NUMBER].image =Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
         self.border[UP_BORDER_NUMBER].rect = self.border[UP_BORDER_NUMBER].image.get_rect() 
         self.border[UP_BORDER_NUMBER].image.fill(COLOR_GREEN)  
-        self.all_borders = Group()    
+        self.all_borders = Group()
+        border_location = Coordinate()    
         for i in range(BORDER_LOCATION.__len__()):
             self.all_borders.add(self.border[i])
-            self.border[i].rect.topleft = BORDER_LOCATION[i]  
+            border_location.x , border_location.y = BORDER_LOCATION[i] 
+            self.border[i].rect.topleft = (border_location.x , border_location.y) 
         self.all_borders.add(self.border)
     
     def __initializeBalls(self, number_of_balls: int) -> None:
