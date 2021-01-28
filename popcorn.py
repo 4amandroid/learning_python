@@ -11,22 +11,8 @@ from Border import Border
 from Brick import Brick
 from Ball import Ball
 from Stick import Stick
+from CollisionInfo import CollisionInfo
 
-
- 
-        
-        
-   
-        
-    
-
-
-
-class CollisionInfo:
-    def __init__(self, ball, visual_object):
-        self.ball = ball
-        self.visual_object = visual_object
-        
 class Game():
     def __init__(self):
         # create instances of core game objects
@@ -153,7 +139,6 @@ while running:
     game.screen.fill(COLOR_BLACK)
     game.all_visual_objects.draw(game.brick_screen)
     game.all_balls.draw(game.screen)
-    #game.all_visual_objects.update()
     game.all_balls.update()
     game.all_sticks.update()
     pygame.display.flip()
