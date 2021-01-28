@@ -61,7 +61,7 @@ class Stick(Sprite):
 
     def __init__(self) -> None:
         super().__init__()
-        self.image = Surface((107, 22))             #!!! avoid magic numbers
+        self.image = Surface((STICK_LENGHT, STICK_HEIGHT))   
         self.stick_image = pygame.image.load(STICK_TEXTURE)
         self.image.blit(self.stick_image,TOP_LEFT_SURFACE)
         self.image.set_colorkey(BACKGROUND_COLOR)
@@ -215,12 +215,9 @@ while running:
                 if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
                     game.collisionInfo.visual_object.brick_hardness -= 1
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
-    #number_of_unbrakeable_bricks = game.level.brick_break.count(max(game.level.brick_break)) 
-    print(game.number_of_unbreakable_bricks)  #mahni me    
-    # Draw / render
-    print(game.all_bricks.__len__) ##mahni me
-    print(len(game.all_bricks))   #mahni me 
+     
     
+    # Draw / render
     game.screen.fill(COLOR_BLACK)
     game.all_visual_objects.draw(game.brick_screen)
     game.all_balls.draw(game.screen)
