@@ -9,7 +9,9 @@ from Level import Level
 from Coordinate import Coordinate 
 from Border import Border
 from Brick import Brick
-from random import choice
+from Ball import Ball
+from Stick import Stick
+
 
  
         
@@ -17,47 +19,8 @@ from random import choice
    
         
     
-class Ball(Sprite):
-    
-    def __init__(self) -> None:
-        super().__init__()
-        self.x_speed = choice(BALL_X_SPEED)           
-        self.y_speed = choice(BALL_Y_SPEED)          
-        self.color = COLOR_RED
-        self.ball_radius = BALL_RADIUS         
-        self.image = Surface((self.ball_radius*2, self.ball_radius*2))
-        self.image.set_colorkey(BACKGROUND_COLOR)
-        pygame.draw.circle(self.image, self.color, (self.ball_radius,self.ball_radius), self.ball_radius)
-        self.rect = self.image.get_rect()
-        self.rect.center = (self.ball_radius, self.ball_radius)
-        self.rect.y = STICK_Y_POSITION
-        
 
-    def update(self) -> None:
-        self.rect.x += int(self.x_speed) #!!! coordinate += speed :) time-space continuum? :)
-        self.rect.y += int(self.y_speed)  
-        if self.rect.bottom >= SCREEN_HEIGHT or self.rect.top <= 0:
-            self.y_speed *= -1 # will be removed
-        if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
-            self.x_speed *= -1    
 
-class Stick(Sprite):
-
-    def __init__(self) -> None:
-        super().__init__()
-        self.image = Surface((STICK_LENGHT, STICK_HEIGHT))   
-        self.stick_image = pygame.image.load(STICK_TEXTURE)
-        self.image.blit(self.stick_image,TOP_LEFT_SURFACE)
-        self.image.set_colorkey(BACKGROUND_COLOR)
-        self.rect = self.image.get_rect()
- 
-    def update(self) -> None:
-        stick_position = Coordinate()
-        stick_position.x = pygame.mouse.get_pos()[0] 
-        self.rect.x = stick_position.x    #!!! mouse should return coordinate object: Coordinate(pygame.mouse.get_pos()).x
-        self.rect.y = STICK_Y_POSITION
-        if self.rect.right >= SCREEN_WIDTH:
-            self.rect.right = SCREEN_WIDTH  
 
 class CollisionInfo:
     def __init__(self, ball, visual_object):
@@ -157,21 +120,6 @@ class Game():
                     self.collisionInfo = None
                     
         
-                    
-                    # self.changeDirection(ball, visual_object)
-                    # if isinstance(visual_object, Brick):  
-                    #     if visual_object.brick_hardness == min(game.level.brick_break):    
-                    #         visual_object.kill() 
-                    #     else:
-                    #         visual_object.brick_hardness -= 1
-                    #     visual_object.paint(visual_object.brick_hardness) 
-                        # print(visual_object.brick_hardness)
-                        # if len(game.all_visual_objects) == 5:      #num_of_bricks - unbrakeble_bricks
-                        #    game.level.current_level += 1           #!!! unacceptable! game and level logic is no place here
-                        #    game.loadNextLevel() 
-                        #    game.getAllVisualObject()
-                        
-
 game = Game()
 game.loadNextLevel()              #!!! why next level?
 game.getAllVisualObject()
