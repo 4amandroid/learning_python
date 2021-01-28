@@ -6,6 +6,7 @@ from pygame.color import Color
 from pygame import Surface
 from Config import *
 from Level import Level
+from Coordinate import Coordinate 
 from random import choice
 
 class Border(Sprite):
@@ -65,9 +66,11 @@ class Stick(Sprite):
         self.image.blit(self.stick_image,TOP_LEFT_SURFACE)
         self.image.set_colorkey(BACKGROUND_COLOR)
         self.rect = self.image.get_rect()
-        
+ 
     def update(self) -> None:
-        self.rect.x = pygame.mouse.get_pos()[0]     #!!! mouse should return coordinate object: Coordinate(pygame.mouse.get_pos()).x
+        stick_position = Coordinate()
+        stick_position.x = pygame.mouse.get_pos()[0] 
+        self.rect.x = stick_position.x    #!!! mouse should return coordinate object: Coordinate(pygame.mouse.get_pos()).x
         self.rect.y = STICK_Y_POSITION
         if self.rect.right >= SCREEN_WIDTH:
             self.rect.right = SCREEN_WIDTH  
