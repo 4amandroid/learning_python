@@ -7,14 +7,10 @@ from pygame import Surface
 from Config import *
 from Level import Level
 from Coordinate import Coordinate 
+from Border import Border
 from random import choice
 
-class Border(Sprite):
-    def __init__(self) -> None: 
-        super().__init__()
-        self.image = Surface((SIDE_BORDER_WIDTH, SCREEN_WIDTH))  
-        self.rect = self.image.get_rect()
-        self.image.fill(COLOR_GREEN)
+ 
         
         
 class Brick(Sprite):
