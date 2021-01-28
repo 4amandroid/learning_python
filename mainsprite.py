@@ -132,13 +132,14 @@ class Game():
     def loadNextLevel(self):                                                  
         self.level.load(self.level.current_level)
         self.all_bricks = Group()                                              
-         
         self.brick = [Brick() for i in range(self.level.brick_x.__len__())]
+        brick_position = Coordinate()
         for i in range(self.level.brick_x.__len__()):
-            self.all_bricks.add(self.brick[i])
-            #self.all_visual_objects.add(self.all_bricks)
-            self.brick[i].rect.x = self.level.brick_x[i]
-            self.brick[i].rect.y = self.level.brick_y[i]
+            self.all_bricks.add(self.brick[i]) 
+            brick_position.x = self.level.brick_x[i]
+            brick_position.y = self.level.brick_y[i]
+            self.brick[i].rect.x = brick_position.x
+            self.brick[i].rect.y = brick_position.y
             self.brick[i].brick_hardness = self.level.brick_break[i]
             self.brick[i].paint(self.brick[i].brick_hardness)
         self.number_of_unbreakable_bricks = self.level.brick_break.count(max(self.level.brick_break))     
