@@ -13,7 +13,7 @@ class Level():
         """
         load level by number using self generated number from array
         """
-        with open('data2.json') as json_file:
+        with open('./images/data2.json') as json_file:
             # get arrays foreach object in json (all levels)
             levels_info = json.loads(json_file.read(), object_hook=lambda d: SimpleNamespace(**d))
             

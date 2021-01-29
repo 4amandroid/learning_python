@@ -87,7 +87,7 @@ class Game():
         
     def changeDirection(self, ball, visual_object):
         if abs(visual_object.rect.top - ball.rect.bottom) < self.tolerance and ball.y_speed > 0:
-          ball.y_speed *= -1
+            ball.y_speed *= -1
         if abs(visual_object.rect.bottom - ball.rect.top) < self.tolerance and ball.y_speed < 0:
             ball.y_speed *= -1 
         if abs(visual_object.rect.right - ball.rect.left) < self.tolerance and ball.x_speed < 0:  
