@@ -33,7 +33,7 @@ class Level():
                 # and throws exception in case they not equal 
                 object.__setattr__(self, atribute_name, level.__dict__[atribute_name])
             pass
-    def loadNextLevel(self):                                                  
+    def loadCurrentLevel(self):                                                  
         self.load(self.current_level)
         self.all_bricks = Group()                                              
         self.brick = [Brick() for i in range(self.brick_x.__len__())]

@@ -102,7 +102,7 @@ class Game():
                     
         
 game = Game()
-game.level.loadNextLevel()              #!!! why next level?
+game.level.loadCurrentLevel()              #!!! why next level?
 game.getAllVisualObject()
 # Game loop
 running = True
@@ -117,12 +117,12 @@ while running:
     game.collisionInfo = game.collideDetect()
     if game.collisionInfo is not None:
         game.changeDirection(game.collisionInfo.ball, game.collisionInfo.visual_object)
-        if isinstance(game.collisionInfo.visual_object, Brick): #!!! tuk nikoga ne e instancia na brick - triabva da se oprawi
+        if isinstance(game.collisionInfo.visual_object, Brick):  
             if game.collisionInfo.visual_object.brick_hardness == min(game.level.brick_break):    
                 game.collisionInfo.visual_object.kill()
                 if len(game.level.all_bricks) == game.level.number_of_unbreakable_bricks:
                     game.level.current_level += 1
-                    game.level.loadNextLevel()
+                    game.level.loadCurrentLevel()
                     game.getAllVisualObject()
             else:
                 if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
