@@ -93,8 +93,9 @@ class Game():
             if isinstance(visual_object, Stick):
                 if (ball.rect.x-visual_object.rect.x)<35: 
                     print('left point blew')#35 = length_stick/3
-                    ball.x_speed *= -1
+                    if ball.x_speed > 0: ball.x_speed *= -1
                 elif (ball.rect.x-visual_object.rect.x)>70:
+                    if ball.x_speed < 0: ball.x_speed *= -1
                     print('right point blew')
                 else: print('middle point blew')    
                 print('stick blew')
