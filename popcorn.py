@@ -64,24 +64,11 @@ class Game():
             self.brick_screen = pygame.display.set_mode((screen_width, screen_height))
             pygame.display.set_caption("My Game")    
         
-    def loadNextLevel(self):                                                  
-        self.level.load(self.level.current_level)
-        self.all_bricks = Group()                                              
-        self.brick = [Brick() for i in range(self.level.brick_x.__len__())]
-        brick_position = Coordinate()
-        for i in range(self.level.brick_x.__len__()):
-            self.all_bricks.add(self.brick[i]) 
-            brick_position.x = self.level.brick_x[i]
-            brick_position.y = self.level.brick_y[i]
-            self.brick[i].rect.x = brick_position.x
-            self.brick[i].rect.y = brick_position.y
-            self.brick[i].brick_hardness = self.level.brick_break[i]
-            self.brick[i].paint(self.brick[i].brick_hardness)
-        self.number_of_unbreakable_bricks = self.level.brick_break.count(max(self.level.brick_break))     
+    
         
     def getAllVisualObject(self) -> None:        
         self.all_visual_objects = Group() 
-        self.all_visual_objects.add(self.all_bricks)
+        self.all_visual_objects.add(self.level.all_bricks)
         self.all_visual_objects.add(self.stick)  
         self.all_visual_objects.add(self.all_borders)
         
@@ -91,9 +78,9 @@ class Game():
         if abs(visual_object.rect.top - ball.rect.bottom) < self.tolerance and ball.y_speed > 0:
             ball.y_speed *= -1
             if isinstance(visual_object, Stick):
-                if (ball.rect.x-visual_object.rect.x) < STICK_LENGHT//3: 
+                if (ball.rect.x-visual_object.rect.x) < STICK_LENGTH//3: 
                     if ball.x_speed > 0: ball.x_speed *= -1
-                elif (ball.rect.x-visual_object.rect.x)> STICK_LENGHT - STICK_LENGHT//3:
+                elif (ball.rect.x-visual_object.rect.x)> STICK_LENGTH - STICK_LENGTH//3:
                     if ball.x_speed < 0: ball.x_speed *= -1
                  
         if abs(visual_object.rect.bottom - ball.rect.top) < self.tolerance and ball.y_speed < 0:
@@ -115,7 +102,7 @@ class Game():
                     
         
 game = Game()
-game.loadNextLevel()              #!!! why next level?
+game.level.loadNextLevel()              #!!! why next level?
 game.getAllVisualObject()
 # Game loop
 running = True
@@ -133,9 +120,9 @@ while running:
         if isinstance(game.collisionInfo.visual_object, Brick): #!!! tuk nikoga ne e instancia na brick - triabva da se oprawi
             if game.collisionInfo.visual_object.brick_hardness == min(game.level.brick_break):    
                 game.collisionInfo.visual_object.kill()
-                if len(game.all_bricks) == game.number_of_unbreakable_bricks:
+                if len(game.level.all_bricks) == game.level.number_of_unbreakable_bricks:
                     game.level.current_level += 1
-                    game.loadNextLevel()
+                    game.level.loadNextLevel()
                     game.getAllVisualObject()
             else:
                 if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
