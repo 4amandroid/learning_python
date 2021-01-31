@@ -78,18 +78,12 @@ class Game():
         if abs(visual_object.rect.top - ball.rect.bottom) < self.tolerance and ball.y_speed > 0:
             ball.y_speed *= -1
             if isinstance(visual_object, Stick):
-<<<<<<< HEAD
-                if (ball.rect.x-visual_object.rect.x) < STICK_LENGHT//3: 
-                    if ball.x_speed > 0: ball.x_speed *= -1
-                elif (ball.rect.x-visual_object.rect.x)> STICK_LENGHT - STICK_LENGHT//3:
-                    if ball.x_speed < 0: ball.x_speed *= -1
-=======
                 if (ball.rect.x-visual_object.rect.x) < STICK_LENGTH//3: 
                     if ball.x_speed > 0: ball.x_speed *= -1
                 elif (ball.rect.x-visual_object.rect.x)> STICK_LENGTH - STICK_LENGTH//3:
                     if ball.x_speed < 0: ball.x_speed *= -1
                  
->>>>>>> popcorntest
+ 
         if abs(visual_object.rect.bottom - ball.rect.top) < self.tolerance and ball.y_speed < 0:
             ball.y_speed *= -1 
         if abs(visual_object.rect.right - ball.rect.left) < self.tolerance and ball.x_speed < 0:  
