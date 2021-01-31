@@ -1,5 +1,8 @@
 import json
 from types import SimpleNamespace
+from pygame.sprite import Sprite, Group
+from Coordinate import Coordinate
+from Brick import Brick
 
 class Level():
     levels = ['level1', 'level2', 'level3', 'level4']
@@ -30,7 +33,20 @@ class Level():
                 # and throws exception in case they not equal 
                 object.__setattr__(self, atribute_name, level.__dict__[atribute_name])
             pass
-            
+    def loadCurrentLevel(self):                                                  
+        self.load(self.current_level)
+        self.all_bricks = Group()                                              
+        self.brick = [Brick() for i in range(self.brick_x.__len__())]
+        brick_position = Coordinate()
+        for i in range(self.brick_x.__len__()):
+            self.all_bricks.add(self.brick[i]) 
+            brick_position.x = self.brick_x[i]
+            brick_position.y = self.brick_y[i]
+            self.brick[i].rect.x = brick_position.x
+            self.brick[i].rect.y = brick_position.y
+            self.brick[i].brick_hardness = self.brick_break[i]
+            self.brick[i].paint(self.brick[i].brick_hardness)
+        self.number_of_unbreakable_bricks = self.brick_break.count(max(self.brick_break))            
      
     def save(self):
         

@@ -9,7 +9,7 @@ class Stick(Sprite):
 
     def __init__(self) -> None:
         super().__init__()
-        self.image = Surface((STICK_LENGHT, STICK_HEIGHT))   
+        self.image = Surface((STICK_LENGTH, STICK_HEIGHT))   
         self.stick_image = pygame.image.load(STICK_TEXTURE)
         self.image.blit(self.stick_image,TOP_LEFT_SURFACE)
         self.image.set_colorkey(BACKGROUND_COLOR)
