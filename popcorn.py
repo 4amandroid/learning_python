@@ -52,7 +52,6 @@ class Game():
         self.ball = [Ball() for i in range(number_of_balls)]  
         self.all_balls.add(self.ball) 
         
-    
     def __initSticks(self) -> None:
         self.all_sticks = Group()
         self.all_sticks.add(self.stick)
@@ -63,8 +62,6 @@ class Game():
             self.screen = pygame.display.set_mode((screen_width, screen_height))
             self.brick_screen = pygame.display.set_mode((screen_width, screen_height))
             pygame.display.set_caption("My Game")    
-        
-    
         
     def getAllVisualObject(self) -> None:        
         self.all_visual_objects = Group() 
@@ -82,8 +79,6 @@ class Game():
                     if ball.x_speed > 0: ball.x_speed *= -1
                 elif (ball.rect.x-visual_object.rect.x)> STICK_LENGTH - STICK_LENGTH//3:
                     if ball.x_speed < 0: ball.x_speed *= -1
-                 
- 
         if abs(visual_object.rect.bottom - ball.rect.top) < self.tolerance and ball.y_speed < 0:
             ball.y_speed *= -1 
         if abs(visual_object.rect.right - ball.rect.left) < self.tolerance and ball.x_speed < 0:  
