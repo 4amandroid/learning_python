@@ -20,5 +20,7 @@ class Stick(Sprite):
         stick_position.x = pygame.mouse.get_pos()[0] 
         self.rect.x = stick_position.x    #!!! mouse should return coordinate object: Coordinate(pygame.mouse.get_pos()).x
         self.rect.y = STICK_Y_POSITION
-        if self.rect.right >= SCREEN_WIDTH:
-            self.rect.right = SCREEN_WIDTH  
+        if self.rect.right >= SCREEN_WIDTH - SIDE_BORDER_WIDTH:
+            self.rect.right = SCREEN_WIDTH - SIDE_BORDER_WIDTH
+        elif self.rect.left <= SIDE_BORDER_WIDTH:
+            self.rect.left = SIDE_BORDER_WIDTH  
