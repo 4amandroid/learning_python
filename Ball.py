@@ -17,7 +17,7 @@ class Ball(Sprite):
         pygame.draw.circle(self.image, self.color, (self.ball_radius,self.ball_radius), self.ball_radius)
         self.rect = self.image.get_rect()
         self.rect.center = (self.ball_radius, self.ball_radius)
-        self.rect.y = STICK_Y_POSITION
+        self.rect.y = STICK_Y_POSITION - self.ball_radius
         
 
     def update(self) -> None:

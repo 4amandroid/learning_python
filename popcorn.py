@@ -95,7 +95,13 @@ class Game():
                     
                 else:
                     self.collisionInfo = None
-                    
+        for _ball in self.all_balls:
+            self.all_balls.remove(_ball)
+            for _ball1 in self.all_balls:
+                if _ball.rect.colliderect(_ball1):
+                    print('ballcolision')
+            self.all_balls.add(_ball)
+        print(self.all_balls)            
         
 game = Game()
 game.level.loadCurrentLevel()              #!!! why next level?
@@ -126,6 +132,7 @@ while running:
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
      
     
+        
     # Draw / render
     game.screen.fill(COLOR_BLACK)
     game.all_visual_objects.draw(game.brick_screen)
