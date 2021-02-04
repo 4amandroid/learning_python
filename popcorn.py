@@ -1,6 +1,6 @@
 from typing import Any
 import pygame
-pygame.init() ###############
+pygame.init() ############### ?????????????????????????
 from pygame.sprite import Sprite, Group
 from pygame.time import Clock
 from pygame.color import Color
@@ -15,11 +15,11 @@ from Stick import Stick
 from CollisionInfo import CollisionInfo
 #test new branch
 class Text():
-    def printScreen(self,points = 0,level = 0, lives=3):
+    def printScreen(self,points = 0,level = 0, lives = DEFAULT_NUMBER_OF_LIVES):
         self.points=points
         self.lives=lives
         self.level=level
-        font = pygame.font.Font('freesansbold.ttf', 34)
+        font = pygame.font.Font('freesansbold.ttf', FONT_SIZE)
         bar_text =('POINTS  ' + str(self.points) + '  LIVES  '+ str(self.lives)+'  LEVEL  ' + str(self.level))
         self.text = font.render( bar_text, True, COLOR_GREEN, COLOR_RED)
         self.textRect = self.text.get_rect()
@@ -139,6 +139,7 @@ while running:
         if isinstance(game.collisionInfo.visual_object, Brick):  
             if game.collisionInfo.visual_object.brick_hardness == min(game.level.brick_break):    
                 game.collisionInfo.visual_object.kill()
+                game.points += POINTS_FOR_BRICK
                 if len(game.level.all_bricks) == game.level.number_of_unbreakable_bricks:
                     game.level.current_level += 1
                     game.level.loadCurrentLevel()
@@ -146,7 +147,7 @@ while running:
             else:
                 if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
                     game.collisionInfo.visual_object.brick_hardness -= 1
-                    game.points += 2
+                    game.points += POINTS_FOR_BRICK
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
      
     
@@ -157,7 +158,7 @@ while running:
     game.all_balls.draw(game.screen)
     game.all_balls.update()
     game.all_sticks.update()
-    text.printScreen(game.points,game.level.current_level)
+    text.printScreen(game.points, game.level.current_level+1)
     #game.screen.blit(text.text, text.textRect)    
     pygame.display.flip()
 
