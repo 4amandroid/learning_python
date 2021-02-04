@@ -15,11 +15,16 @@ from Stick import Stick
 from CollisionInfo import CollisionInfo
 #test new branch
 class Text():
-    def __init__(self):
-        font = pygame.font.Font('freesansbold.ttf', 32)
-        self.text = font.render('GeeksForGeeks', True, COLOR_GREEN, COLOR_RED)
+    def printScreen(self,points = 0,level = 0, lives=3):
+        self.points=points
+        self.lives=lives
+        self.level=level
+        font = pygame.font.Font('freesansbold.ttf', 34)
+        bar_text =('POINTS  ' + str(self.points) + '  LIVES  '+ str(self.lives)+'  LEVEL  ' + str(self.level))
+        self.text = font.render( bar_text, True, COLOR_GREEN, COLOR_RED)
         self.textRect = self.text.get_rect()
-        self.textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        self.textRect.topleft = (TOP_LEFT_SURFACE)
+        game.screen.blit(self.text, text.textRect)    
 
 class Game():
     def __init__(self):
@@ -34,7 +39,7 @@ class Game():
         self.__initializeBalls(DEFAULT_NUMBER_OF_BALLS)
         self.__initSticks()
         
-        
+        self.points = 0
         self.tolerance = COLISION_TOLERANCE
         self.clock = Clock()
         self.__initializeGraphics(SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -108,6 +113,8 @@ class Game():
             self.all_balls.remove(_ball)
             for _ball1 in self.all_balls:
                 if _ball.rect.colliderect(_ball1):
+                    #_ball.x_speed *= -1
+                    #_ball.y_speed *= -1
                     print('ballcolision')
             self.all_balls.add(_ball)
         print(self.all_balls)            
@@ -139,6 +146,7 @@ while running:
             else:
                 if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
                     game.collisionInfo.visual_object.brick_hardness -= 1
+                    game.points += 2
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
      
     
@@ -149,7 +157,8 @@ while running:
     game.all_balls.draw(game.screen)
     game.all_balls.update()
     game.all_sticks.update()
-    game.screen.blit(text.text, text.textRect)    
+    text.printScreen(game.points,game.level.current_level)
+    #game.screen.blit(text.text, text.textRect)    
     pygame.display.flip()
 
 pygame.quit()
