@@ -1,5 +1,6 @@
 from typing import Any
 import pygame
+pygame.init() ###############
 from pygame.sprite import Sprite, Group
 from pygame.time import Clock
 from pygame.color import Color
@@ -13,6 +14,12 @@ from Ball import Ball
 from Stick import Stick
 from CollisionInfo import CollisionInfo
 #test new branch
+class Text():
+    def __init__(self):
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        self.text = font.render('GeeksForGeeks', True, COLOR_GREEN, COLOR_RED)
+        self.textRect = self.text.get_rect()
+        self.textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
 class Game():
     def __init__(self):
@@ -62,6 +69,7 @@ class Game():
             pygame.mixer.init()
             self.screen = pygame.display.set_mode((screen_width, screen_height))
             self.brick_screen = pygame.display.set_mode((screen_width, screen_height))
+            font = pygame.font.Font('freesansbold.ttf', 32)
             pygame.display.set_caption("My Game")    
         
     def getAllVisualObject(self) -> None:        
@@ -107,6 +115,7 @@ class Game():
 game = Game()
 game.level.loadCurrentLevel()              #!!! why next level?
 game.getAllVisualObject()
+text=Text()
 # Game loop
 running = True
  
@@ -133,13 +142,14 @@ while running:
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
      
     
-        
+    
     # Draw / render
     game.screen.fill(COLOR_BLACK)
     game.all_visual_objects.draw(game.brick_screen)
     game.all_balls.draw(game.screen)
     game.all_balls.update()
     game.all_sticks.update()
+    game.screen.blit(text.text, text.textRect)    
     pygame.display.flip()
 
 pygame.quit()
