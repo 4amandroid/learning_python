@@ -12,6 +12,7 @@ from Brick import Brick
 from Ball import Ball
 from Stick import Stick
 from CollisionInfo import CollisionInfo
+#test new branch
 
 class Game():
     def __init__(self):
