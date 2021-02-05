@@ -93,12 +93,20 @@ class Game():
                     if ball.x_speed > 0: ball.x_speed *= -1
                 elif (ball.rect.x-visual_object.rect.x)> STICK_LENGTH - STICK_LENGTH//3:
                     if ball.x_speed < 0: ball.x_speed *= -1
+            if isinstance(visual_object, Ball):
+                visual_object.y_speed *= -1
         if abs(visual_object.rect.bottom - ball.rect.top) < self.tolerance and ball.y_speed < 0:
-            ball.y_speed *= -1 
+            ball.y_speed *= -1
+            if isinstance(visual_object, Ball):
+                visual_object.y_speed *= -1
         if abs(visual_object.rect.right - ball.rect.left) < self.tolerance and ball.x_speed < 0:  
-            ball.x_speed *= -1   
+            ball.x_speed *= -1
+            if isinstance(visual_object, Ball):
+                visual_object.x_speed *= -1
         if abs(visual_object.rect.left - ball.rect.right) < self.tolerance and ball.x_speed > 0:  
             ball.x_speed *= -1
+            if isinstance(visual_object, Ball):
+                visual_object.x_speed *= -1
         pass
 
     def collideDetect(self):    
@@ -113,11 +121,13 @@ class Game():
             self.all_balls.remove(_ball)
             for _ball1 in self.all_balls:
                 if _ball.rect.colliderect(_ball1):
-                    #_ball.x_speed *= -1
-                    #_ball.y_speed *= -1
-                    print('ballcolision')
-            self.all_balls.add(_ball)
-        print(self.all_balls)            
+                    self.all_balls.add(_ball)
+                    return CollisionInfo(_ball, _ball1)
+                else:
+                    self.CollisionInfo = None
+                    self.all_balls.add(_ball)
+            
+        print(self.all_balls)          
         
 game = Game()
 game.level.loadCurrentLevel()              #!!! why next level?
