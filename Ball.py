@@ -23,11 +23,11 @@ class Ball(Sprite):
     def update(self) -> None:
         self.rect.x += int(self.x_speed) #!!! coordinate += speed :) time-space continuum? :)
         self.rect.y += int(self.y_speed)  
-        if self.rect.bottom >= SCREEN_HEIGHT or self.rect.top <= 0:
+        if self.rect.top <= 0:
             self.y_speed *= -1  
         if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
             self.x_speed *= -1
-        # colision bug ball to border
+        # TODO debug when colision bug ball to border
         if self.rect.top <= UP_BORDER_HEIGHT - COLISION_TOLERANCE:
             print("collision bug")       
         if self.rect.left <= SIDE_BORDER_WIDTH - COLISION_TOLERANCE or self.rect.right >= SCREEN_WIDTH-SIDE_BORDER_WIDTH+COLISION_TOLERANCE: 

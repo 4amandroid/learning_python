@@ -27,7 +27,7 @@ class Game():
         self.__initializeBalls(DEFAULT_NUMBER_OF_BALLS)
         self.__initSticks()
         
-        
+        self.lives = DEFAULT_NUMBER_OF_LIVES
         self.tolerance = COLISION_TOLERANCE
         self.clock = Clock()
         self.__initializeGraphics(SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -64,11 +64,13 @@ class Game():
             self.brick_screen = pygame.display.set_mode((screen_width, screen_height))
             pygame.display.set_caption("My Game")
             self.font = pygame.font.SysFont(None, FONT_SIZE)
-    def printItemBar(self,points = 0, lives = DEFAULT_NUMBER_OF_LIVES):
+    def printItemBar(self,points = 0):
         self.points=points
-        self.lives=lives
-        #font = pygame.font.Font('freesansbold.ttf', UP_BORDER_HEIGHT)
+        
         bar_text =('POINTS  ' + str(self.points) + '  LIVES  '+ str(self.lives)+'  LEVEL  ' + str(self.level.current_level+1))
+        if self.lives == -1:
+            bar_text = 'G A M E   O V E R'
+            self.font = pygame.font.SysFont(None, FONT_SIZE*4)
         self.text = self.font.render( bar_text, True, COLOR_GREEN, COLOR_RED)
         self.textRect = self.text.get_rect()
         self.textRect.midtop = (SCREEN_WIDTH//2,UP_WALL_Y)
@@ -95,12 +97,14 @@ class Game():
         if abs(visual_object.rect.right - ball.rect.left) < self.tolerance and ball.x_speed < 0:  
             ball.x_speed *= -1   
         if abs(visual_object.rect.left - ball.rect.right) < self.tolerance and ball.x_speed > 0:  
-            ball.x_speed *= -1
+            ball.x_speed *= -1    
         pass
 
     def collideDetect(self):    
-        for visual_object in self.all_visual_objects:    
+        for visual_object in self.all_visual_objects:
             for ball in self.all_balls:
+                if ball.rect.bottom >= SCREEN_HEIGHT:
+                    ball.kill()
                 if ball.rect.colliderect(visual_object.rect): 
                     return CollisionInfo(ball, visual_object)
                     
@@ -135,8 +139,13 @@ while running:
                 if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
                     game.collisionInfo.visual_object.brick_hardness -= 1
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
-     
-    
+    if len(game.all_balls) == 0:
+        
+        if game.lives >= 0:
+            game.lives -= 1
+            game.ball = [Ball() for i in range(DEFAULT_NUMBER_OF_BALLS)]  
+            game.all_balls.add(game.ball) 
+         
         
     # Draw / render
     game.screen.fill(COLOR_BLACK)
