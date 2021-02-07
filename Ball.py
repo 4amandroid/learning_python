@@ -18,12 +18,18 @@ class Ball(Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (self.ball_radius, self.ball_radius)
         self.rect.y = STICK_Y_POSITION - self.ball_radius
-        
+        self.rect.x = SCREEN_WIDTH//2
 
     def update(self) -> None:
         self.rect.x += int(self.x_speed) #!!! coordinate += speed :) time-space continuum? :)
         self.rect.y += int(self.y_speed)  
         if self.rect.bottom >= SCREEN_HEIGHT or self.rect.top <= 0:
-            self.y_speed *= -1 # will be removed
+            self.y_speed *= -1  
         if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
-            self.x_speed *= -1    
+            self.x_speed *= -1
+        # colision bug ball to border
+        if self.rect.top <= UP_BORDER_HEIGHT - COLISION_TOLERANCE:
+            print("collision bug")       
+        if self.rect.left <= SIDE_BORDER_WIDTH - COLISION_TOLERANCE or self.rect.right >= SCREEN_WIDTH-SIDE_BORDER_WIDTH+COLISION_TOLERANCE: 
+            print("collision bug") 
+        

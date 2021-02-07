@@ -12,17 +12,7 @@ from Brick import Brick
 from Ball import Ball
 from Stick import Stick
 from CollisionInfo import CollisionInfo
-'''class Text():
-    def printScreen(self,points = 0,level = 0, lives = DEFAULT_NUMBER_OF_LIVES):
-        self.points=points
-        self.lives=lives
-        self.level=level
-        font = pygame.font.Font('freesansbold.ttf', UP_BORDER_HEIGHT)
-        bar_text =('POINTS  ' + str(self.points) + '  LIVES  '+ str(self.lives)+'  LEVEL  ' + str(self.level))
-        self.text = font.render( bar_text, True, COLOR_GREEN, COLOR_RED)
-        self.textRect = self.text.get_rect()
-        self.textRect.topleft = (TOP_LEFT_SURFACE)
-        game.screen.blit(self.text, text.textRect)    '''
+ 
 class Game():
     def __init__(self):
         # create instances of core game objects
@@ -48,7 +38,7 @@ class Game():
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
         self.border[UP_BORDER_NUMBER].image =Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
         self.border[UP_BORDER_NUMBER].rect = self.border[UP_BORDER_NUMBER].image.get_rect() 
-        self.border[UP_BORDER_NUMBER].image.fill(COLOR_GREEN)  
+        self.border[UP_BORDER_NUMBER].image.fill(COLOR_RED)  
         self.all_borders = Group()
         border_location = Coordinate()    
         for i in range(BORDER_LOCATION.__len__()):
@@ -73,7 +63,7 @@ class Game():
             self.screen = pygame.display.set_mode((screen_width, screen_height))
             self.brick_screen = pygame.display.set_mode((screen_width, screen_height))
             pygame.display.set_caption("My Game")
-            self.font = pygame.font.Font(FONT, FONT_SIZE)
+            self.font = pygame.font.SysFont(None, FONT_SIZE)
     def printItemBar(self,points = 0, lives = DEFAULT_NUMBER_OF_LIVES):
         self.points=points
         self.lives=lives
@@ -109,16 +99,16 @@ class Game():
         pass
 
     def collideDetect(self):    
-        for visual_object in self.all_visual_objects:   #!!! unacceptable! game is no place here
+        for visual_object in self.all_visual_objects:    
             for ball in self.all_balls:
-                if ball.rect.colliderect(visual_object.rect):#!!! extract ifs as separate method for now
+                if ball.rect.colliderect(visual_object.rect): 
                     return CollisionInfo(ball, visual_object)
                     
                 else:
                     self.collisionInfo = None
     
 game = Game()
-game.level.loadCurrentLevel()              #!!! why next level?
+game.level.loadCurrentLevel()               
 game.getAllVisualObject()
 # Game loop
 running = True
@@ -154,8 +144,8 @@ while running:
     game.all_balls.draw(game.screen)
     game.all_balls.update()
     game.all_sticks.update()
-    game.printItemBar(game.points)#, game.level.current_level+1)
-    #game.screen.blit(game.text, (0,0,600,36))  
+    game.printItemBar(game.points)
+    
     pygame.display.flip()
 
 pygame.quit()
