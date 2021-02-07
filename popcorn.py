@@ -12,7 +12,17 @@ from Brick import Brick
 from Ball import Ball
 from Stick import Stick
 from CollisionInfo import CollisionInfo
-
+'''class Text():
+    def printScreen(self,points = 0,level = 0, lives = DEFAULT_NUMBER_OF_LIVES):
+        self.points=points
+        self.lives=lives
+        self.level=level
+        font = pygame.font.Font('freesansbold.ttf', UP_BORDER_HEIGHT)
+        bar_text =('POINTS  ' + str(self.points) + '  LIVES  '+ str(self.lives)+'  LEVEL  ' + str(self.level))
+        self.text = font.render( bar_text, True, COLOR_GREEN, COLOR_RED)
+        self.textRect = self.text.get_rect()
+        self.textRect.topleft = (TOP_LEFT_SURFACE)
+        game.screen.blit(self.text, text.textRect)    '''
 class Game():
     def __init__(self):
         # create instances of core game objects
@@ -20,7 +30,8 @@ class Game():
         self.border = Border()
         self.ball = Ball()
         self.stick = Stick()
-        
+        self.points=0
+        self.points_per_brick = POINTS_PER_BRICK
         # initialize core game objects
         self.__initializeBorderFrame()
         self.__initializeBalls(DEFAULT_NUMBER_OF_BALLS)
@@ -61,8 +72,18 @@ class Game():
             pygame.mixer.init()
             self.screen = pygame.display.set_mode((screen_width, screen_height))
             self.brick_screen = pygame.display.set_mode((screen_width, screen_height))
-            pygame.display.set_caption("My Game")    
-        
+            pygame.display.set_caption("My Game")
+            self.font = pygame.font.Font(FONT, FONT_SIZE)
+    def printItemBar(self,points = 0, lives = DEFAULT_NUMBER_OF_LIVES):
+        self.points=points
+        self.lives=lives
+        #font = pygame.font.Font('freesansbold.ttf', UP_BORDER_HEIGHT)
+        bar_text =('POINTS  ' + str(self.points) + '  LIVES  '+ str(self.lives)+'  LEVEL  ' + str(self.level.current_level+1))
+        self.text = self.font.render( bar_text, True, COLOR_GREEN, COLOR_RED)
+        self.textRect = self.text.get_rect()
+        self.textRect.midtop = (SCREEN_WIDTH//2,UP_WALL_Y)
+        self.screen.blit(self.text,self.textRect)      
+
     def getAllVisualObject(self) -> None:        
         self.all_visual_objects = Group() 
         self.all_visual_objects.add(self.level.all_bricks)
@@ -95,14 +116,7 @@ class Game():
                     
                 else:
                     self.collisionInfo = None
-        for _ball in self.all_balls:
-            self.all_balls.remove(_ball)
-            for _ball1 in self.all_balls:
-                if _ball.rect.colliderect(_ball1):
-                    print('ballcolision')
-            self.all_balls.add(_ball)
-        print(self.all_balls)            
-        
+    
 game = Game()
 game.level.loadCurrentLevel()              #!!! why next level?
 game.getAllVisualObject()
@@ -119,7 +133,8 @@ while running:
     game.collisionInfo = game.collideDetect()
     if game.collisionInfo is not None:
         game.changeDirection(game.collisionInfo.ball, game.collisionInfo.visual_object)
-        if isinstance(game.collisionInfo.visual_object, Brick):  
+        if isinstance(game.collisionInfo.visual_object, Brick):
+            game.points += game.points_per_brick
             if game.collisionInfo.visual_object.brick_hardness == min(game.level.brick_break):    
                 game.collisionInfo.visual_object.kill()
                 if len(game.level.all_bricks) == game.level.number_of_unbreakable_bricks:
@@ -139,6 +154,8 @@ while running:
     game.all_balls.draw(game.screen)
     game.all_balls.update()
     game.all_sticks.update()
+    game.printItemBar(game.points)#, game.level.current_level+1)
+    #game.screen.blit(game.text, (0,0,600,36))  
     pygame.display.flip()
 
 pygame.quit()
