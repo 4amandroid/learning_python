@@ -92,12 +92,16 @@ class Game():
                     if ball.x_speed > 0: ball.x_speed *= -1
                 elif (ball.rect.x-visual_object.rect.x)> STICK_LENGTH - STICK_LENGTH//3:
                     if ball.x_speed < 0: ball.x_speed *= -1
+             # ако изпълнението е стигнало до тук, няма смисъл да се изпълняват долните редове
+             # най-добре е това за стика да си е в отделен метод, за сега го направи в game
         if abs(visual_object.rect.bottom - ball.rect.top) < self.tolerance and ball.y_speed < 0:
             ball.y_speed *= -1 
-        if abs(visual_object.rect.right - ball.rect.left) < self.tolerance and ball.x_speed < 0:  
+        if abs(visual_object.rect.right - ball.rect.left) < self.tolerance and ball.x_speed < 0:  # иф 1
             ball.x_speed *= -1   
-        if abs(visual_object.rect.left - ball.rect.right) < self.tolerance and ball.x_speed > 0:  
+        if abs(visual_object.rect.left - ball.rect.right) < self.tolerance and ball.x_speed > 0:  # иф 2
             ball.x_speed *= -1    
+          
+        # на пръв поглед този код може да стане с един иф - if 1 or 2: ball.x_speed *= -1
         pass
 
     def collideDetect(self):    
