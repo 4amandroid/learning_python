@@ -68,7 +68,7 @@ class Game():
         self.points=points
         
         bar_text =('POINTS  ' + str(self.points) + '  LIVES  '+ str(self.lives)+'  LEVEL  ' + str(self.level.current_level+1))
-        if self.lives == -1:
+        if self.lives == 0 and len(self.all_balls) == 0:
             bar_text = 'G A M E   O V E R'
             self.font = pygame.font.SysFont(None, FONT_SIZE*4)
         self.text = self.font.render( bar_text, True, COLOR_GREEN, COLOR_RED)
@@ -140,8 +140,7 @@ while running:
                     game.collisionInfo.visual_object.brick_hardness -= 1
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
     if len(game.all_balls) == 0:
-        
-        if game.lives >= 0:
+        if game.lives > 0:
             game.lives -= 1
             game.ball = [Ball() for i in range(DEFAULT_NUMBER_OF_BALLS)]  
             game.all_balls.add(game.ball) 
