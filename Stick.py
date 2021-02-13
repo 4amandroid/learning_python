@@ -1,4 +1,5 @@
 import pygame
+pygame.init()
 from Config import *
 from pygame.sprite import Sprite
 from pygame import Surface 
@@ -7,17 +8,17 @@ from Coordinate import Coordinate
 class Bullet(Sprite):
     def __init__(self) -> None:
         super().__init__()
-        self.image = Surface((STICK_LENGTH, STICK_HEIGHT))   
-        self.bullet_image = pygame.image.load(STICK_TEXTURE)
+        self.image = Surface((BULLET_WIDTH, BULLET_HEIGHT))   
+        self.bullet_image = pygame.image.load(BULLET_TEXTURE)
         self.image.blit(self.bullet_image,TOP_LEFT_SURFACE)
         self.image.set_colorkey(BACKGROUND_COLOR)
         self.rect = self.image.get_rect()
         self.rect.y = STICK_Y_POSITION
         self.bullet_position = Coordinate()
-       
+        self.bullet_position.x = pygame.mouse.get_pos()[0] + STICK_LENGTH//2
         
     def update(self) -> None:
-        self.bullet_position.x = pygame.mouse.get_pos()[0] + STICK_LENGTH//2
+        
         self.rect.x = self.bullet_position.x
         self.rect.y -=1
         
