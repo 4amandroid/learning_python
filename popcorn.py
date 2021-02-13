@@ -10,7 +10,7 @@ from Coordinate import Coordinate
 from Border import Border
 from Brick import Brick
 from Ball import Ball
-from Stick import Stick
+from Stick import Stick,Bullet
 from CollisionInfo import CollisionInfo
  
 class Game():
@@ -20,6 +20,8 @@ class Game():
         self.border = Border()
         self.ball = Ball()
         self.stick = Stick()
+        self.bullet = Bullet()
+        self.all_bullets = Group()
         self.points=0
         self.points_per_brick = POINTS_PER_BRICK
         # initialize core game objects
@@ -125,9 +127,14 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  
+            bullet=Bullet()
+            game.all_bullets.add(bullet)
+            print(game.all_bullets)
     game.collisionInfo = game.collideDetect()
     if game.collisionInfo is not None:
-        pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))
+       
         game.changeDirection(game.collisionInfo.ball, game.collisionInfo.visual_object)
         if isinstance(game.collisionInfo.visual_object, Brick):
             game.points += game.points_per_brick
@@ -154,6 +161,8 @@ while running:
     game.all_balls.draw(game.screen)
     game.all_balls.update()
     game.all_sticks.update()
+    game.all_bullets.draw(game.screen)
+    game.all_bullets.update()
     game.printItemBar(game.points)
     
     pygame.display.flip()
