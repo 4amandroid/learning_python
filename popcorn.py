@@ -119,7 +119,10 @@ class Game():
             for brick in self.level.all_bricks:
                 if bullet.rect.colliderect(brick.rect):
                     bullet.kill()
-                    brick.kill()
+                    if brick.brick_hardness < 4: 
+                        brick.kill()
+                elif bullet.rect.y < UP_BORDER_HEIGHT:
+                    bullet.kill()     
 game = Game()
 game.level.loadCurrentLevel()               
 game.getAllVisualObject()
