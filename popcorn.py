@@ -114,7 +114,12 @@ class Game():
                     
                 else:
                     self.collisionInfo = None
-    
+    def bulletCollideDetect(self):
+        for bullet in self.all_bullets:
+            for brick in self.level.all_bricks:
+                if bullet.rect.colliderect(brick.rect):
+                    bullet.kill()
+                    brick.kill()
 game = Game()
 game.level.loadCurrentLevel()               
 game.getAllVisualObject()
@@ -134,6 +139,7 @@ while running:
             game.all_bullets.add(bullet)
             print(game.all_bullets)
     game.collisionInfo = game.collideDetect()
+    game.bulletCollideDetect()
     if game.collisionInfo is not None:
        
         game.changeDirection(game.collisionInfo.ball, game.collisionInfo.visual_object)
