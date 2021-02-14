@@ -13,6 +13,7 @@ from Brick import Brick
 from Ball import Ball
 from Stick import Stick
 from CollisionInfo import CollisionInfo
+from menu import Menu
 #test new branch
 class Text():
     def printScreen(self,points = 0,level = 0, lives = DEFAULT_NUMBER_OF_LIVES):
@@ -135,7 +136,8 @@ game.getAllVisualObject()
 text=Text()
 # Game loop
 running = True
- 
+menu=Menu() 
+menu.show()
 while running:
      
     game.clock.tick(FPS)                 #!!! is FPS is frame per second?
