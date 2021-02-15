@@ -10,7 +10,7 @@ from Coordinate import Coordinate
 from Border import Border
 from Brick import Brick
 from Ball import Ball
-from Stick import Stick,Bullet
+from Stick import Stick,Bullet,Luck
 from CollisionInfo import CollisionInfo
  
 class Game():
@@ -20,8 +20,10 @@ class Game():
         self.border = Border()
         self.ball = Ball()
         self.stick = Stick()
-        self.bullet = Bullet()
+        #self.bullet = Bullet()
         self.all_bullets = Group()
+        #self.luck=Luck()
+        self.all_lucks = Group()
         self.points=0
         self.points_per_brick = POINTS_PER_BRICK
         # initialize core game objects
@@ -157,6 +159,9 @@ while running:
             else:
                 if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
                     game.collisionInfo.visual_object.brick_hardness -= 1
+                    luck = Luck()
+                    game.all_lucks.add(luck)
+                    print(game.all_lucks)
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
     if len(game.all_balls) == 0:
         if game.lives > 0:
@@ -173,6 +178,8 @@ while running:
     game.all_sticks.update()
     game.all_bullets.draw(game.screen)
     game.all_bullets.update()
+    game.all_lucks.draw(game.screen)
+    game.all_lucks.update()
     game.printItemBar(game.points)
     
     pygame.display.flip()

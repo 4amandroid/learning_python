@@ -5,6 +5,19 @@ from pygame.sprite import Sprite
 from pygame import Surface 
 from Coordinate import Coordinate 
 
+class Luck(Sprite):
+    def __init__(self) -> None:
+        super().__init__()
+        self.image = Surface((BULLET_WIDTH, BULLET_HEIGHT))   
+        self.luck_image = pygame.image.load(BULLET_TEXTURE)
+        self.image.blit(self.luck_image,TOP_LEFT_SURFACE)
+        self.image.set_colorkey(BACKGROUND_COLOR)
+        self.rect = self.image.get_rect()
+        self.rect.y = 220
+    def update(self) -> None:
+        self.rect.x= 220
+        self.rect.y += 1 
+        pass
 class Bullet(Sprite):
     def __init__(self) -> None:
         super().__init__()
