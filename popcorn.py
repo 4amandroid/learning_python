@@ -73,7 +73,7 @@ class Game():
         if self.lives == 0 and len(self.all_balls) == 0:
             bar_text = 'G A M E   O V E R'
             self.font = pygame.font.SysFont(None, FONT_SIZE*4)
-        self.text = self.font.render( bar_text, True, COLOR_GREEN, COLOR_RED)
+        self.text = self.font.render( bar_text, True, COLOR_RED, COLOR_GREEN)
         self.textRect = self.text.get_rect()
         self.textRect.midtop = (SCREEN_WIDTH//2,UP_WALL_Y)
         self.screen.blit(self.text,self.textRect)      
