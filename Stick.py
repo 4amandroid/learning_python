@@ -16,12 +16,12 @@ class BaseStick(Sprite):
         self.rect = self.image.get_rect()
 
 class Luck(BaseStick):
-    def __init__(self) -> None:
+    def __init__(self,midtop) -> None:
         super().__init__()
-        self.rect.y = 220
+        self.rect.midtop = midtop
         
     def update(self) -> None:
-        self.rect.x= 220
+       
         self.rect.y += 1 
         
 class Bullet(BaseStick):

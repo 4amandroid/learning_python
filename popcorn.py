@@ -159,7 +159,7 @@ while running:
             else:
                 if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
                     game.collisionInfo.visual_object.brick_hardness -= 1
-                    luck = Luck()
+                    luck = Luck(game.collisionInfo.visual_object.rect.midbottom)
                     game.all_lucks.add(luck)
                     print(game.all_lucks)
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
