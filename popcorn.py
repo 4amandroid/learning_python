@@ -140,7 +140,7 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  
-            bullet=Bullet()
+            bullet =  game.stick.shot();
             game.all_bullets.add(bullet)
             print(game.all_bullets)
     game.collisionInfo = game.collideDetect()

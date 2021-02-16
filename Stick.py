@@ -29,9 +29,10 @@ class Luck(BaseStick):
         self.rect.y += 1 
         
 class Bullet(BaseStick):
-    def __init__(self) -> None:
+    def __init__(self, x = 0, y = 0) -> None:
         super().__init__()
         self.rect.y = STICK_Y_POSITION
+        # self.bullet_position = (x, y)
         self.bullet_position = Coordinate(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
         self.bullet_position.x =  self.bullet_position.x + STICK_LENGTH//2
         
@@ -52,3 +53,8 @@ class Stick(BaseStick):
             self.rect.right = SCREEN_WIDTH - SIDE_BORDER_WIDTH
         elif self.rect.left <= SIDE_BORDER_WIDTH:
             self.rect.left = SIDE_BORDER_WIDTH
+            
+    def shot(self) -> Bullet:
+        self.bullet = Bullet()
+        # self.bullet = Bullet(x, y) x / y на стика
+        return self.bullet
