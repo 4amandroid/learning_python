@@ -17,7 +17,7 @@ class BaseStick(Sprite):
         self.rect = self.image.get_rect()
 
 class Luck(BaseStick):
-    def __init__(self,midtop,sprite_top_surface = TOP_LEFT_SURFACE) -> None:
+    def __init__(self, midtop, sprite_top_surface = TOP_LEFT_SURFACE) -> None:
         super().__init__()
         luck_images=('./images/luck1.png','./images/luck2.png','./images/luck3.png','./images/luck4.png')
         self.luck_image = pygame.image.load(choice(luck_images))
@@ -25,16 +25,13 @@ class Luck(BaseStick):
         self.rect.midtop = midtop
         
     def update(self) -> None:
-       
         self.rect.y += 1 
         
 class Bullet(BaseStick):
-    def __init__(self, x = 0, y = 0) -> None:
+    def __init__(self, x_offset) -> None:
         super().__init__()
         self.rect.y = STICK_Y_POSITION
-        # self.bullet_position = (x, y)
-        self.bullet_position = Coordinate(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
-        self.bullet_position.x =  self.bullet_position.x + STICK_LENGTH//2
+        self.bullet_position = Coordinate(x_offset + STICK_LENGTH//2, pygame.mouse.get_pos()[1])
         
     def update(self) -> None:
         self.rect.x = self.bullet_position.x
@@ -55,6 +52,5 @@ class Stick(BaseStick):
             self.rect.left = SIDE_BORDER_WIDTH
             
     def shot(self) -> Bullet:
-        self.bullet = Bullet()
-        # self.bullet = Bullet(x, y) x / y на стика
+        self.bullet = Bullet(self.rect.x)
         return self.bullet
