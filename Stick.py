@@ -3,7 +3,8 @@ from Config import BULLET_WIDTH, BULLET_HEIGHT, BULLET_TEXTURE, TOP_LEFT_SURFACE
                     STICK_LENGTH, STICK_HEIGHT, STICK_TEXTURE, SCREEN_WIDTH, SIDE_BORDER_WIDTH
 from pygame.sprite import Sprite
 from pygame import Surface 
-from Coordinate import Coordinate 
+from Coordinate import Coordinate
+from random import choice
 
 class BaseStick(Sprite):
     def __init__(self, sprite_width = BULLET_WIDTH, sprite_height = BULLET_HEIGHT, sprite_texture = BULLET_TEXTURE,\
@@ -16,8 +17,11 @@ class BaseStick(Sprite):
         self.rect = self.image.get_rect()
 
 class Luck(BaseStick):
-    def __init__(self,midtop) -> None:
+    def __init__(self,midtop,sprite_top_surface = TOP_LEFT_SURFACE) -> None:
         super().__init__()
+        luck_images=('./images/luck1.png','./images/luck2.png','./images/luck3.png','./images/luck4.png')
+        self.luck_image = pygame.image.load(choice(luck_images))
+        self.image.blit(self.luck_image, sprite_top_surface)
         self.rect.midtop = midtop
         
     def update(self) -> None:
@@ -32,7 +36,7 @@ class Bullet(BaseStick):
         self.bullet_position.x =  self.bullet_position.x + STICK_LENGTH//2
         
     def update(self) -> None:
-        #self.rect.x = self.bullet_position.x
+        self.rect.x = self.bullet_position.x
         self.rect.y -=1
 
         
