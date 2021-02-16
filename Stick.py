@@ -5,6 +5,7 @@ from pygame.sprite import Sprite
 from pygame import Surface 
 from Coordinate import Coordinate
 from random import choice
+from pygame.sprite import Sprite, Group
 
 class BaseStick(Sprite):
     def __init__(self, sprite_width = BULLET_WIDTH, sprite_height = BULLET_HEIGHT, sprite_texture = BULLET_TEXTURE,\
@@ -36,11 +37,13 @@ class Bullet(BaseStick):
     def update(self) -> None:
         self.rect.x = self.bullet_position.x
         self.rect.y -=1
-
+        
         
 class Stick(BaseStick):
-    def __init__(self) -> None:
+    def __init__(self, screen) -> None:
         super().__init__(STICK_LENGTH, STICK_HEIGHT, STICK_TEXTURE, TOP_LEFT_SURFACE, BACKGROUND_COLOR)
+        self.bullets = Group() 
+        self.screen = screen
  
     def update(self) -> None:
         stick_position = Coordinate(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
@@ -50,7 +53,11 @@ class Stick(BaseStick):
             self.rect.right = SCREEN_WIDTH - SIDE_BORDER_WIDTH
         elif self.rect.left <= SIDE_BORDER_WIDTH:
             self.rect.left = SIDE_BORDER_WIDTH
+        for bullet in self.bullets:
+            bullet.update()
+        self.bullets.draw(self.screen)
             
     def shot(self) -> Bullet:
-        self.bullet = Bullet(self.rect.x)
-        return self.bullet
+        bullet = Bullet(self.rect.x)
+        self.bullets.add(bullet)
+        return bullet

@@ -15,14 +15,13 @@ from CollisionInfo import CollisionInfo
  
 class Game():
     def __init__(self):
+        self.clock = Clock()
+        self.__initializeGraphics(SCREEN_WIDTH, SCREEN_HEIGHT)
         # create instances of core game objects
         self.level = Level()
         self.border = Border()
         self.ball = Ball()
-        self.stick = Stick()
-        #self.bullet = Bullet()
-        self.all_bullets = Group()
-        #self.luck=Luck()
+        self.stick = Stick(self.screen)
         self.all_lucks = Group()
         self.points=0
         self.points_per_brick = POINTS_PER_BRICK
@@ -33,8 +32,7 @@ class Game():
         
         self.lives = DEFAULT_NUMBER_OF_LIVES
         self.tolerance = COLISION_TOLERANCE
-        self.clock = Clock()
-        self.__initializeGraphics(SCREEN_WIDTH, SCREEN_HEIGHT)
+        
         
         self.collisionInfo = None
         
@@ -116,15 +114,15 @@ class Game():
                     
                 else:
                     self.collisionInfo = None
-    def bulletCollideDetect(self):
-        for bullet in self.all_bullets:
+    def bulletCollideDetect(self): # move to bullet class
+        for bullet in self.stick.bullets:
             for brick in self.level.all_bricks:
                 if bullet.rect.colliderect(brick.rect):
                     bullet.kill()
                     if brick.brick_hardness < 4: 
                         brick.kill()
                 elif bullet.rect.y < UP_BORDER_HEIGHT:
-                    bullet.kill()     
+                    bullet.kill()
 game = Game()
 game.level.loadCurrentLevel()               
 game.getAllVisualObject()
@@ -141,8 +139,6 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  
             bullet =  game.stick.shot();
-            game.all_bullets.add(bullet)
-            print(game.all_bullets)
     game.collisionInfo = game.collideDetect()
     game.bulletCollideDetect()
     if game.collisionInfo is not None:
@@ -173,11 +169,10 @@ while running:
     # Draw / render
     game.screen.fill(COLOR_BLACK)
     game.all_visual_objects.draw(game.brick_screen)
+    
     game.all_balls.draw(game.screen)
     game.all_balls.update()
     game.all_sticks.update()
-    game.all_bullets.draw(game.screen)
-    game.all_bullets.update()
     game.all_lucks.draw(game.screen)
     game.all_lucks.update()
     game.printItemBar(game.points)
