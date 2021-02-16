@@ -32,7 +32,7 @@ class Bullet(BaseStick):
         self.bullet_position.x =  self.bullet_position.x + STICK_LENGTH//2
         
     def update(self) -> None:
-        self.rect.x = self.bullet_position.x
+        #self.rect.x = self.bullet_position.x
         self.rect.y -=1
 
         
