@@ -53,8 +53,8 @@ class Stick(BaseStick):
             self.rect.right = SCREEN_WIDTH - SIDE_BORDER_WIDTH
         elif self.rect.left <= SIDE_BORDER_WIDTH:
             self.rect.left = SIDE_BORDER_WIDTH
-        for bullet in self.bullets:
-            bullet.update()
+        #for bullet in self.bullets:
+        self.bullets.update()
         self.bullets.draw(self.screen)
             
     def shot(self) -> Bullet:
