@@ -32,7 +32,7 @@ class Bullet(BaseStick):
     def __init__(self, x_offset) -> None:
         super().__init__()
         self.rect.y = STICK_Y_POSITION
-        self.bullet_position = Coordinate(x_offset + STICK_LENGTH//2, pygame.mouse.get_pos()[1])
+        self.bullet_position = Coordinate(x_offset  , pygame.mouse.get_pos()[1])
         
     def update(self) -> None:
         self.rect.x = self.bullet_position.x
@@ -59,5 +59,7 @@ class Stick(BaseStick):
             
     def shot(self) -> Bullet:
         bullet = Bullet(self.rect.x)
+        self.bullets.add(bullet)
+        bullet = Bullet(self.rect.x+STICK_LENGTH-BULLET_WIDTH)
         self.bullets.add(bullet)
         return bullet
