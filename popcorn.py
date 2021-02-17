@@ -123,6 +123,14 @@ class Game():
                         brick.kill()
                 elif bullet.rect.y < UP_BORDER_HEIGHT:
                     bullet.kill()
+    def luckCollideDetect(self): # move to luck class
+        for stick in self.all_sticks:
+            for luck in self.all_lucks:
+                if luck.rect.colliderect(self.stick.rect):
+                    luck.kill()
+                     
+                elif luck.rect.bottom > SCREEN_HEIGHT:
+                    luck.kill()               
 game = Game()
 game.level.loadCurrentLevel()               
 game.getAllVisualObject()
@@ -141,6 +149,7 @@ while running:
             bullet =  game.stick.shot();
     game.collisionInfo = game.collideDetect()
     game.bulletCollideDetect()
+    game.luckCollideDetect()
     if game.collisionInfo is not None:
        
         game.changeDirection(game.collisionInfo.ball, game.collisionInfo.visual_object)
