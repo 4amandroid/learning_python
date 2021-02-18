@@ -22,6 +22,7 @@ class Game():
         self.border = Border()
         self.ball = Ball()
         self.stick = Stick(self.screen)
+        self.luck = Luck
         self.all_lucks = Group()
         self.points=0
         self.points_per_brick = POINTS_PER_BRICK
@@ -122,7 +123,7 @@ class Game():
                     if brick.brick_hardness < 4: 
                         brick.kill()
                 elif bullet.rect.y < UP_BORDER_HEIGHT:
-                    bullet.kill()'''
+                    bullet.kill()
     def luckCollideDetect(self): # move to luck class
         for stick in self.all_sticks:
             for luck in self.all_lucks:
@@ -130,7 +131,7 @@ class Game():
                     luck.kill()
                      
                 elif luck.rect.bottom > SCREEN_HEIGHT:
-                    luck.kill()               
+                    luck.kill()     '''          
 game = Game()
 game.level.loadCurrentLevel()               
 game.getAllVisualObject()
@@ -148,8 +149,10 @@ while running:
             pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  
             bullet =  game.stick.shot();
     game.collisionInfo = game.collideDetect()
-    game.stick.bullet.bulletCollideDetect(game.level.all_bricks,game.stick.bullets)
-    game.luckCollideDetect()
+    game.stick.bullet.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
+     
+    game.luck.luckCollideDetect(game.all_sticks ,game.all_lucks)
+                    #защо маммка му 
     if game.collisionInfo is not None:
        
         game.changeDirection(game.collisionInfo.ball, game.collisionInfo.visual_object)

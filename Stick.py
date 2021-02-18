@@ -1,6 +1,7 @@
 import pygame
 from Config import BULLET_WIDTH, BULLET_HEIGHT, BULLET_TEXTURE, TOP_LEFT_SURFACE, BACKGROUND_COLOR, STICK_Y_POSITION, \
-                    STICK_LENGTH, STICK_HEIGHT, STICK_TEXTURE, SCREEN_WIDTH, SIDE_BORDER_WIDTH ,UP_BORDER_HEIGHT
+                    STICK_LENGTH, STICK_HEIGHT, STICK_TEXTURE, SCREEN_WIDTH, SIDE_BORDER_WIDTH ,UP_BORDER_HEIGHT , \
+                      SCREEN_HEIGHT  
 from pygame.sprite import Sprite
 from pygame import Surface 
 from Coordinate import Coordinate
@@ -18,13 +19,20 @@ class BaseStick(Sprite):
         self.rect = self.image.get_rect()
 
 class Luck(BaseStick):
-    def __init__(self, midtop, sprite_top_surface = TOP_LEFT_SURFACE) -> None:
+    def __init__(self, midtop = 0, sprite_top_surface = TOP_LEFT_SURFACE) -> None:
         super().__init__()
         luck_images=('./images/luck1.png','./images/luck2.png','./images/luck3.png','./images/luck4.png')
         self.luck_image = pygame.image.load(choice(luck_images))
         self.image.blit(self.luck_image, sprite_top_surface)
         self.rect.midtop = midtop
-        
+    def luckCollideDetect(sticks,lucks): #  # TO DO change name
+        for stick in sticks:
+            for luck in lucks:
+                if luck.rect.colliderect(stick.rect):
+                    luck.kill()
+                     
+                elif luck.rect.bottom > SCREEN_HEIGHT:
+                    luck.kill()                   
     def update(self) -> None:
         self.rect.y += 1 
         
@@ -33,7 +41,7 @@ class Bullet(BaseStick):
         super().__init__()
         self.rect.y = STICK_Y_POSITION
         self.bullet_position = Coordinate(x_offset  , pygame.mouse.get_pos()[1])
-    def bulletCollideDetect(self,bricks,bullets): # move to bullet class
+    def bulletCollideDetect(self,bricks,bullets): # TO DO change name
         for bullet in bullets:
             for brick in bricks:
                 if bullet.rect.colliderect(brick.rect):
