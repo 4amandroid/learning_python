@@ -1,6 +1,6 @@
 import pygame
 from Config import BULLET_WIDTH, BULLET_HEIGHT, BULLET_TEXTURE, TOP_LEFT_SURFACE, BACKGROUND_COLOR, STICK_Y_POSITION, \
-                    STICK_LENGTH, STICK_HEIGHT, STICK_TEXTURE, SCREEN_WIDTH, SIDE_BORDER_WIDTH
+                    STICK_LENGTH, STICK_HEIGHT, STICK_TEXTURE, SCREEN_WIDTH, SIDE_BORDER_WIDTH ,UP_BORDER_HEIGHT
 from pygame.sprite import Sprite
 from pygame import Surface 
 from Coordinate import Coordinate
@@ -29,11 +29,19 @@ class Luck(BaseStick):
         self.rect.y += 1 
         
 class Bullet(BaseStick):
-    def __init__(self, x_offset) -> None:
+    def __init__(self, x_offset=0) -> None:
         super().__init__()
         self.rect.y = STICK_Y_POSITION
         self.bullet_position = Coordinate(x_offset  , pygame.mouse.get_pos()[1])
-        
+    def bulletCollideDetect(self,bricks,bullets): # move to bullet class
+        for bullet in bullets:
+            for brick in bricks:
+                if bullet.rect.colliderect(brick.rect):
+                    bullet.kill()
+                    if brick.brick_hardness < 4: 
+                        brick.kill()
+                elif bullet.rect.y < UP_BORDER_HEIGHT:
+                    bullet.kill()   
     def update(self) -> None:
         self.rect.x = self.bullet_position.x
         self.rect.y -=1
@@ -42,6 +50,7 @@ class Bullet(BaseStick):
 class Stick(BaseStick):
     def __init__(self, screen) -> None:
         super().__init__(STICK_LENGTH, STICK_HEIGHT, STICK_TEXTURE, TOP_LEFT_SURFACE, BACKGROUND_COLOR)
+        self.bullet = Bullet() 
         self.bullets = Group() 
         self.screen = screen
  

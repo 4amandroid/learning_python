@@ -114,7 +114,7 @@ class Game():
                     
                 else:
                     self.collisionInfo = None
-    def bulletCollideDetect(self): # move to bullet class
+    '''def bulletCollideDetect(self): # move to bullet class
         for bullet in self.stick.bullets:
             for brick in self.level.all_bricks:
                 if bullet.rect.colliderect(brick.rect):
@@ -122,7 +122,7 @@ class Game():
                     if brick.brick_hardness < 4: 
                         brick.kill()
                 elif bullet.rect.y < UP_BORDER_HEIGHT:
-                    bullet.kill()
+                    bullet.kill()'''
     def luckCollideDetect(self): # move to luck class
         for stick in self.all_sticks:
             for luck in self.all_lucks:
@@ -148,7 +148,7 @@ while running:
             pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  
             bullet =  game.stick.shot();
     game.collisionInfo = game.collideDetect()
-    game.bulletCollideDetect()
+    game.stick.bullet.bulletCollideDetect(game.level.all_bricks,game.stick.bullets)
     game.luckCollideDetect()
     if game.collisionInfo is not None:
        
