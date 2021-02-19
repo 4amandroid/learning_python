@@ -115,23 +115,7 @@ class Game():
                     
                 else:
                     self.collisionInfo = None
-    '''def bulletCollideDetect(self): # move to bullet class
-        for bullet in self.stick.bullets:
-            for brick in self.level.all_bricks:
-                if bullet.rect.colliderect(brick.rect):
-                    bullet.kill()
-                    if brick.brick_hardness < 4: 
-                        brick.kill()
-                elif bullet.rect.y < UP_BORDER_HEIGHT:
-                    bullet.kill()
-    def luckCollideDetect(self): # move to luck class
-        for stick in self.all_sticks:
-            for luck in self.all_lucks:
-                if luck.rect.colliderect(self.stick.rect):
-                    luck.kill()
-                     
-                elif luck.rect.bottom > SCREEN_HEIGHT:
-                    luck.kill()     '''          
+     
 game = Game()
 game.level.loadCurrentLevel()               
 game.getAllVisualObject()
@@ -169,7 +153,6 @@ while running:
                     game.collisionInfo.visual_object.brick_hardness -= 1
                     luck = Luck(game.collisionInfo.visual_object.rect.midbottom)
                     game.all_lucks.add(luck)
-                    print(game.all_lucks)
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
     if len(game.all_balls) == 0:
         if game.lives > 0:

@@ -5,7 +5,7 @@ from Config import BULLET_WIDTH, BULLET_HEIGHT, BULLET_TEXTURE, TOP_LEFT_SURFACE
 from pygame.sprite import Sprite
 from pygame import Surface 
 from Coordinate import Coordinate
-from random import choice
+from random import randint
 from pygame.sprite import Sprite, Group
 
 class BaseStick(Sprite):
@@ -21,8 +21,10 @@ class BaseStick(Sprite):
 class Luck(BaseStick):
     def __init__(self, midtop = 0, sprite_top_surface = TOP_LEFT_SURFACE) -> None:
         super().__init__()
-        luck_images=('./images/luck1.png','./images/luck2.png','./images/luck3.png','./images/luck4.png')
-        self.luck_image = pygame.image.load(choice(luck_images))
+        luck_images=['./images/luck1.png','./images/luck2.png','./images/luck3.png','./images/luck4.png']
+        luck_number=randint(1, 4)
+
+        self.luck_image = pygame.image.load(luck_images[luck_number-1])
         self.image.blit(self.luck_image, sprite_top_surface)
         self.rect.midtop = midtop
     def luckCollideDetect(sticks,lucks): #  # TO DO change name
