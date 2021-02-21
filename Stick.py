@@ -18,15 +18,16 @@ class BaseStick(Sprite):
         self.image.blit(self.luck_image, sprite_top_surface)
         self.image.set_colorkey(bg_color)
         self.rect = self.image.get_rect()
-
+        self.shoot = False
 
 class Luck(BaseStick):
     def __init__(self, midtop=0, sprite_top_surface=TOP_LEFT_SURFACE) -> None:
         super().__init__()
         self.images = ['./images/luck1.png', './images/luck2.png',
                        './images/luck3.png', './images/luck4.png']
+         
         self.number = randint(0,CHANCE_FOR_LUCK)
-        if self.number in range(0, len(self.images)):
+        if self.number in range(len(self.images)):
             self.luck_image = pygame.image.load(self.images[self.number])
             self.image.blit(self.luck_image, sprite_top_surface)
             self.rect.midtop = midtop
@@ -35,9 +36,10 @@ class Luck(BaseStick):
         for stick in sticks:
             for luck in lucks:
                 if luck.rect.colliderect(stick.rect):
-                    print(luck.number)
+                    if luck.number == 0:
+                        stick.shoot= True
+                    print(stick.shoot)
                     luck.kill()
-
                 elif luck.rect.bottom > SCREEN_HEIGHT:
                     luck.kill()
 

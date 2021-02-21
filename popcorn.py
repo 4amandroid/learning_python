@@ -131,8 +131,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  
-            bullet =  game.stick.shot();
+            if game.stick.shoot:
+                pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  
+                bullet =  game.stick.shot();
     game.collisionInfo = game.collideDetect()
     game.stick.bullet.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
      
@@ -153,9 +154,10 @@ while running:
                 if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
                     game.collisionInfo.visual_object.brick_hardness -= 1
                     luck = Luck(game.collisionInfo.visual_object.rect.midbottom)
-                    if luck.number in range(0,len(luck.images)):
+                    if luck.number in range(len(luck.images)):
                         game.all_lucks.add(luck)
-                    print(game.all_lucks)
+                    #print(luck.shoot)    
+                    #print(game.all_lucks)
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
     if len(game.all_balls) == 0:
         if game.lives > 0:
