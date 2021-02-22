@@ -38,6 +38,11 @@ class Luck(BaseStick):
                 if luck.rect.colliderect(stick.rect):
                     if luck.number == 0:
                         stick.shoot= True
+                        if stick.shoot:
+
+                            stick.sprite_texture = './images/shootbar.png'
+                            stick.luck_image = pygame.image.load(stick.sprite_texture)
+                            stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
                     print(stick.shoot)
                     luck.kill()
                 elif luck.rect.bottom > SCREEN_HEIGHT:
@@ -77,6 +82,8 @@ class Stick(BaseStick):
         self.screen = screen
 
     def update(self) -> None:
+        
+             
         stick_position = Coordinate(pygame.mouse.get_pos()[
                                     0], pygame.mouse.get_pos()[1])
         self.rect.x = stick_position.x
