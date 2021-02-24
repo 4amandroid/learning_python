@@ -3,7 +3,7 @@ from Config import *
 from pygame.sprite import Sprite
 from pygame import Surface 
 from random import choice
-
+from Stick import sel
 class Ball(Sprite):
     
     def __init__(self) -> None:
@@ -19,8 +19,10 @@ class Ball(Sprite):
         self.rect.center = (self.ball_radius, self.ball_radius)
         self.rect.y = STICK_Y_POSITION - self.ball_radius
         self.rect.x = SCREEN_WIDTH//2
-
+        self.glued = False
     def update(self) -> None:
+        #if self.glued:
+        #    self.rect.x = ?
         self.rect.x += int(self.x_speed) #!!! coordinate += speed :) time-space continuum? :)
         self.rect.y += int(self.y_speed)  
         if self.rect.top <= 0:
