@@ -36,7 +36,7 @@ class Luck(BaseStick):
         for stick in sticks:
             for luck in lucks:
                 if luck.rect.colliderect(stick.rect):
-                    if luck.number == 0:
+                    if luck.number == 0:#Това ще го оправя като го направя
                         stick.shoot = True
                         stick.glue = False #if true works 2 luck
                         if stick.shoot:
@@ -45,6 +45,10 @@ class Luck(BaseStick):
                             stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
                     elif luck.number == 1:
                         stick.glue= True
+                        if stick.glue:
+                            stick.sprite_texture = './images/gluebar.png'
+                            stick.luck_image = pygame.image.load(stick.sprite_texture)
+                            stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
                     else: 
                         stick.shoot=False
                         stick.glue= False

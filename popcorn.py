@@ -141,7 +141,7 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             for ball in game.all_balls:
-                if ball.glued:
+                if ball.glued:#TO DO ball change direction when not glued
                     ball.glue = False
                     ball.rect.x +=COLISION_TOLERANCE
                     ball.rect.y -=COLISION_TOLERANCE
