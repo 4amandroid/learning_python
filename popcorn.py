@@ -13,6 +13,7 @@ from Brick import Brick
 from Ball import Ball
 from Stick import Stick,Bullet,Luck
 from CollisionInfo import CollisionInfo
+
  
 class Game():
     def __init__(self):
@@ -137,6 +138,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
+            for ball in game.all_balls:
+                if ball.glued:
+                    ball.glue = False
+                    ball.x_speed = BALL_X_SPEED
+                    ball.x_speed = BALL_X_SPEED
             if game.stick.shoot:
                 
                 pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  

@@ -2,14 +2,14 @@ import pygame
 from Config import *
 from pygame.sprite import Sprite
 from pygame import Surface 
-from random import choice
+ 
  
 class Ball(Sprite):
     
     def __init__(self) -> None:
         super().__init__()
-        self.x_speed = choice(BALL_X_SPEED)           
-        self.y_speed = choice(BALL_Y_SPEED)          
+        self.x_speed =  BALL_X_SPEED
+        self.y_speed =  BALL_Y_SPEED
         self.color = COLOR_RED
         self.ball_radius = BALL_RADIUS         
         self.image = Surface((self.ball_radius*2, self.ball_radius*2))
