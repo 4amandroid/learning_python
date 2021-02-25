@@ -3,7 +3,7 @@ from Config import *
 from pygame.sprite import Sprite
 from pygame import Surface 
 from random import choice
-from Stick import sel
+ 
 class Ball(Sprite):
     
     def __init__(self) -> None:

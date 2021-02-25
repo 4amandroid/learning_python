@@ -91,6 +91,12 @@ class Game():
    
     def changeDirection(self, ball, visual_object):
         if isinstance(visual_object, Stick):
+            if visual_object.shoot:#TO DO slow up stick speed
+                ball.x_speed = 0
+                ball.y_speed = 0
+                ball.rect.centerx = visual_object.rect.centerx
+                ball.glued = True 
+
             if (ball.rect.x-visual_object.rect.x) < STICK_LENGTH//3: 
                 if ball.x_speed > 0: ball.x_speed *= -1
             elif (ball.rect.x-visual_object.rect.x)> STICK_LENGTH - STICK_LENGTH//3:
@@ -177,7 +183,7 @@ while running:
     game.all_lucks.draw(game.screen)
     game.all_lucks.update()
     game.printItemBar(game.points)
-    
+ 
     pygame.display.flip()
 
 pygame.quit()

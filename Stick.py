@@ -85,13 +85,14 @@ class Stick(BaseStick):
         self.bullet = Bullet()
         self.bullets = Group()
         self.screen = screen
+     
 
     def update(self) -> None:
         
              
-        stick_position = Coordinate(pygame.mouse.get_pos()[
+        self.stick_position = Coordinate(pygame.mouse.get_pos()[
                                     0], pygame.mouse.get_pos()[1])
-        self.rect.x = stick_position.x
+        self.rect.x = self.stick_position.x
         self.rect.y = STICK_Y_POSITION
         if self.rect.right >= SCREEN_WIDTH - SIDE_BORDER_WIDTH:
             self.rect.right = SCREEN_WIDTH - SIDE_BORDER_WIDTH
@@ -100,7 +101,7 @@ class Stick(BaseStick):
         # for bullet in self.bullets:
         self.bullets.update()
         self.bullets.draw(self.screen)
-
+        return self.rect.x
     def shot(self) -> Bullet:
         bullet = Bullet(self.rect.x)
         self.bullets.add(bullet)
