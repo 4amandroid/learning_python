@@ -38,7 +38,7 @@ class Luck(BaseStick):
                 if luck.rect.colliderect(stick.rect):
                     if luck.number == 0:#Това ще го оправя като го направя
                         stick.shoot = True
-                        stick.glue = False #if true works 2 luck
+                        stick.glue = False #if true works 2 lucks
                         if stick.shoot:
                             stick.sprite_texture = './images/shootbar.png'
                             stick.luck_image = pygame.image.load(stick.sprite_texture)
