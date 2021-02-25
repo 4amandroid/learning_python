@@ -92,9 +92,9 @@ class Game():
    
     def changeDirection(self, ball, visual_object):
         if isinstance(visual_object, Stick):
-            if visual_object.shoot:#TO DO slow up stick speed
+            if visual_object.glue:#TO DO slow up stick speed
                 ball.glued = True 
-                if visual_object.shoot and ball.glued:
+                if visual_object.glue and ball.glued:
                     ball.x_speed = 0
                     ball.y_speed = 0
                     ball.rect.centerx = visual_object.rect.centerx

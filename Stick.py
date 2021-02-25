@@ -19,7 +19,7 @@ class BaseStick(Sprite):
         self.image.set_colorkey(bg_color)
         self.rect = self.image.get_rect()
         self.shoot = False
-
+        self.glue = False
 class Luck(BaseStick):
     def __init__(self, midtop=0, sprite_top_surface=TOP_LEFT_SURFACE) -> None:
         super().__init__()
@@ -42,8 +42,11 @@ class Luck(BaseStick):
                             stick.sprite_texture = './images/shootbar.png'
                             stick.luck_image = pygame.image.load(stick.sprite_texture)
                             stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
+                    elif luck.number == 1:
+                        stick.glue= True
                     else: 
                         stick.shoot=False
+                        stick.glue= True 
                         stick.sprite_texture = STICK_TEXTURE
                         stick.luck_image = pygame.image.load(stick.sprite_texture)
                         stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
@@ -101,7 +104,7 @@ class Stick(BaseStick):
         # for bullet in self.bullets:
         self.bullets.update()
         self.bullets.draw(self.screen)
-        return self.rect.x
+      
     def shot(self) -> Bullet:
         bullet = Bullet(self.rect.x)
         self.bullets.add(bullet)
