@@ -93,10 +93,12 @@ class Game():
     def changeDirection(self, ball, visual_object):
         if isinstance(visual_object, Stick):
             if visual_object.shoot:#TO DO slow up stick speed
-                ball.x_speed = 0
-                ball.y_speed = 0
-                ball.rect.centerx = visual_object.rect.centerx
                 ball.glued = True 
+                if visual_object.shoot and ball.glued:
+                    ball.x_speed = 0
+                    ball.y_speed = 0
+                    ball.rect.centerx = visual_object.rect.centerx
+                
 
             if (ball.rect.x-visual_object.rect.x) < STICK_LENGTH//3: 
                 if ball.x_speed > 0: ball.x_speed *= -1
@@ -141,8 +143,10 @@ while running:
             for ball in game.all_balls:
                 if ball.glued:
                     ball.glue = False
+                    ball.rect.x +=COLISION_TOLERANCE
+                    ball.rect.y -=COLISION_TOLERANCE
                     ball.x_speed = BALL_X_SPEED
-                    ball.x_speed = BALL_X_SPEED
+                    ball.y_speed = BALL_Y_SPEED
             if game.stick.shoot:
                 
                 pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  
