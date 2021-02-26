@@ -44,7 +44,8 @@ class Luck(BaseStick):
                             stick.luck_image = pygame.image.load(stick.sprite_texture)
                             stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
                     elif luck.number == 1:
-                        stick.glue= True
+                        stick.glue = True
+                        stick.shoot = False
                         if stick.glue:
                             stick.sprite_texture = './images/gluebar.png'
                             stick.luck_image = pygame.image.load(stick.sprite_texture)
