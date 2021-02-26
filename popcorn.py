@@ -1,4 +1,4 @@
-from os import PRIO_PROCESS
+#from os import PRIO_PROCESS
 from typing import Any
 import pygame
 from pygame.sprite import Sprite, Group
@@ -98,8 +98,6 @@ class Game():
                     ball.x_speed = 0
                     ball.y_speed = 0
                     ball.rect.centerx = visual_object.rect.centerx
-                
-
             if (ball.rect.x-visual_object.rect.x) < STICK_LENGTH//3: 
                 if ball.x_speed > 0: ball.x_speed *= -1
             elif (ball.rect.x-visual_object.rect.x)> STICK_LENGTH - STICK_LENGTH//3:
@@ -142,9 +140,9 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             for ball in game.all_balls:
                 if ball.glued:#TO DO repair bug ball change direction when not glued
-                    ball.glue = False
-                    ball.rect.x +=COLISION_TOLERANCE
-                    ball.rect.y -=COLISION_TOLERANCE
+                    ball.glued = False
+                    ball.rect.x += COLISION_TOLERANCE
+                    ball.rect.y -= COLISION_TOLERANCE
                     ball.x_speed = BALL_X_SPEED
                     ball.y_speed = BALL_Y_SPEED
             if game.stick.shoot:

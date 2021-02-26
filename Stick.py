@@ -56,9 +56,7 @@ class Luck(BaseStick):
                         stick.sprite_texture = STICK_TEXTURE
                         stick.luck_image = pygame.image.load(stick.sprite_texture)
                         stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
-                    print(stick.shoot)
                     luck.kill()
-                   
                 elif luck.rect.bottom > SCREEN_HEIGHT:
                     luck.kill()
 
