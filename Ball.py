@@ -20,11 +20,15 @@ class Ball(Sprite):
         self.rect.y = STICK_Y_POSITION - self.ball_radius
         self.rect.x = SCREEN_WIDTH//2
         self.glued = False
-    def update(self) -> None:
-        #if self.glued:
-        #    self.rect.x = ?
-        self.rect.x += int(self.x_speed) #!!! coordinate += speed :) time-space continuum? :)
-        self.rect.y += int(self.y_speed)  
+        self.glueXPos = 0
+        
+    def update(self, x) -> None:
+        if self.glued:
+            self.rect.x = x
+        else:
+            self.rect.x += int(self.x_speed) #!!! coordinate += speed :) time-space continuum? :)
+            self.rect.y += int(self.y_speed)  
+        
         if self.rect.top <= 0:
             self.y_speed *= -1  
         if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:

@@ -95,9 +95,12 @@ class Game():
             if visual_object.glue:#TO DO slow up stick speed
                 ball.glued = True 
                 if visual_object.glue and ball.glued:
+                    ball.glueXPos = ball.x_speed
                     ball.x_speed = 0
                     ball.y_speed = 0
+                    ball.rect.top -=1
                     ball.rect.centerx = visual_object.rect.centerx
+                    return
             if (ball.rect.x-visual_object.rect.x) < STICK_LENGTH//3: 
                 if ball.x_speed > 0: ball.x_speed *= -1
             elif (ball.rect.x-visual_object.rect.x)> STICK_LENGTH - STICK_LENGTH//3:
@@ -186,7 +189,7 @@ while running:
     game.all_visual_objects.draw(game.brick_screen)
     
     game.all_balls.draw(game.screen)
-    game.all_balls.update()
+    game.all_balls.update(game.stick.rect.x)
     game.all_sticks.update()
     game.all_lucks.draw(game.screen)
     game.all_lucks.update()
