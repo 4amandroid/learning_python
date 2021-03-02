@@ -30,6 +30,10 @@
 		"debug.focusWindowOnBreak": true,
 		"debug.showInStatusBar": "always",
 		"vsintellicode.features.python.deepLearning": "enabled",
-		"python.analysis.completeFunctionParens": true
+		"python.analysis.completeFunctionParens": true,
+		"cSpell.words": [
+			"blit",
+			"pygame"
+		]
 	}
 }

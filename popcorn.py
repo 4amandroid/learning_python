@@ -1,20 +1,15 @@
-#from os import PRIO_PROCESS
-from typing import Any
 import pygame
-from pygame.sprite import Sprite, Group
+from pygame.sprite import Group
 from pygame.time import Clock
-from pygame.color import Color
-from pygame import Surface
+from pygame import Rect, Surface
 from Config import *
 from Level import Level
 from Coordinate import Coordinate 
 from Border import Border
 from Brick import Brick
 from Ball import Ball
-from Stick import Stick,Bullet,Luck
+from Stick import Stick, Luck
 from CollisionInfo import CollisionInfo
-
- 
 class Game():
     def __init__(self):
         self.clock = Clock()
@@ -26,12 +21,12 @@ class Game():
         self.stick = Stick(self.screen)
         self.luck = Luck
         self.all_lucks = Group()
-        self.points=0
+        self.points = 0
         self.points_per_brick = POINTS_PER_BRICK
         # initialize core game objects
         self.__initializeBorderFrame()
         self.__initializeBalls(DEFAULT_NUMBER_OF_BALLS)
-        self.__initSticks()
+        self.__initStick()
         
         self.lives = DEFAULT_NUMBER_OF_LIVES
         self.tolerance = COLISION_TOLERANCE
@@ -41,8 +36,8 @@ class Game():
         
     def __initializeBorderFrame(self) -> None:
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
-        self.border[UP_BORDER_NUMBER].image =Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
-        self.border[UP_BORDER_NUMBER].rect = self.border[UP_BORDER_NUMBER].image.get_rect() 
+        self.border[UP_BORDER_NUMBER].image = Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
+        self.border[UP_BORDER_NUMBER].rect = self.border[UP_BORDER_NUMBER].image.get_rect()
         self.border[UP_BORDER_NUMBER].image.fill(COLOR_RED)  
         self.all_borders = Group()
         border_location = Coordinate()    
@@ -58,7 +53,7 @@ class Game():
         self.ball = [Ball() for i in range(number_of_balls)]  
         self.all_balls.add(self.ball) 
         
-    def __initSticks(self) -> None:
+    def __initStick(self) -> None:
         self.all_sticks = Group()
         self.all_sticks.add(self.stick)
             
@@ -172,11 +167,9 @@ while running:
             else:
                 if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
                     game.collisionInfo.visual_object.brick_hardness -= 1
-                    luck = Luck(game.collisionInfo.visual_object.rect.midbottom)
-                    if luck.number in range(len(luck.images)):
-                        game.all_lucks.add(luck)
-                    #print(luck.shoot)    
-                    #print(game.all_lucks)
+                    lucks = Luck(game.collisionInfo.visual_object.rect.midbottom)
+                    if lucks.number in range(len(lucks.images)):
+                        game.all_lucks.add(lucks)
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
     if len(game.all_balls) == 0:
         if game.lives > 0:

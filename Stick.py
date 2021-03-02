@@ -23,16 +23,17 @@ class BaseStick(Sprite):
     def __init__(self, sprite_width: int = BULLET_WIDTH, sprite_height: int = BULLET_HEIGHT, sprite_texture: str = BULLET_TEXTURE,
                  sprite_top_surface: Tuple[int, int] = TOP_LEFT_SURFACE, bg_color: Tuple[int, int, int] = BACKGROUND_COLOR) -> None:
         super().__init__()
+        
         self.image = Surface((sprite_width, sprite_height))
         self.luck_image = pygame.image.load(sprite_texture)
         self.image.blit(self.luck_image, sprite_top_surface)
         self.image.set_colorkey(bg_color)
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect() # type: ignore
         self.shoot = False
         self.glue = False
-class StickTextureInfo(BaseStick):
+class Luck(BaseStick):
     """
-    StickTextureInfo - helper for stick textures
+    Luck - helper for raining lucks
 
     Args:
         BaseStick ([StickTextureInfo]): [derived from BaseStick]
@@ -50,7 +51,7 @@ class StickTextureInfo(BaseStick):
             self.image.blit(self.luck_image, sprite_top_surface)
             self.rect.midtop = midtop
 
-    def luckCollideDetect(sticks, lucks):  # TO DO change name
+    def luckCollideDetect(sticks, lucks: List[Any]):  # TO DO change name
         for stick in sticks:
             for luck in lucks:
                 if luck.rect.colliderect(stick.rect):
@@ -115,7 +116,7 @@ class Bullet(BaseStick):
 
 
 class Stick(BaseStick):
-    """Stick object
+    """Stick object. General player controlled object.
     """
     def __init__(self, screen: pygame.Surface) -> None:
         super().__init__(STICK_LENGTH, 
@@ -127,8 +128,9 @@ class Stick(BaseStick):
         self.bullets = Group()
         self.screen = screen
      
-
-    def update(self) -> None:
+     
+    
+    def update(self) -> None: # type: ignore
         self.stick_position = Coordinate(pygame.mouse.get_pos()[
                                     0], pygame.mouse.get_pos()[1])
         self.rect.x = self.stick_position.x
