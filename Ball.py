@@ -21,10 +21,10 @@ class Ball(Sprite):
         self.rect.x = SCREEN_WIDTH//2
         self.glued = False
         self.glueXPos = 0
-        
+        self.x_correction = 0
     def update(self, x) -> None:
         if self.glued:
-            self.rect.x = x
+            self.rect.x = x + self.x_correction
         else:
             self.rect.x += int(self.x_speed) #!!! coordinate += speed :) time-space continuum? :)
             self.rect.y += int(self.y_speed)  
