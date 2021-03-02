@@ -1,3 +1,4 @@
+from typing import Tuple, List, Any
 import pygame
 from Config import BULLET_WIDTH, BULLET_HEIGHT, BULLET_TEXTURE, TOP_LEFT_SURFACE, BACKGROUND_COLOR, STICK_Y_POSITION, \
     STICK_LENGTH, STICK_HEIGHT, STICK_TEXTURE, SCREEN_WIDTH, SIDE_BORDER_WIDTH, UP_BORDER_HEIGHT, \
@@ -5,13 +6,22 @@ from Config import BULLET_WIDTH, BULLET_HEIGHT, BULLET_TEXTURE, TOP_LEFT_SURFACE
 from pygame.sprite import Sprite
 from pygame import Surface
 from Coordinate import Coordinate
+from Brick import Brick
 from random import randint
 from pygame.sprite import Sprite, Group
 
 
 class BaseStick(Sprite):
-    def __init__(self, sprite_width=BULLET_WIDTH, sprite_height=BULLET_HEIGHT, sprite_texture=BULLET_TEXTURE,
-                 sprite_top_surface=TOP_LEFT_SURFACE, bg_color=BACKGROUND_COLOR) -> None:
+    """
+    BaseStick class for stick related objects, derived from Sprite.
+    Initialize the surface.
+        self.shoot = False
+        self.glue = False
+    Args:
+        BaseStick ([Abstract]): abstact class
+    """
+    def __init__(self, sprite_width: int = BULLET_WIDTH, sprite_height: int = BULLET_HEIGHT, sprite_texture: str = BULLET_TEXTURE,
+                 sprite_top_surface: Tuple[int, int] = TOP_LEFT_SURFACE, bg_color: Tuple[int, int, int] = BACKGROUND_COLOR) -> None:
         super().__init__()
         self.image = Surface((sprite_width, sprite_height))
         self.luck_image = pygame.image.load(sprite_texture)
@@ -20,9 +30,17 @@ class BaseStick(Sprite):
         self.rect = self.image.get_rect()
         self.shoot = False
         self.glue = False
-class Luck(BaseStick):
-    def __init__(self, midtop=0, sprite_top_surface=TOP_LEFT_SURFACE) -> None:
+class StickTextureInfo(BaseStick):
+    """
+    StickTextureInfo - helper for stick textures
+
+    Args:
+        BaseStick ([StickTextureInfo]): [derived from BaseStick]
+    """
+    def __init__(self, midtop: Tuple[int, int] = (0, 0), sprite_top_surface: Tuple[int, int] = TOP_LEFT_SURFACE) -> None:
+        
         super().__init__()
+    
         self.images = ['./images/luck1.png', './images/luck2.png',
                        './images/luck3.png', './images/luck4.png']
          
@@ -65,12 +83,23 @@ class Luck(BaseStick):
 
 
 class Bullet(BaseStick):
-    def __init__(self, x_offset=0) -> None:
+    """Feature of stick - responsible for shooting behavior
+
+    Args:
+        BaseStick ([x_offset]): int [bullet start position according to stick]
+    """
+    def __init__(self, x_offset: int = 0 ) -> None:
         super().__init__()
         self.rect.y = STICK_Y_POSITION
         self.bullet_position = Coordinate(x_offset, pygame.mouse.get_pos()[1])
 
-    def bulletCollideDetect(self, bricks, bullets):  # TO DO change name
+    def bulletCollideDetect(self, bricks: List[Brick], bullets: List[Any]):
+        """Action when bullet is collide to brick
+
+        Args:
+            bricks (List[Brick])
+            bullets (List[Any])
+        """
         for bullet in bullets:
             for brick in bricks:
                 if bullet.rect.colliderect(brick.rect):
@@ -86,17 +115,20 @@ class Bullet(BaseStick):
 
 
 class Stick(BaseStick):
-    def __init__(self, screen) -> None:
-        super().__init__(STICK_LENGTH, STICK_HEIGHT,
-                         STICK_TEXTURE, TOP_LEFT_SURFACE, BACKGROUND_COLOR)
+    """Stick object
+    """
+    def __init__(self, screen: pygame.Surface) -> None:
+        super().__init__(STICK_LENGTH, 
+                         STICK_HEIGHT,
+                         STICK_TEXTURE, 
+                         TOP_LEFT_SURFACE, 
+                         BACKGROUND_COLOR)
         self.bullet = Bullet()
         self.bullets = Group()
         self.screen = screen
      
 
     def update(self) -> None:
-        
-             
         self.stick_position = Coordinate(pygame.mouse.get_pos()[
                                     0], pygame.mouse.get_pos()[1])
         self.rect.x = self.stick_position.x
@@ -109,7 +141,9 @@ class Stick(BaseStick):
         self.bullets.update()
         self.bullets.draw(self.screen)
       
+    
     def shot(self) -> Bullet:
+        
         bullet = Bullet(self.rect.x)
         self.bullets.add(bullet)
         bullet = Bullet(self.rect.x+STICK_LENGTH-BULLET_WIDTH)
