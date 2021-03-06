@@ -33,8 +33,9 @@ STICK_LENGTH = 107
 STICK_HEIGHT = 22
 STICK_CORRECTION = 23
 STICK_Y_POSITION = 550
- 
+
 BALL_RADIUS = 5
  
 FONT_SIZE =35
 CHANCE_FOR_LUCK = 10
+LUCK_IMAGES = ['./images/luck1.png', './images/luck2.png','./images/luck3.png', './images/luck4.png']
