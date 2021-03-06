@@ -32,6 +32,7 @@ class BaseStick(Sprite):
         self.shoot = False
         self.glue = False
         self.longbar = False
+        self.shortbar = False
 class Luck(BaseStick):
     """
     Luck - helper for raining lucks
@@ -85,7 +86,15 @@ class Luck(BaseStick):
                         stick.shoot = False
                         if stick.longbar:
                             initChangedStick(stick,'./images/longbar.png',STICK_LENGTH+STICK_CORRECTION)
+                    elif luck.number == 3:
+                        stick.shortbar = True
+                        stick.longbar = False
+                        stick.glue = False
+                        stick.shoot = False
+                        initChangedStick(stick, './images/shortbar.png',STICK_LENGTH-STICK_CORRECTION)  
                     else: 
+                        stick.shortbar = False
+                        stick.longbar = False
                         stick.shoot=False
                         stick.glue= False
                         initChangedStick(stick)
