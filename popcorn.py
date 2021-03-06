@@ -8,7 +8,7 @@ from Coordinate import Coordinate
 from Border import Border
 from Brick import Brick
 from Ball import Ball
-from Stick import Stick, Luck
+from Stick import Stick, Luck, Bullet
 from CollisionInfo import CollisionInfo
 class Game():
     def __init__(self):
@@ -149,8 +149,51 @@ while running:
                 pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  
                 bullet =  game.stick.shot();
     game.collisionInfo = game.collideDetect()
+
+    #==================================================================================================================================================================
+    '''
+    имаш:
+    class MyClass:
+        def method(x) -> тук нямаш self като параметър
+        print(x)
+        
+    my_obj = MyClass()
+    my_obj.method(x) -> тук ти гърми с това че подаваш само един аргумент, а не 2
+    
+    Python интерпетатора транслира "Behind the scenes" извикването на методите по този начин:
+    
+    от my_obj.method(x) прави MyClass.method(my_obj, x)
+    
+    слага като първи параметър на метода инстанцията на класа и съответно ако декларираш метода така:
+        def method(self, x)
+    интерпретатора ще подаде инстанцията, а метода ще я "приеме" 
+    
+    в твоя случай долните 2 неща са еднакви и ще работят и 2-те
+    
     game.stick.bullet.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
-     
+    Bullet.bulletCollideDetect(game.stick.bullet, game.level.all_bricks, game.stick.bullets)
+    
+    тези улеснения се наричат syntax shugar в езиците и в случая е направено за да не подаваш винаги като първи параметър инстанцията.
+    '''
+
+
+    #==================================================================================================================================================================
+    # game.stick.bullet.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
+    Bullet.bulletCollideDetect(game.stick.bullet, game.level.all_bricks ,game.stick.bullets)
+    
+    
+    #==================================================================================================================================================================
+    '''
+        защо това може да работи без self?
+        game.luck.luckCollideDetect(game.all_sticks ,game.all_lucks)    
+        luck трябва да е инстанция на game и трябва да е инстанциирано в конструктора на game
+        но понеже са пропуснати () след luck - виж в конструктора на game - self.luck = Luck
+        в този случай инстанция не се прави - няма смисъл интерпретатора да иска да подава self, понеже self е текуща инстанция на обекта
+        в този случай luck се нарича Alias който сочи към някаква функция без клас, просто е като глобална функция
+    '''
+    #==================================================================================================================================================================
+
+
     game.luck.luckCollideDetect(game.all_sticks ,game.all_lucks)
                     #защо маммка му 
     if game.collisionInfo is not None:
