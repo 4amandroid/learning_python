@@ -31,6 +31,7 @@ class BaseStick(Sprite):
         self.rect = self.image.get_rect() # type: ignore
         self.shoot = False
         self.glue = False
+        self.longbar = False
 class Luck(BaseStick):
     """
     Luck - helper for raining lucks
@@ -50,8 +51,21 @@ class Luck(BaseStick):
             self.luck_image = pygame.image.load(self.images[self.number])
             self.image.blit(self.luck_image, sprite_top_surface)
             self.rect.midtop = midtop
-
+    '''def initChangedStick(stick,stick_image = STICK_TEXTURE, stick_length = STICK_LENGTH):
+        stick.image = Surface((stick_length,STICK_HEIGHT))#remove hardcore
+        stick.sprite_texture = './images/longbar.png'
+        stick.luck_image = pygame.image.load(stick.sprite_texture)
+        stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
+        stick.rect = stick.image.get_rect()
+        pass'''
     def luckCollideDetect(sticks, lucks: List[Any]):  # TO DO change name
+        def initChangedStick(stick,stick_image = STICK_TEXTURE, stick_length = STICK_LENGTH):
+            stick.image = Surface((stick_length,STICK_HEIGHT))#remove hardcore
+            stick.sprite_texture = './images/longbar.png'
+            stick.luck_image = pygame.image.load(stick.sprite_texture)
+            stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
+            stick.rect = stick.image.get_rect()
+        pass
         for stick in sticks:
             for luck in lucks:
                 if luck.rect.colliderect(stick.rect):
@@ -59,6 +73,7 @@ class Luck(BaseStick):
                         stick.shoot = True
                         stick.glue = False #if true works 2 lucks
                         if stick.shoot:
+                            
                             stick.sprite_texture = './images/shootbar.png'
                             stick.luck_image = pygame.image.load(stick.sprite_texture)
                             stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
@@ -69,6 +84,13 @@ class Luck(BaseStick):
                             stick.sprite_texture = './images/gluebar.png'
                             stick.luck_image = pygame.image.load(stick.sprite_texture)
                             stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
+                    elif luck.number == 2:
+                        stick.longbar = True
+                        stick.glue = False
+                        stick.shoot = False
+                        if stick.longbar:
+                            initChangedStick(stick,'./images/longbar.png',130)
+                             
                     else: 
                         stick.shoot=False
                         stick.glue= False
