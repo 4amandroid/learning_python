@@ -58,6 +58,7 @@ class Luck(BaseStick):
         stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
         stick.rect = stick.image.get_rect()
         pass'''
+    @staticmethod
     def luckCollideDetect(sticks, lucks: List[Any]):  # TO DO change name
         def initChangedStick(stick,stick_image = STICK_TEXTURE, stick_length = STICK_LENGTH):
             stick.image = Surface((stick_length,STICK_HEIGHT))#remove hardcore

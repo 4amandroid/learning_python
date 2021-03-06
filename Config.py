@@ -33,6 +33,7 @@ STICK_LENGTH = 107
 STICK_HEIGHT = 22
 STICK_CORRECTION = 23
 STICK_Y_POSITION = 550
+STICK_IMAGES = ['./images/shootbar.png', './images/gluebar.png', './images/longbar.png', './images/shortbar.png']
 
 BALL_RADIUS = 5
  

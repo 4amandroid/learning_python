@@ -19,7 +19,7 @@ class Game():
         self.border = Border()
         self.ball = Ball()
         self.stick = Stick(self.screen)
-        self.luck = Luck
+        self.luck = Luck()
         self.all_lucks = Group()
         self.points = 0
         self.points_per_brick = POINTS_PER_BRICK
@@ -81,10 +81,7 @@ class Game():
         self.all_visual_objects.add(self.level.all_bricks)
         self.all_visual_objects.add(self.stick)  
         self.all_visual_objects.add(self.all_borders)
-        
-     
-        
-   
+       
     def changeDirection(self, ball, visual_object):
         if isinstance(visual_object, Stick):
             ball.x_correction = (ball.rect.x-visual_object.rect.x)
