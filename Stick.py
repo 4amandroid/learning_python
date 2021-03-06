@@ -2,7 +2,7 @@ from typing import Tuple, List, Any
 import pygame
 from Config import BULLET_WIDTH, BULLET_HEIGHT, BULLET_TEXTURE, TOP_LEFT_SURFACE, BACKGROUND_COLOR, STICK_Y_POSITION, \
     STICK_LENGTH, STICK_HEIGHT, STICK_TEXTURE, SCREEN_WIDTH, SIDE_BORDER_WIDTH, UP_BORDER_HEIGHT, \
-    SCREEN_HEIGHT,CHANCE_FOR_LUCK
+    SCREEN_HEIGHT,CHANCE_FOR_LUCK,STICK_CORRECTION
 from pygame.sprite import Sprite
 from pygame import Surface
 from Coordinate import Coordinate
@@ -61,7 +61,7 @@ class Luck(BaseStick):
     def luckCollideDetect(sticks, lucks: List[Any]):  # TO DO change name
         def initChangedStick(stick,stick_image = STICK_TEXTURE, stick_length = STICK_LENGTH):
             stick.image = Surface((stick_length,STICK_HEIGHT))#remove hardcore
-            stick.sprite_texture = './images/longbar.png'
+            stick.sprite_texture = stick_image
             stick.luck_image = pygame.image.load(stick.sprite_texture)
             stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
             stick.rect = stick.image.get_rect()
@@ -73,10 +73,8 @@ class Luck(BaseStick):
                         stick.shoot = True
                         stick.glue = False #if true works 2 lucks
                         if stick.shoot:
-                            
-                            stick.sprite_texture = './images/shootbar.png'
-                            stick.luck_image = pygame.image.load(stick.sprite_texture)
-                            stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
+                            initChangedStick(stick, './images/shootbar.png')
+                             
                     elif luck.number == 1:
                         stick.glue = True
                         stick.shoot = False
@@ -89,7 +87,7 @@ class Luck(BaseStick):
                         stick.glue = False
                         stick.shoot = False
                         if stick.longbar:
-                            initChangedStick(stick,'./images/longbar.png',130)
+                            initChangedStick(stick,'./images/longbar.png',STICK_LENGTH+STICK_CORRECTION)
                              
                     else: 
                         stick.shoot=False
