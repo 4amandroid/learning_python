@@ -2,7 +2,7 @@ from typing import Tuple, List, Any
 import pygame
 from Config import BULLET_WIDTH, BULLET_HEIGHT, BULLET_TEXTURE, TOP_LEFT_SURFACE, BACKGROUND_COLOR, STICK_Y_POSITION, \
     STICK_LENGTH, STICK_HEIGHT, STICK_TEXTURE, SCREEN_WIDTH, SIDE_BORDER_WIDTH, UP_BORDER_HEIGHT, \
-    SCREEN_HEIGHT,CHANCE_FOR_LUCK,STICK_CORRECTION
+    SCREEN_HEIGHT,CHANCE_FOR_LUCK,STICK_CORRECTION,LUCK_IMAGES
 from pygame.sprite import Sprite
 from pygame import Surface
 from Coordinate import Coordinate
@@ -44,8 +44,7 @@ class Luck(BaseStick):
         
         super().__init__()
     
-        self.images = ['./images/luck1.png', './images/luck2.png',
-                       './images/luck3.png', './images/luck4.png']
+        self.images = LUCK_IMAGES
          
         self.number = randint(0,CHANCE_FOR_LUCK)
         if self.number in range(len(self.images)):
@@ -66,7 +65,8 @@ class Luck(BaseStick):
             stick.luck_image = pygame.image.load(stick.sprite_texture)
             stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
             stick.rect = stick.image.get_rect()
-        pass
+        def resetLucks(luck_umber):
+            pass
         for stick in sticks:
             for luck in lucks:
                 if luck.rect.colliderect(stick.rect):
