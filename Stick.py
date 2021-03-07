@@ -61,38 +61,34 @@ class Luck(BaseStick):
             stick.luck_image = pygame.image.load(stick.sprite_texture)
             stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
             stick.rect = stick.image.get_rect()
-        def resetLucks(luck_umber):
-            pass
+        def resetLucks(stick, luck, luck_number):
+            stick_lucks={0: False, 1:False, 2:False, 3:False}
+            stick_lucks[luck_number] = True
+            stick.shoot = stick_lucks[0]
+            stick.glue = stick_lucks[1]
+            stick.longbar = stick_lucks[2]
+            stick.shortbar = stick_lucks[3]
+            
         for stick in sticks:
             for luck in lucks:
                 if luck.rect.colliderect(stick.rect):
                     if luck.number == 0:#Това ще го оправя като го направя
-                        stick.shoot = True
-                        stick.glue = False #if true works 2 lucks
+                        resetLucks(stick, luck, luck.number)
                         if stick.shoot: #TODO replace image shortcut with list
                             initChangedStick(stick, self.images[luck.number])
                     elif luck.number == 1:
-                        stick.glue = True
-                        stick.shoot = False
+                        resetLucks(stick, luck, luck.number)
                         if stick.glue:
                             initChangedStick(stick, self.images[luck.number])
                     elif luck.number == 2:
-                        stick.longbar = True
-                        stick.glue = False
-                        stick.shoot = False
+                        resetLucks(stick, luck, luck.number) 
                         if stick.longbar:
                             initChangedStick(stick, self.images[luck.number], STICK_LENGTH+STICK_CORRECTION)
                     elif luck.number == 3:
-                        stick.shortbar = True
-                        stick.longbar = False
-                        stick.glue = False
-                        stick.shoot = False
+                        resetLucks(stick, luck, luck.number)
                         initChangedStick(stick, self.images[luck.number], STICK_LENGTH-STICK_CORRECTION)  
                     else: 
-                        stick.shortbar = False
-                        stick.longbar = False
-                        stick.shoot=False
-                        stick.glue= False
+                        resetLucks(stick, luck, luck.number)
                         initChangedStick(stick)
                         
                     luck.kill()
