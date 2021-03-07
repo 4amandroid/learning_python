@@ -33,7 +33,7 @@ class Game():
         
         
         self.collisionInfo = None
-        
+    #test merge   
     def __initializeBorderFrame(self) -> None:
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
         self.border[UP_BORDER_NUMBER].image = Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
