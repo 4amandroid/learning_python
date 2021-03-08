@@ -77,7 +77,7 @@ class Luck(BaseStick):
         for stick in sticks:
             for luck in lucks:
                 if luck.rect.colliderect(stick.rect):
-                    if luck.number >= 0 and luck.number < 4:#Това ще го оправя като го направя
+                    if luck.number in range(len(self.images)):#Това ще го оправя като го направя
                         resetLucks(stick, luck, luck.number)
                         initChangedStick(stick,luck, self.images[luck.number])
                     luck.kill()
