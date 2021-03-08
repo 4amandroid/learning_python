@@ -80,10 +80,6 @@ class Luck(BaseStick):
                     if luck.number >= 0 and luck.number < 4:#Това ще го оправя като го направя
                         resetLucks(stick, luck, luck.number)
                         initChangedStick(stick,luck, self.images[luck.number])
-                    else: 
-                        resetLucks(stick, luck, luck.number)
-                        initChangedStick(stick,luck)
-                        
                     luck.kill()
                 elif luck.rect.bottom > SCREEN_HEIGHT:
                     luck.kill()
