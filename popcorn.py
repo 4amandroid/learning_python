@@ -85,6 +85,11 @@ class Game():
                 ball.glued = True 
                 if visual_object.glue and ball.glued:
                     #ball.glueXPos = 29 #ball.x_speed
+                    if ball.x_speed != 0:
+                        if ball.x_speed < 0:
+                            ball.correct_glue_direction = -1
+                        else:
+                            ball.correct_glue_direction = 1
                     ball.x_speed = 0
                     ball.y_speed = 0
                     ball.rect.top -=1
@@ -128,9 +133,9 @@ while running:
             for ball in game.all_balls:
                 if ball.glued:#TO DO repair bug ball change direction when not glued
                     ball.glued = False
-                    ball.rect.x += COLISION_TOLERANCE
+                    ball.rect.x += COLISION_TOLERANCE 
                     ball.rect.y -= COLISION_TOLERANCE
-                    ball.x_speed = BALL_X_SPEED
+                    ball.x_speed = BALL_X_SPEED * ball.correct_glue_direction
                     ball.y_speed = BALL_Y_SPEED
             if game.stick.shoot:
                 

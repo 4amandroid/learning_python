@@ -22,6 +22,7 @@ class Ball(Sprite):
         self.glued = False
         self.glueXPos = 0
         self.x_correction = 0
+        self.correct_glue_direction = 1
     def update(self, x) -> None:
         if self.glued:
             self.rect.x = x + self.x_correction
@@ -35,7 +36,9 @@ class Ball(Sprite):
             self.x_speed *= -1
         # TODO debug when colision bug ball to border
         if self.rect.top <= UP_BORDER_HEIGHT - COLISION_TOLERANCE:
-            print("collision bug")       
+            print("collision bug")
+            self.y_speed *= -1  
         if self.rect.left <= SIDE_BORDER_WIDTH - COLISION_TOLERANCE or self.rect.right >= SCREEN_WIDTH-SIDE_BORDER_WIDTH+COLISION_TOLERANCE: 
+            self.x_speed *= -1
             print("collision bug") 
         
