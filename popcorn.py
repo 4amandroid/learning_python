@@ -27,13 +27,10 @@ class Game():
         self.__initializeBorderFrame()
         self.__initializeBalls(DEFAULT_NUMBER_OF_BALLS)
         self.__initStick()
-        
         self.lives = DEFAULT_NUMBER_OF_LIVES
         self.tolerance = COLISION_TOLERANCE
-        
-        
         self.collisionInfo = None
-    #test merge   
+    
     def __initializeBorderFrame(self) -> None:
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
         self.border[UP_BORDER_NUMBER].image = Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
@@ -64,9 +61,8 @@ class Game():
             self.brick_screen = pygame.display.set_mode((screen_width, screen_height))
             pygame.display.set_caption("My Game")
             self.font = pygame.font.SysFont(None, FONT_SIZE)
-    def printItemBar(self,points = 0):
+    def printItemBar(self,points = 0) -> None:
         self.points=points
-        
         bar_text =('POINTS  ' + str(self.points) + '  LIVES  '+ str(self.lives)+'  LEVEL  ' + str(self.level.current_level+1))
         if self.lives == 0 and len(self.all_balls) == 0:
             bar_text = 'G A M E   O V E R'
@@ -98,17 +94,13 @@ class Game():
                 if ball.x_speed > 0: ball.x_speed *= -1
             elif (ball.rect.x-visual_object.rect.x)> STICK_LENGTH - STICK_LENGTH//3:
                 if ball.x_speed < 0: ball.x_speed *= -1
-            
         if (abs(visual_object.rect.top - ball.rect.bottom) < self.tolerance and ball.y_speed > 0) or \
                (abs(visual_object.rect.bottom - ball.rect.top) < self.tolerance and ball.y_speed < 0):
             ball.y_speed *= -1
         elif (abs(visual_object.rect.right - ball.rect.left) < self.tolerance and ball.x_speed < 0) or \
                  (abs(visual_object.rect.left - ball.rect.right) < self.tolerance and ball.x_speed > 0):
             ball.x_speed *= -1   
-         
         
-        pass
-
     def collideDetect(self):    
         for visual_object in self.all_visual_objects:
             for ball in self.all_balls:
@@ -116,7 +108,6 @@ class Game():
                     ball.kill()
                 if ball.rect.colliderect(visual_object.rect): 
                     return CollisionInfo(ball, visual_object)
-                    
                 else:
                     self.collisionInfo = None
      

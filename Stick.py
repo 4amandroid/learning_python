@@ -41,19 +41,15 @@ class Luck(BaseStick):
         BaseStick ([StickTextureInfo]): [derived from BaseStick]
     """
     def __init__(self, midtop: Tuple[int, int] = (0, 0), sprite_top_surface: Tuple[int, int] = TOP_LEFT_SURFACE) -> None:
-        
         super().__init__()
-    
         self.images = LUCK_IMAGES
-         
         self.number = randint(0,CHANCE_FOR_LUCK)
         if self.number in range(len(self.images)):
             self.luck_image = pygame.image.load(self.images[self.number])
             self.image.blit(self.luck_image, sprite_top_surface)
             self.rect.midtop = midtop
      
-    
-    def luckCollideDetect(self, sticks, lucks: List[Any]):  # TO DO change name
+    def luckCollideDetect(self, sticks, lucks: List[Any]) -> None:  # TO DO change name
         self.images = STICK_IMAGES
         def initChangedStick(stick, luck, stick_image = STICK_TEXTURE):
             stick_length = STICK_LENGTH
@@ -70,8 +66,6 @@ class Luck(BaseStick):
             stick_lucks=[False] * len(self.images)
             stick_lucks[luck_number] = True
             stick.shoot, stick.glue, stick.longbar, stick.shortbar = stick_lucks
-             
-            
         for stick in sticks:
             for luck in lucks:
                 if luck.rect.colliderect(stick.rect):
@@ -81,7 +75,7 @@ class Luck(BaseStick):
                     luck.kill()
                 elif luck.rect.bottom > SCREEN_HEIGHT:
                     luck.kill()
-
+    
     def update(self) -> None:
         self.rect.y += 1
 
