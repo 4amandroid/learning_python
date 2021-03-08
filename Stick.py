@@ -69,10 +69,8 @@ class Luck(BaseStick):
         def resetLucks(stick, luck, luck_number):
             stick_lucks=[False] * len(self.images)
             stick_lucks[luck_number] = True
-            stick.shoot = stick_lucks[0]
-            stick.glue = stick_lucks[1]
-            stick.longbar = stick_lucks[2]
-            stick.shortbar = stick_lucks[3]
+            stick.shoot, stick.glue, stick.longbar, stick.shortbar = stick_lucks
+             
             
         for stick in sticks:
             for luck in lucks:
