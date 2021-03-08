@@ -67,7 +67,7 @@ class Luck(BaseStick):
             stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
             stick.rect = stick.image.get_rect()
         def resetLucks(stick, luck, luck_number):
-            stick_lucks={0: False, 1:False, 2:False, 3:False}
+            stick_lucks=[False, False, False, False]
             stick_lucks[luck_number] = True
             stick.shoot = stick_lucks[0]
             stick.glue = stick_lucks[1]
