@@ -55,7 +55,12 @@ class Luck(BaseStick):
     
     def luckCollideDetect(self, sticks, lucks: List[Any]):  # TO DO change name
         self.images = STICK_IMAGES
-        def initChangedStick(stick,stick_image = STICK_TEXTURE, stick_length = STICK_LENGTH):
+        def initChangedStick(stick, luck, stick_image = STICK_TEXTURE):
+            stick_length = STICK_LENGTH
+            if stick.longbar:
+                stick_length = STICK_LENGTH + STICK_CORRECTION
+            elif stick.shortbar:
+                stick_length = STICK_LENGTH - STICK_CORRECTION
             stick.image = Surface((stick_length,STICK_HEIGHT))#remove hardcore
             stick.sprite_texture = stick_image
             stick.luck_image = pygame.image.load(stick.sprite_texture)
@@ -72,24 +77,12 @@ class Luck(BaseStick):
         for stick in sticks:
             for luck in lucks:
                 if luck.rect.colliderect(stick.rect):
-                    if luck.number == 0:#Това ще го оправя като го направя
+                    if luck.number >= 0 and luck.number < 4:#Това ще го оправя като го направя
                         resetLucks(stick, luck, luck.number)
-                        if stick.shoot: #TODO replace image shortcut with list
-                            initChangedStick(stick, self.images[luck.number])
-                    elif luck.number == 1:
-                        resetLucks(stick, luck, luck.number)
-                        if stick.glue:
-                            initChangedStick(stick, self.images[luck.number])
-                    elif luck.number == 2:
-                        resetLucks(stick, luck, luck.number) 
-                        if stick.longbar:
-                            initChangedStick(stick, self.images[luck.number], STICK_LENGTH+STICK_CORRECTION)
-                    elif luck.number == 3:
-                        resetLucks(stick, luck, luck.number)
-                        initChangedStick(stick, self.images[luck.number], STICK_LENGTH-STICK_CORRECTION)  
+                        initChangedStick(stick,luck, self.images[luck.number])
                     else: 
                         resetLucks(stick, luck, luck.number)
-                        initChangedStick(stick)
+                        initChangedStick(stick,luck)
                         
                     luck.kill()
                 elif luck.rect.bottom > SCREEN_HEIGHT:
