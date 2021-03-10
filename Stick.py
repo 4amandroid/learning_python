@@ -33,6 +33,7 @@ class BaseStick(Sprite):
         self.glue = False
         self.longbar = False
         self.shortbar = False
+        
 class Luck(BaseStick):
     """
     Luck - helper for raining lucks
