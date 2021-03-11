@@ -8,7 +8,7 @@ from Coordinate import Coordinate
 from Border import Border
 from Brick import Brick
 from Ball import Ball
-from Stick import Stick, Luck, Bullet
+from Stick import Stick, Luck
 from CollisionInfo import CollisionInfo
 class Game():
     def __init__(self):
@@ -171,8 +171,8 @@ while running:
 
 
     #==================================================================================================================================================================
-    # game.stick.bullet.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
-    Bullet.bulletCollideDetect(game.stick.bullet, game.level.all_bricks ,game.stick.bullets)
+    game.stick.bullet.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
+    
     
     
     #==================================================================================================================================================================

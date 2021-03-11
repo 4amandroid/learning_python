@@ -52,7 +52,7 @@ class Luck(BaseStick):
      
     def luckCollideDetect(self, sticks, lucks: List[Any]) -> None:  # TO DO change name
         self.images = STICK_IMAGES
-        def initChangedStick(stick, luck, stick_image = STICK_TEXTURE):
+        def initChangedStick(stick: Stick, stick_image = STICK_TEXTURE):
             stick_length = STICK_LENGTH
             if stick.longbar:
                 stick_length = STICK_LENGTH + STICK_CORRECTION
@@ -72,7 +72,7 @@ class Luck(BaseStick):
                 if luck.rect.colliderect(stick.rect):
                     if luck.number in range(len(self.images)):#Това ще го оправя като го направя
                         resetLucks(stick, luck, luck.number)
-                        initChangedStick(stick,luck, self.images[luck.number])
+                        initChangedStick(stick, self.images[luck.number])
                     luck.kill()
                 elif luck.rect.bottom > SCREEN_HEIGHT:
                     luck.kill()
@@ -114,7 +114,8 @@ class Bullet(BaseStick):
 
 
 class Stick(BaseStick):
-    """Stick object. General player controlled object.
+    """
+    Stick object. General player controlled object.
     """
     def __init__(self, screen: pygame.Surface) -> None:
         super().__init__(STICK_LENGTH, 
@@ -123,14 +124,12 @@ class Stick(BaseStick):
                          TOP_LEFT_SURFACE, 
                          BACKGROUND_COLOR)
         self.bullet = Bullet()
-        self.bullets = Group()
+        self.bullets = Group(self.bullet)
         self.screen = screen
-     
      
     
     def update(self) -> None: # type: ignore
-        self.stick_position = Coordinate(pygame.mouse.get_pos()[
-                                    0], pygame.mouse.get_pos()[1])
+        self.stick_position = Coordinate(coordinates = pygame.mouse.get_pos())
         self.rect.x = self.stick_position.x
         self.rect.y = STICK_Y_POSITION
         if self.rect.right >= SCREEN_WIDTH - SIDE_BORDER_WIDTH:
