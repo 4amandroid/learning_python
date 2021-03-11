@@ -95,7 +95,7 @@ class Game():
             else:   button_color = COLOR_RED
             if button_2.collidepoint((mx, my)):
                 if self.click:
-                    self.drawText("КОН ДА ТА МАНДРЪСА", self.font,  COLOR_GREEN, self.screen, 50, 400)
+                    self.drawText("казах ти да не цъкаш кон", self.font,  COLOR_GREEN, self.screen, 50, 400)
                     #self.mainMenu=False
                     #return
                     self.click = False
