@@ -1,4 +1,4 @@
-import pygame
+import pygame,sys
 from pygame.sprite import Group
 from pygame.time import Clock
 from pygame import Rect, Surface
@@ -10,6 +10,7 @@ from Brick import Brick
 from Ball import Ball
 from Stick import Stick, Luck, Bullet
 from CollisionInfo import CollisionInfo
+from pygame.locals import *
 class Game():
     def __init__(self):
         self.clock = Clock()
@@ -30,7 +31,8 @@ class Game():
         self.lives = DEFAULT_NUMBER_OF_LIVES
         self.tolerance = COLISION_TOLERANCE
         self.collisionInfo = None
-    
+        self.click = False
+        self.main_menu = True
     def __initializeBorderFrame(self) -> None:
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
         self.border[UP_BORDER_NUMBER].image = Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
@@ -70,8 +72,50 @@ class Game():
         self.text = self.font.render( bar_text, True, COLOR_GREEN, COLOR_RED)
         self.textRect = self.text.get_rect()
         self.textRect.midtop = (SCREEN_WIDTH//2,UP_WALL_Y)
-        self.screen.blit(self.text,self.textRect)      
+        self.screen.blit(self.text,self.textRect)
 
+    def drawText(self,text, font, color, surface, x, y):
+        textobj = font.render(text, 1, color)
+        textrect = textobj.get_rect()
+        textrect.topleft = (x, y)
+        surface.blit(textobj, textrect)
+
+    def mainMenu(self):
+        button_color = (10,110,110)
+        while self.main_menu:
+            self.drawText('main menu', self.font, (255, 255, 255), self.screen, 20, 20)
+            mx, my = pygame.mouse.get_pos()
+            button_1 = pygame.Rect(50, 100, 200, 50)
+            
+            button_2 = pygame.Rect(50, 200, 200, 50)
+            if button_1.collidepoint((mx, my)):
+                button_color = (10,110,110)
+                if self.click:
+                    return
+            else:   button_color = COLOR_RED
+            if button_2.collidepoint((mx, my)):
+                if self.click:
+                    self.drawText("КОН ДА ТА МАНДРЪСА", self.font,  COLOR_GREEN, self.screen, 50, 400)
+                    #self.mainMenu=False
+                    #return
+                    self.click = False
+            pygame.draw.rect(self.screen, button_color, button_1)
+            self.drawText('PLAY', self.font,  COLOR_GREEN, self.screen, 50, 100)
+            pygame.draw.rect(self.screen, (255, 0, 0), button_2)
+            self.drawText("DON'T PRESS", self.font,  COLOR_GREEN, self.screen, 50, 200)
+    
+            click = False
+            for event in pygame.event.get():
+                if event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        return
+                if event.type == MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        self.click = True
+    
+            pygame.display.update()
+        
+        
     def getAllVisualObject(self) -> None:        
         self.all_visual_objects = Group() 
         self.all_visual_objects.add(self.level.all_bricks)
@@ -121,7 +165,7 @@ game.level.loadCurrentLevel()
 game.getAllVisualObject()
 # Game loop
 running = True
- 
+game.mainMenu()
 while running:
      
     game.clock.tick(FPS)                 #!!! is FPS is frame per second?
