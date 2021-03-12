@@ -33,6 +33,7 @@ class Game():
         self.collisionInfo = None
         self.click = False
         self.main_menu = True
+        self.pause = False
     def __initializeBorderFrame(self) -> None:
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
         self.border[UP_BORDER_NUMBER].image = Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
@@ -91,6 +92,7 @@ class Game():
             if button_1.collidepoint((mx, my)):
                 button_color = (10,110,110)
                 if self.click:
+                    game.pause = False
                     return
             else:   button_color = COLOR_RED
             if button_2.collidepoint((mx, my)):
@@ -104,10 +106,11 @@ class Game():
             pygame.draw.rect(self.screen, (255, 0, 0), button_2)
             self.drawText("DON'T PRESS", self.font,  COLOR_GREEN, self.screen, 50, 200)
     
-            click = False
+            self.click = False
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
+                        game.pause = False
                         return
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1:
@@ -182,9 +185,13 @@ while running:
                     ball.x_speed = BALL_X_SPEED * ball.correct_glue_direction
                     ball.y_speed = BALL_Y_SPEED
             if game.stick.shoot:
-                
                 pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  
                 bullet =  game.stick.shot();
+        if event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        game.pause = True
+    if game.pause:
+        game.mainMenu()                          
     game.collisionInfo = game.collideDetect()
 
     #==================================================================================================================================================================
