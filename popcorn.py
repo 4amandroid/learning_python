@@ -5,7 +5,7 @@ from pygame import Rect, Surface
 from Config import *
 from Level import Level
 from Coordinate import Coordinate 
-from Border import Border
+from BaseGameObject import BaseGameObject, Border
 from Brick import Brick
 from Ball import Ball
 from Stick import Stick, Luck
@@ -17,6 +17,7 @@ class Game():
         # create instances of core game objects
         self.level = Level()
         self.border = Border()
+        self.border.initializeBorderFrame()
         self.ball = Ball()
         self.stick = Stick(self.screen)
         self.luck = Luck()
@@ -24,25 +25,25 @@ class Game():
         self.points = 0
         self.points_per_brick = POINTS_PER_BRICK
         # initialize core game objects
-        self.__initializeBorderFrame()
+        #self.__initializeBorderFrame()
         self.__initializeBalls(DEFAULT_NUMBER_OF_BALLS)
         self.__initStick()
         self.lives = DEFAULT_NUMBER_OF_LIVES
         self.tolerance = COLISION_TOLERANCE
         self.collisionInfo = None
     
-    def __initializeBorderFrame(self) -> None:
-        self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
-        self.border[UP_BORDER_NUMBER].image = Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
-        self.border[UP_BORDER_NUMBER].rect = self.border[UP_BORDER_NUMBER].image.get_rect()
-        self.border[UP_BORDER_NUMBER].image.fill(COLOR_RED)  
-        self.all_borders = Group()
-        border_location = Coordinate()    
-        for i in range(BORDER_LOCATION.__len__()):
-            self.all_borders.add(self.border[i])
-            border_location.x , border_location.y = BORDER_LOCATION[i] 
-            self.border[i].rect.topleft = (border_location.x , border_location.y) 
-        self.all_borders.add(self.border)
+    # def __initializeBorderFrame(self) -> None:
+    #     self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
+    #     self.border[UP_BORDER_NUMBER].image = Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
+    #     self.border[UP_BORDER_NUMBER].rect = self.border[UP_BORDER_NUMBER].image.get_rect()
+    #     self.border[UP_BORDER_NUMBER].image.fill(COLOR_RED)  
+    #     self.all_borders = Group()
+    #     border_location = Coordinate()    
+    #     for i in range(BORDER_LOCATION.__len__()):
+    #         self.all_borders.add(self.border[i])
+    #         border_location.x , border_location.y = BORDER_LOCATION[i] 
+    #         self.border[i].rect.topleft = (border_location.x , border_location.y) 
+    #     self.all_borders.add(self.border)
     
     def __initializeBalls(self, number_of_balls: int) -> None:
         self.number_of_balls = DEFAULT_NUMBER_OF_BALLS
@@ -76,7 +77,7 @@ class Game():
         self.all_visual_objects = Group() 
         self.all_visual_objects.add(self.level.all_bricks)
         self.all_visual_objects.add(self.stick)  
-        self.all_visual_objects.add(self.all_borders)
+        self.all_visual_objects.add(self.border.all_borders)
        
     def changeDirection(self, ball, visual_object):
         if isinstance(visual_object, Stick):
