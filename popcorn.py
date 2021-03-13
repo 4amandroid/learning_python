@@ -32,18 +32,7 @@ class Game():
         self.tolerance = COLISION_TOLERANCE
         self.collisionInfo = None
     
-    # def __initializeBorderFrame(self) -> None:
-    #     self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
-    #     self.border[UP_BORDER_NUMBER].image = Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
-    #     self.border[UP_BORDER_NUMBER].rect = self.border[UP_BORDER_NUMBER].image.get_rect()
-    #     self.border[UP_BORDER_NUMBER].image.fill(COLOR_RED)  
-    #     self.all_borders = Group()
-    #     border_location = Coordinate()    
-    #     for i in range(BORDER_LOCATION.__len__()):
-    #         self.all_borders.add(self.border[i])
-    #         border_location.x , border_location.y = BORDER_LOCATION[i] 
-    #         self.border[i].rect.topleft = (border_location.x , border_location.y) 
-    #     self.all_borders.add(self.border)
+     
     
     def __initializeBalls(self, number_of_balls: int) -> None:
         self.number_of_balls = DEFAULT_NUMBER_OF_BALLS
@@ -143,55 +132,10 @@ while running:
                 pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  
                 bullet =  game.stick.shot();
     game.collisionInfo = game.collideDetect()
-
-    #==================================================================================================================================================================
-    '''
-    имаш:
-    class MyClass:
-        def method(x) -> тук нямаш self като параметър
-        print(x)
-        
-    my_obj = MyClass()
-    my_obj.method(x) -> тук ти гърми с това че подаваш само един аргумент, а не 2
-    
-    Python интерпетатора транслира "Behind the scenes" извикването на методите по този начин:
-    
-    от my_obj.method(x) прави MyClass.method(my_obj, x)
-    
-    слага като първи параметър на метода инстанцията на класа и съответно ако декларираш метода така:
-        def method(self, x)
-    интерпретатора ще подаде инстанцията, а метода ще я "приеме" 
-    
-    в твоя случай долните 2 неща са еднакви и ще работят и 2-те
-    
     game.stick.bullet.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
-    Bullet.bulletCollideDetect(game.stick.bullet, game.level.all_bricks, game.stick.bullets)
-    
-    тези улеснения се наричат syntax shugar в езиците и в случая е направено за да не подаваш винаги като първи параметър инстанцията.
-    '''
-
-
-    #==================================================================================================================================================================
-    game.stick.bullet.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
-    
-    
-    
-    #==================================================================================================================================================================
-    '''
-        защо това може да работи без self?
-        game.luck.luckCollideDetect(game.all_sticks ,game.all_lucks)    
-        luck трябва да е инстанция на game и трябва да е инстанциирано в конструктора на game
-        но понеже са пропуснати () след luck - виж в конструктора на game - self.luck = Luck
-        в този случай инстанция не се прави - няма смисъл интерпретатора да иска да подава self, понеже self е текуща инстанция на обекта
-        в този случай luck се нарича Alias който сочи към някаква функция без клас, просто е като глобална функция
-    '''
-    #==================================================================================================================================================================
-
-
     game.luck.luckCollideDetect(game.all_sticks ,game.all_lucks)
-                    #защо маммка му 
+                     
     if game.collisionInfo is not None:
-       
         game.changeDirection(game.collisionInfo.ball, game.collisionInfo.visual_object)
         if isinstance(game.collisionInfo.visual_object, Brick):
             game.points += game.points_per_brick
