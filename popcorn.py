@@ -19,6 +19,7 @@ class Game():
         self.border = Border()
         self.border.initializeBorderFrame()
         self.ball = Ball()
+        self.ball.initializeBalls(DEFAULT_NUMBER_OF_BALLS)
         self.stick = Stick(self.screen)
         self.luck = Luck()
         self.all_lucks = Group()
@@ -26,20 +27,12 @@ class Game():
         self.points_per_brick = POINTS_PER_BRICK
         # initialize core game objects
         #self.__initializeBorderFrame()
-        self.__initializeBalls(DEFAULT_NUMBER_OF_BALLS)
+         
         self.__initStick()
         self.lives = DEFAULT_NUMBER_OF_LIVES
         self.tolerance = COLISION_TOLERANCE
         self.collisionInfo = None
     
-     
-    
-    def __initializeBalls(self, number_of_balls: int) -> None:
-        self.number_of_balls = DEFAULT_NUMBER_OF_BALLS
-        self.all_balls = Group()
-        self.ball = [Ball() for i in range(number_of_balls)]  
-        self.all_balls.add(self.ball) 
-        
     def __initStick(self) -> None:
         self.all_sticks = Group()
         self.all_sticks.add(self.stick)
@@ -98,7 +91,7 @@ class Game():
         
     def collideDetect(self):    
         for visual_object in self.all_visual_objects:
-            for ball in self.all_balls:
+            for ball in self.ball.all_balls:
                 if ball.rect.bottom >= SCREEN_HEIGHT:
                     ball.kill()
                 if ball.rect.colliderect(visual_object.rect): 
@@ -120,7 +113,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            for ball in game.all_balls:
+            for ball in game.ball.all_balls:
                 if ball.glued:#TO DO repair bug ball change direction when not glued
                     ball.glued = False
                     ball.rect.x += COLISION_TOLERANCE 
@@ -152,19 +145,17 @@ while running:
                     if lucks.number in range(len(lucks.images)):
                         game.all_lucks.add(lucks)
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
-    if len(game.all_balls) == 0:
+    if len(game.ball.all_balls) == 0:
         if game.lives > 0:
             game.lives -= 1
-            game.ball = [Ball() for i in range(DEFAULT_NUMBER_OF_BALLS)]  
-            game.all_balls.add(game.ball) 
-         
-        
+            game.ball.initializeBalls(DEFAULT_NUMBER_OF_BALLS)
+             
     # Draw / render
     game.screen.fill(COLOR_BLACK)
     game.all_visual_objects.draw(game.brick_screen)
     
-    game.all_balls.draw(game.screen)
-    game.all_balls.update(game.stick.rect.x)
+    game.ball.all_balls.draw(game.screen)
+    game.ball.all_balls.update(game.stick.rect.x)
     game.all_sticks.update()
     game.all_lucks.draw(game.screen)
     game.all_lucks.update()

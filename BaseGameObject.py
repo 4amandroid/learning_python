@@ -34,6 +34,13 @@ class Ball(BaseGameObject):
         self.glueXPos = 0
         self.x_correction = 0
         self.correct_glue_direction = 1
+
+    def initializeBalls(self, number_of_balls: int=DEFAULT_NUMBER_OF_BALLS) -> None:
+        self.number_of_balls = DEFAULT_NUMBER_OF_BALLS
+        self.all_balls = Group()
+        self.ball = [Ball() for i in range(number_of_balls)]  
+        self.all_balls.add(self.ball) 
+
     def update(self, x) -> None:
         if self.glued:
             self.rect.x = x + self.x_correction
