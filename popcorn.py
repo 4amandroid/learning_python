@@ -5,9 +5,9 @@ from pygame import Rect, Surface
 from Config import *
 from Level import Level
 from Coordinate import Coordinate 
-from BaseGameObject import BaseGameObject, Border
+from BaseGameObject import BaseGameObject, Border,Ball
 from Brick import Brick
-from Ball import Ball
+#from Ball import Ball
 from Stick import Stick, Luck
 from CollisionInfo import CollisionInfo
 class Game():
