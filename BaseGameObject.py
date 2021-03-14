@@ -13,7 +13,7 @@ class BaseGameObject(Sprite):
         super().__init__()
         self.image = Surface((surface_width, surface_height))  
         self.rect = self.image.get_rect()
-        self.image.fill(COLOR_GREEN)
+        #self.image.fill(COLOR_GREEN)
         self.image.set_colorkey(BACKGROUND_COLOR)
 class Brick(BaseGameObject):
         
@@ -31,15 +31,15 @@ class Brick(BaseGameObject):
 class Ball(BaseGameObject):
     
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__(BALL_RADIUS*2,BALL_RADIUS*2)
         self.x_speed =  BALL_X_SPEED
         self.y_speed =  BALL_Y_SPEED
         self.color = COLOR_RED
         self.ball_radius = BALL_RADIUS         
-        self.image = Surface((self.ball_radius*2, self.ball_radius*2))
+        #self.image = Surface((self.ball_radius*2, self.ball_radius*2))
         #self.image.set_colorkey(BACKGROUND_COLOR)
         pygame.draw.circle(self.image, self.color, (self.ball_radius,self.ball_radius), self.ball_radius)
-        self.rect = self.image.get_rect()
+        #self.rect = self.image.get_rect()
         self.rect.center = (self.ball_radius, self.ball_radius)
         self.rect.y = STICK_Y_POSITION - self.ball_radius
         self.rect.x = SCREEN_WIDTH//2
@@ -75,7 +75,7 @@ class Ball(BaseGameObject):
 class Border(BaseGameObject):
     def __init__(self) -> None:
         super().__init__()
-         
+        self.image.fill(COLOR_GREEN)
     def initializeBorderFrame(self) -> None:
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
         self.border[UP_BORDER_NUMBER].image = Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
