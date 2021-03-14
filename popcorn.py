@@ -5,7 +5,7 @@ from pygame import Rect, Surface
 from Config import *
 from Level import Level
 from Coordinate import Coordinate 
-from BaseGameObject import BaseGameObject, Border,Ball
+from BaseGameObject import BaseGameObject, Border,Ball,Brick
 from Brick import Brick
 #from Ball import Ball
 from Stick import Stick, Luck
