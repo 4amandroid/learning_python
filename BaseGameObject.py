@@ -9,20 +9,20 @@ from pygame.sprite import Sprite, Group
  
 
 class BaseGameObject(Sprite):
-    def __init__(self) -> None: 
+    def __init__(self,surface_width :int = SIDE_BORDER_WIDTH, surface_height :int = SCREEN_WIDTH) -> None: 
         super().__init__()
-        self.image = Surface((SIDE_BORDER_WIDTH, SCREEN_WIDTH))  
+        self.image = Surface((surface_width, surface_height))  
         self.rect = self.image.get_rect()
         self.image.fill(COLOR_GREEN)
         self.image.set_colorkey(BACKGROUND_COLOR)
- class Brick(BaseGameObject):
+class Brick(BaseGameObject):
         
     def __init__(self):
-        super().__init__()
+        super().__init__(BRICK_OFFSET_X, BRICK_OFFSET_Y)
         self.brick_hardness :int= 0
-        self.image = Surface((BRICK_OFFSET_X, BRICK_OFFSET_Y))
-        self.image.set_colorkey(BACKGROUND_COLOR)   
-        self.rect = self.image.get_rect()     
+        #self.image = Surface((BRICK_OFFSET_X, BRICK_OFFSET_Y))
+        #self.image.set_colorkey(BACKGROUND_COLOR)   
+        #self.rect = self.image.get_rect()     
               
     def paint(self,brick_hardness:int) -> None:               
         self.brick_hardness = brick_hardness           
@@ -75,9 +75,7 @@ class Ball(BaseGameObject):
 class Border(BaseGameObject):
     def __init__(self) -> None:
         super().__init__()
-        #self.border = Border()
-        #self.__initializeBorderFrame()
-
+         
     def initializeBorderFrame(self) -> None:
         self.border = [Border() for i in range(BORDER_LOCATION.__len__())]
         self.border[UP_BORDER_NUMBER].image = Surface((SCREEN_WIDTH, UP_BORDER_HEIGHT))                        
