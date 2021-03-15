@@ -123,7 +123,8 @@ while running:
     game.collisionInfo = game.collideDetect()  # type: ignore
     
     #2-те метода които са bulletCollideDetect и luckCollideDetect трябва да са в базовия клас
-    game.stick.bullet.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
+    if len(game.stick.bullets) > 0:
+        game.stick.bullet.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
     game.luck.luckCollideDetect(game.all_sticks ,game.all_lucks)
        
     if game.collisionInfo is not None:

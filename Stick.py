@@ -125,8 +125,8 @@ class Stick(BaseStick):
                          STICK_TEXTURE, 
                          TOP_LEFT_SURFACE, 
                          BACKGROUND_COLOR)
-        self.bullet = Bullet()
-        self.bullets = Group(self.bullet)
+        #self.bullet = Bullet()
+        self.bullets = Group()
         self.screen = screen
      
     
@@ -145,8 +145,8 @@ class Stick(BaseStick):
     
     def shot(self) -> Bullet:
         
-        bullet = Bullet(self.rect.x)
-        self.bullets.add(bullet)
-        bullet = Bullet(self.rect.x+STICK_LENGTH-BULLET_WIDTH)
-        self.bullets.add(bullet)
-        return bullet
+        self.bullet = Bullet(self.rect.x)
+        self.bullets.add(self.bullet)
+        self.bullet = Bullet(self.rect.x+STICK_LENGTH-BULLET_WIDTH)
+        self.bullets.add(self.bullet)
+        return self.bullet
