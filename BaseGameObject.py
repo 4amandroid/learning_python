@@ -15,6 +15,13 @@ class BaseGameObject(Sprite):
         self.rect = self.image.get_rect()
         #self.image.fill(COLOR_GREEN)
         self.image.set_colorkey(BACKGROUND_COLOR)
+        
+    def getAllVisualObjects(self) -> None:        
+        self.all_visual_objects = Group() 
+        self.all_visual_objects.add(self.level.all_bricks)
+        self.all_visual_objects.add(self.stick)  
+        self.all_visual_objects.add(self.border.all_borders)
+        
 class Brick(BaseGameObject):
         
     def __init__(self):

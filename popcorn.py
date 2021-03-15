@@ -1,17 +1,16 @@
 import pygame
 from pygame.sprite import Group
 from pygame.time import Clock
-from pygame import Rect, Surface
 from Config import *
 from Level import Level
-from Coordinate import Coordinate 
 from BaseGameObject import BaseGameObject, Border,Ball,Brick
 from Brick import Brick
-#from Ball import Ball
 from Stick import Stick, Luck
 from CollisionInfo import CollisionInfo
-class Game():
+
+class Game(BaseGameObject):
     def __init__(self):
+        super().__init__()
         self.clock = Clock()
         self.__initializeGraphics(SCREEN_WIDTH, SCREEN_HEIGHT)
         # create instances of core game objects
@@ -34,6 +33,7 @@ class Game():
         self.collisionInfo = None
     
     def __initStick(self) -> None:
+        # това трябва да се промени навсякъде - ще работим само с един стик за сега
         self.all_sticks = Group()
         self.all_sticks.add(self.stick)
             
@@ -44,9 +44,11 @@ class Game():
             self.brick_screen = pygame.display.set_mode((screen_width, screen_height))
             pygame.display.set_caption("My Game")
             self.font = pygame.font.SysFont(None, FONT_SIZE)
-    def printItemBar(self,points = 0) -> None:
-        self.points=points
-        bar_text =('POINTS  ' + str(self.points) + '  LIVES  '+ str(self.lives)+'  LEVEL  ' + str(self.level.current_level+1))
+            
+    def printItemBar(self, points: int = 0) -> None:
+        self.points = points
+        # използвай този метод за билдване на стринг https://docs.python.org/3.6/whatsnew/3.6.html#whatsnew36-pep498
+        bar_text = ('POINTS  ' + str(self.points) + '  LIVES  '+ str(self.lives)+'  LEVEL  ' + str(self.level.current_level+1))
         if self.lives == 0 and len(self.all_balls) == 0:
             bar_text = 'G A M E   O V E R'
             self.font = pygame.font.SysFont(None, FONT_SIZE*4)
@@ -54,12 +56,6 @@ class Game():
         self.textRect = self.text.get_rect()
         self.textRect.midtop = (SCREEN_WIDTH//2,UP_WALL_Y)
         self.screen.blit(self.text,self.textRect)      
-
-    def getAllVisualObject(self) -> None:        
-        self.all_visual_objects = Group() 
-        self.all_visual_objects.add(self.level.all_bricks)
-        self.all_visual_objects.add(self.stick)  
-        self.all_visual_objects.add(self.border.all_borders)
        
     def changeDirection(self, ball, visual_object):
         if isinstance(visual_object, Stick):
@@ -96,23 +92,22 @@ class Game():
                     ball.kill()
                 if ball.rect.colliderect(visual_object.rect): 
                     return CollisionInfo(ball, visual_object)
-                else:
-                    self.collisionInfo = None
      
 game = Game()
 game.level.loadCurrentLevel()               
-game.getAllVisualObject()
-# Game loop
+game.getAllVisualObjects()
+
 running = True
- 
+# Game loop
 while running:
      
-    game.clock.tick(FPS)                 #!!! is FPS is frame per second?
+    game.clock.tick(FPS)
      
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
+            # нов метод за това с лепилото
             for ball in game.ball.all_balls:
                 if ball.glued:#TO DO repair bug ball change direction when not glued
                     ball.glued = False
@@ -124,11 +119,18 @@ while running:
                 
                 pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  
                 bullet =  game.stick.shot();
-    game.collisionInfo = game.collideDetect()
+    
+    game.collisionInfo = game.collideDetect()  # type: ignore
+    
+    #2-те метода които са bulletCollideDetect и luckCollideDetect трябва да са в базовия клас
     game.stick.bullet.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
     game.luck.luckCollideDetect(game.all_sticks ,game.all_lucks)
-                     
+       
     if game.collisionInfo is not None:
+        # нов метод в базовия клас който се казва changeDirection, от него трябва да се извади логиката която не е за смяна на посоката
+        # смяна на нивово, точки, kill, смяна на hardness, късмети
+        # тези неща трябва да се напишат в метод който се казва collisionReaction
+        
         game.changeDirection(game.collisionInfo.ball, game.collisionInfo.visual_object)
         if isinstance(game.collisionInfo.visual_object, Brick):
             game.points += game.points_per_brick
@@ -137,7 +139,7 @@ while running:
                 if len(game.level.all_bricks) == game.level.number_of_unbreakable_bricks:
                     game.level.current_level += 1
                     game.level.loadCurrentLevel()
-                    game.getAllVisualObject()
+                    game.getAllVisualObjects()
             else:
                 if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
                     game.collisionInfo.visual_object.brick_hardness -= 1
@@ -145,6 +147,7 @@ while running:
                     if lucks.number in range(len(lucks.images)):
                         game.all_lucks.add(lucks)
             game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
+    # нов метод в game
     if len(game.ball.all_balls) == 0:
         if game.lives > 0:
             game.lives -= 1

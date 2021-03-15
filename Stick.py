@@ -58,11 +58,13 @@ class Luck(BaseStick):
                 stick_length = STICK_LENGTH + STICK_CORRECTION
             elif stick.shortbar:
                 stick_length = STICK_LENGTH - STICK_CORRECTION
-            stick.image = Surface((stick_length,STICK_HEIGHT))#remove hardcore
-            stick.sprite_texture = stick_image
-            stick.luck_image = pygame.image.load(stick.sprite_texture)
+                
+            stick.image = Surface((stick_length,STICK_HEIGHT))
+            stick.luck_image = pygame.image.load(stick_image)
             stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
             stick.rect = stick.image.get_rect()
+            
+            
         def resetLucks(stick, luck, luck_number):
             stick_lucks=[False] * len(self.images)
             stick_lucks[luck_number] = True
