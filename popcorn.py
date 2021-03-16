@@ -27,15 +27,15 @@ class Game(BaseGameObject):
         # initialize core game objects
         #self.__initializeBorderFrame()
          
-        self.__initStick()
+        #self.__initStick()
         self.lives = DEFAULT_NUMBER_OF_LIVES
         self.tolerance = COLISION_TOLERANCE
         self.collisionInfo = None
     
-    def __initStick(self) -> None:
+    #def __initStick(self) -> None:
         # това трябва да се промени навсякъде - ще работим само с един стик за сега
-        self.all_sticks = Group()
-        self.all_sticks.add(self.stick)
+    #    self.all_sticks = Group()
+    #    self.all_sticks.add(self.stick)
             
     def __initializeGraphics(self, screen_width: int, screen_height: int) -> None:
             pygame.init()
@@ -125,7 +125,7 @@ while running:
     #2-те метода които са bulletCollideDetect и luckCollideDetect трябва да са в базовия клас
     if len(game.stick.bullets) > 0:
         game.stick.bullet.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
-    game.luck.luckCollideDetect(game.all_sticks ,game.all_lucks)
+    game.luck.luckCollideDetect(game.stick ,game.all_lucks)
        
     if game.collisionInfo is not None:
         # нов метод в базовия клас който се казва changeDirection, от него трябва да се извади логиката която не е за смяна на посоката
@@ -160,7 +160,7 @@ while running:
     
     game.ball.all_balls.draw(game.screen)
     game.ball.all_balls.update(game.stick.rect.x)
-    game.all_sticks.update()
+    game.stick.update()
     game.all_lucks.draw(game.screen)
     game.all_lucks.update()
     game.printItemBar(game.points)

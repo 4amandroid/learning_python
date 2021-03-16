@@ -50,7 +50,7 @@ class Luck(BaseStick):
             self.image.blit(self.luck_image, sprite_top_surface)
             self.rect.midtop = midtop
      
-    def luckCollideDetect(self, sticks, lucks: List[Any]) -> None:  # TO DO change name
+    def luckCollideDetect(self, stick, lucks: List[Any]) -> None:  # TO DO change name
         self.images = STICK_IMAGES
         def initChangedStick(stick: Stick, stick_image = STICK_TEXTURE):
             stick_length = STICK_LENGTH
@@ -69,15 +69,14 @@ class Luck(BaseStick):
             stick_lucks=[False] * len(self.images)
             stick_lucks[luck_number] = True
             stick.shoot, stick.glue, stick.longbar, stick.shortbar = stick_lucks
-        for stick in sticks:
-            for luck in lucks:
-                if luck.rect.colliderect(stick.rect):
-                    if luck.number in range(len(self.images)):
-                        resetLucks(stick, luck, luck.number)
-                        initChangedStick(stick, self.images[luck.number])
-                    luck.kill()
-                elif luck.rect.bottom > SCREEN_HEIGHT:
-                    luck.kill()
+        for luck in lucks:
+            if luck.rect.colliderect(stick.rect):
+                if luck.number in range(len(self.images)):
+                    resetLucks(stick, luck, luck.number)
+                    initChangedStick(stick, self.images[luck.number])
+                luck.kill()
+            elif luck.rect.bottom > SCREEN_HEIGHT:
+                luck.kill()
     
     def update(self) -> None:
         self.rect.y += 1
