@@ -34,7 +34,8 @@ class Brick(BaseGameObject):
     def paint(self,brick_hardness:int) -> None:               
         self.brick_hardness = brick_hardness           
         self.brick_image = pygame.image.load(BRICK_IMAGE[brick_hardness-1])
-        self.image.blit(self.brick_image,TOP_LEFT_SURFACE)          
+        self.image.blit(self.brick_image,TOP_LEFT_SURFACE)
+
 class Ball(BaseGameObject):
     
     def __init__(self) -> None:

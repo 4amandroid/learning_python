@@ -33,7 +33,7 @@ class Game(BaseGameObject):
         self.collisionInfo = None
     
     #def __initStick(self) -> None:
-        # това трябва да се промени навсякъде - ще работим само с един стик за сега
+    #DONE    # това трябва да се промени навсякъде - ще работим само с един стик за сега
     #    self.all_sticks = Group()
     #    self.all_sticks.add(self.stick)
             
@@ -47,8 +47,8 @@ class Game(BaseGameObject):
             
     def printItemBar(self, points: int = 0) -> None:
         self.points = points
-        # използвай този метод за билдване на стринг https://docs.python.org/3.6/whatsnew/3.6.html#whatsnew36-pep498
-        bar_text = ('POINTS  ' + str(self.points) + '  LIVES  '+ str(self.lives)+'  LEVEL  ' + str(self.level.current_level+1))
+        #DONE използвай този метод за билдване на стринг https://docs.python.org/3.6/whatsnew/3.6.html#whatsnew36-pep498
+        bar_text = f"POINTS {self.points} LIVES {self.lives} LEVEL  {self.level.current_level+1}"
         if self.lives == 0 and len(self.all_balls) == 0:
             bar_text = 'G A M E   O V E R'
             self.font = pygame.font.SysFont(None, FONT_SIZE*4)
@@ -63,7 +63,6 @@ class Game(BaseGameObject):
             if visual_object.glue:#TO DO slow up stick speed
                 ball.glued = True 
                 if visual_object.glue and ball.glued:
-                    #ball.glueXPos = 29 #ball.x_speed
                     if ball.x_speed != 0:
                         if ball.x_speed < 0:
                             ball.correct_glue_direction = -1
@@ -72,7 +71,6 @@ class Game(BaseGameObject):
                     ball.x_speed = 0
                     ball.y_speed = 0
                     ball.rect.top -=1
-                    #ball.rect.centerx = visual_object.rect.centerx
                     return
             if (ball.rect.x-visual_object.rect.x) < STICK_LENGTH//3: 
                 if ball.x_speed > 0: ball.x_speed *= -1
@@ -109,7 +107,7 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             # нов метод за това с лепилото
             for ball in game.ball.all_balls:
-                if ball.glued:#TO DO repair bug ball change direction when not glued
+                if ball.glued: 
                     ball.glued = False
                     ball.rect.x += COLISION_TOLERANCE 
                     ball.rect.y -= COLISION_TOLERANCE
