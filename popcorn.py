@@ -60,7 +60,7 @@ class Game(BaseGameObject):
     def changeDirection(self, ball, visual_object):
         if isinstance(visual_object, Stick):
             ball.x_correction = (ball.rect.x-visual_object.rect.x)
-            if visual_object.glue:#TO DO slow up stick speed
+            if visual_object.glue:
                 ball.glued = True 
                 if visual_object.glue and ball.glued:
                     if ball.x_speed != 0:
@@ -90,7 +90,7 @@ class Game(BaseGameObject):
                     ball.kill()
                 if ball.rect.colliderect(visual_object.rect): 
                     return CollisionInfo(ball, visual_object)
-    def ballGlueReaction(self) -> None:
+    def ballPeelOff(self) -> None:
         for ball in self.ball.all_balls:
             if ball.glued: 
                 ball.glued = False
@@ -113,8 +113,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            # нов метод за това с лепилото
-            game.ballGlueReaction()
+            #DONE нов метод за това с лепилото
+            game.ballPeelOff()
             
             if game.stick.shoot:
                 
