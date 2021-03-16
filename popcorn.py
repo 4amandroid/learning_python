@@ -90,7 +90,15 @@ class Game(BaseGameObject):
                     ball.kill()
                 if ball.rect.colliderect(visual_object.rect): 
                     return CollisionInfo(ball, visual_object)
-     
+    def ballGlueReaction(self) -> None:
+        for ball in self.ball.all_balls:
+            if ball.glued: 
+                ball.glued = False
+                ball.rect.x += COLISION_TOLERANCE 
+                ball.rect.y -= COLISION_TOLERANCE
+                ball.x_speed = BALL_X_SPEED * ball.correct_glue_direction
+                ball.y_speed = BALL_Y_SPEED
+         
 game = Game()
 game.level.loadCurrentLevel()               
 game.getAllVisualObjects()
@@ -106,13 +114,8 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             # нов метод за това с лепилото
-            for ball in game.ball.all_balls:
-                if ball.glued: 
-                    ball.glued = False
-                    ball.rect.x += COLISION_TOLERANCE 
-                    ball.rect.y -= COLISION_TOLERANCE
-                    ball.x_speed = BALL_X_SPEED * ball.correct_glue_direction
-                    ball.y_speed = BALL_Y_SPEED
+            game.ballGlueReaction()
+            
             if game.stick.shoot:
                 
                 pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  
