@@ -93,21 +93,21 @@ class Bullet(BaseStick):
         self.rect.y = STICK_Y_POSITION
         self.bullet_position = Coordinate(x_offset, pygame.mouse.get_pos()[1])
 
-    def bulletCollideDetect(self, bricks: List[Brick], bullets: List[Any]):
-        """Action when bullet is collide to brick
+    # def bulletCollideDetect(self, bricks: List[Brick], bullets: List[Any]):
+    #     """Action when bullet is collide to brick
 
-        Args:
-            bricks (List[Brick])
-            bullets (List[Any])
-        """
-        for bullet in bullets:
-            for brick in bricks:
-                if bullet.rect.colliderect(brick.rect):
-                    bullet.kill()
-                    if brick.brick_hardness < 4:
-                        brick.kill()
-                elif bullet.rect.y < UP_BORDER_HEIGHT:
-                    bullet.kill()
+    #     Args:
+    #         bricks (List[Brick])
+    #         bullets (List[Any])
+    #     """
+    #     for bullet in bullets:
+    #         for brick in bricks:
+    #             if bullet.rect.colliderect(brick.rect):
+    #                 bullet.kill()
+    #                 if brick.brick_hardness < 4:
+    #                     brick.kill()
+    #             elif bullet.rect.y < UP_BORDER_HEIGHT:
+    #                 bullet.kill()
 
     def update(self) -> None:
         self.rect.x = self.bullet_position.x

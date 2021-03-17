@@ -21,6 +21,16 @@ class BaseGameObject(Sprite):
         self.all_visual_objects.add(self.level.all_bricks)
         self.all_visual_objects.add(self.stick)  
         self.all_visual_objects.add(self.border.all_borders)
+     #TODO kakvo ще стане ако подам брикса директно
+    def bulletCollideDetect(self, bricks: List[Brick], bullets: List[Any]):
+        for bullet in bullets:
+            for brick in bricks:
+                if bullet.rect.colliderect(brick.rect):
+                    bullet.kill()
+                    if brick.brick_hardness < 4:
+                        brick.kill()
+                elif bullet.rect.y < UP_BORDER_HEIGHT:
+                    bullet.kill()   
         
 class Brick(BaseGameObject):
         
