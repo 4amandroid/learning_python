@@ -51,23 +51,7 @@ class Luck(BaseStick):
             self.rect.midtop = midtop
             
     
-    def luckCollideDetect(self, stick, lucks: List[Any]) -> None:  # TO DO change name
-        self.images = STICK_IMAGES
-        
-            
-            
-        def resetLucks(stick, luck, luck_number):
-            stick_lucks=[False] * len(self.images)
-            stick_lucks[luck_number] = True
-            stick.shoot, stick.glue, stick.longbar, stick.shortbar = stick_lucks
-        for luck in lucks:
-            if luck.rect.colliderect(stick.rect):
-                if luck.number in range(len(self.images)):
-                    resetLucks(stick, luck, luck.number)
-                    stick.initChangedStick(stick, self.images[luck.number])
-                luck.kill()
-            elif luck.rect.bottom > SCREEN_HEIGHT:
-                luck.kill()
+    
     
     def update(self) -> None:
         self.rect.y += 1

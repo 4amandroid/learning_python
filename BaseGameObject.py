@@ -21,6 +21,21 @@ class BaseGameObject(Sprite):
         self.all_visual_objects.add(self.level.all_bricks)
         self.all_visual_objects.add(self.stick)  
         self.all_visual_objects.add(self.border.all_borders)
+
+    def luckCollideDetect(self, stick, lucks: List[Any]) -> None:  # TO DO change name
+        self.images = STICK_IMAGES
+        def resetLucks(stick, luck, luck_number):
+            stick_lucks=[False] * len(self.images)
+            stick_lucks[luck_number] = True
+            stick.shoot, stick.glue, stick.longbar, stick.shortbar = stick_lucks
+        for luck in lucks:
+            if luck.rect.colliderect(stick.rect):
+                if luck.number in range(len(self.images)):
+                    resetLucks(stick, luck, luck.number)
+                    stick.initChangedStick(stick, self.images[luck.number])
+                luck.kill()
+            elif luck.rect.bottom > SCREEN_HEIGHT:
+                luck.kill()    
      #TODO kakvo ще стане ако подам брикса директно
     def bulletCollideDetect(self, bricks: List[Brick], bullets: List[Any]):
         for bullet in bullets:

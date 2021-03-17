@@ -126,7 +126,7 @@ while running:
     #2-те метода които са bulletCollideDetect и luckCollideDetect трябва да са в базовия клас
     if len(game.stick.bullets) > 0:
         game.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
-    game.luck.luckCollideDetect(game.stick ,game.all_lucks)
+    game.luckCollideDetect(game.stick ,game.all_lucks)
        
     if game.collisionInfo is not None:
         # нов метод в базовия клас който се казва changeDirection, от него трябва да се извади логиката която не е за смяна на посоката
