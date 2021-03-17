@@ -49,18 +49,8 @@ class Luck(BaseStick):
             self.luck_image = pygame.image.load(self.images[self.number])
             self.image.blit(self.luck_image, sprite_top_surface)
             self.rect.midtop = midtop
-            #защо stick:Stick не работи
-    def initChangedStick(self,stick, stick_image = STICK_TEXTURE):
-            stick_length = STICK_LENGTH
-            if stick.longbar:
-                stick_length = STICK_LENGTH + STICK_CORRECTION
-            elif stick.shortbar:
-                stick_length = STICK_LENGTH - STICK_CORRECTION
-                
-            stick.image = Surface((stick_length,STICK_HEIGHT))
-            stick.luck_image = pygame.image.load(stick_image)
-            stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
-            stick.rect = stick.image.get_rect() 
+            
+    
     def luckCollideDetect(self, stick, lucks: List[Any]) -> None:  # TO DO change name
         self.images = STICK_IMAGES
         
@@ -74,7 +64,7 @@ class Luck(BaseStick):
             if luck.rect.colliderect(stick.rect):
                 if luck.number in range(len(self.images)):
                     resetLucks(stick, luck, luck.number)
-                    self.initChangedStick(stick, self.images[luck.number])
+                    stick.initChangedStick(stick, self.images[luck.number])
                 luck.kill()
             elif luck.rect.bottom > SCREEN_HEIGHT:
                 luck.kill()
@@ -128,8 +118,18 @@ class Stick(BaseStick):
         #self.bullet = Bullet()
         self.bullets = Group()
         self.screen = screen
-     
-    
+     #защо stick:Stick не работи
+    def initChangedStick(self,stick, stick_image = STICK_TEXTURE):
+            stick_length = STICK_LENGTH
+            if stick.longbar:
+                stick_length = STICK_LENGTH + STICK_CORRECTION
+            elif stick.shortbar:
+                stick_length = STICK_LENGTH - STICK_CORRECTION
+                
+            stick.image = Surface((stick_length,STICK_HEIGHT))
+            stick.luck_image = pygame.image.load(stick_image)
+            stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
+            stick.rect = stick.image.get_rect() 
     def update(self) -> None: # type: ignore
         self.stick_position = Coordinate(coordinates = pygame.mouse.get_pos())
         self.rect.x = self.stick_position.x
