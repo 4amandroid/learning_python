@@ -98,6 +98,7 @@ class Game(BaseGameObject):
                 ball.rect.y -= COLISION_TOLERANCE
                 ball.x_speed = BALL_X_SPEED * ball.correct_glue_direction
                 ball.y_speed = BALL_Y_SPEED
+                
     def collisionReaction(self) -> None:
         self.points += self.points_per_brick
         if self.collisionInfo.visual_object.brick_hardness == min(self.level.brick_break):    
@@ -146,7 +147,7 @@ while running:
     if game.collisionInfo is not None:
         # нов метод в базовия клас който се казва changeDirection, от него трябва да се извади логиката която не е за смяна на посоката
         # смяна на нивово, точки, kill, смяна на hardness, късмети
-        # тези неща трябва да се напишат в метод който се казва collisionReaction
+        # DONE тези неща трябва да се напишат в метод който се казва collisionReaction
         
         game.changeDirection(game.collisionInfo.ball, game.collisionInfo.visual_object)
         if isinstance(game.collisionInfo.visual_object, Brick):
