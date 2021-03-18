@@ -98,8 +98,22 @@ class Game(BaseGameObject):
                 ball.rect.y -= COLISION_TOLERANCE
                 ball.x_speed = BALL_X_SPEED * ball.correct_glue_direction
                 ball.y_speed = BALL_Y_SPEED
-    def collisionReaction(self):
-        pass
+    def collisionReaction(self) -> None:
+        self.points += self.points_per_brick
+        if self.collisionInfo.visual_object.brick_hardness == min(self.level.brick_break):    
+            self.collisionInfo.visual_object.kill()
+            if len(self.level.all_bricks) == self.level.number_of_unbreakable_bricks:
+                self.level.current_level += 1
+                self.level.loadCurrentLevel()
+                self.getAllVisualObjects()
+        else:
+            if self.collisionInfo.visual_object.brick_hardness < max(self.level.brick_break):
+                self.collisionInfo.visual_object.brick_hardness -= 1
+                lucks = Luck(self.collisionInfo.visual_object.rect.midbottom)
+                if lucks.number in range(len(lucks.images)):
+                    self.all_lucks.add(lucks)
+        self.collisionInfo.visual_object.paint(self.collisionInfo.visual_object.brick_hardness)
+        
 game = Game()
 game.level.loadCurrentLevel()               
 game.getAllVisualObjects()
@@ -136,20 +150,8 @@ while running:
         
         game.changeDirection(game.collisionInfo.ball, game.collisionInfo.visual_object)
         if isinstance(game.collisionInfo.visual_object, Brick):
-            game.points += game.points_per_brick
-            if game.collisionInfo.visual_object.brick_hardness == min(game.level.brick_break):    
-                game.collisionInfo.visual_object.kill()
-                if len(game.level.all_bricks) == game.level.number_of_unbreakable_bricks:
-                    game.level.current_level += 1
-                    game.level.loadCurrentLevel()
-                    game.getAllVisualObjects()
-            else:
-                if game.collisionInfo.visual_object.brick_hardness < max(game.level.brick_break):
-                    game.collisionInfo.visual_object.brick_hardness -= 1
-                    lucks = Luck(game.collisionInfo.visual_object.rect.midbottom)
-                    if lucks.number in range(len(lucks.images)):
-                        game.all_lucks.add(lucks)
-            game.collisionInfo.visual_object.paint(game.collisionInfo.visual_object.brick_hardness)
+            game.collisionReaction()
+            
     # нов метод в game
     if len(game.ball.all_balls) == 0:
         if game.lives > 0:
