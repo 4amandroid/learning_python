@@ -98,7 +98,8 @@ class Game(BaseGameObject):
                 ball.rect.y -= COLISION_TOLERANCE
                 ball.x_speed = BALL_X_SPEED * ball.correct_glue_direction
                 ball.y_speed = BALL_Y_SPEED
-         
+    def collisionReaction(self):
+        pass
 game = Game()
 game.level.loadCurrentLevel()               
 game.getAllVisualObjects()
