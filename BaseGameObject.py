@@ -6,7 +6,7 @@ from pygame import Surface
 from Coordinate import Coordinate
 from Brick import Brick
 from pygame.sprite import Sprite, Group
- 
+from Stick import Stick 
 
 class BaseGameObject(Sprite):
     def __init__(self,surface_width :int = SIDE_BORDER_WIDTH, surface_height :int = SCREEN_WIDTH) -> None: 
@@ -46,7 +46,31 @@ class BaseGameObject(Sprite):
                         brick.kill()
                 elif bullet.rect.y < UP_BORDER_HEIGHT:
                     bullet.kill()   
-        
+    def changeDirection(self, ball, visual_object):
+        if isinstance(visual_object, Stick):
+            ball.x_correction = (ball.rect.x-visual_object.rect.x)
+            if visual_object.glue:
+                ball.glued = True 
+                if visual_object.glue and ball.glued:
+                    if ball.x_speed != 0:
+                        if ball.x_speed < 0:
+                            ball.correct_glue_direction = -1
+                        else:
+                            ball.correct_glue_direction = 1
+                    ball.x_speed = 0
+                    ball.y_speed = 0
+                    ball.rect.top -=1
+                    return
+            if (ball.rect.x-visual_object.rect.x) < STICK_LENGTH//3: 
+                if ball.x_speed > 0: ball.x_speed *= -1
+            elif (ball.rect.x-visual_object.rect.x)> STICK_LENGTH - STICK_LENGTH//3:
+                if ball.x_speed < 0: ball.x_speed *= -1
+        if (abs(visual_object.rect.top - ball.rect.bottom) < self.tolerance and ball.y_speed > 0) or \
+               (abs(visual_object.rect.bottom - ball.rect.top) < self.tolerance and ball.y_speed < 0):
+            ball.y_speed *= -1
+        elif (abs(visual_object.rect.right - ball.rect.left) < self.tolerance and ball.x_speed < 0) or \
+                 (abs(visual_object.rect.left - ball.rect.right) < self.tolerance and ball.x_speed > 0):
+            ball.x_speed *= -1     
 class Brick(BaseGameObject):
         
     def __init__(self):

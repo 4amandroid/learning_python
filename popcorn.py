@@ -57,33 +57,9 @@ class Game(BaseGameObject):
         self.textRect.midtop = (SCREEN_WIDTH//2,UP_WALL_Y)
         self.screen.blit(self.text,self.textRect)      
        
-    def changeDirection(self, ball, visual_object):
-        if isinstance(visual_object, Stick):
-            ball.x_correction = (ball.rect.x-visual_object.rect.x)
-            if visual_object.glue:
-                ball.glued = True 
-                if visual_object.glue and ball.glued:
-                    if ball.x_speed != 0:
-                        if ball.x_speed < 0:
-                            ball.correct_glue_direction = -1
-                        else:
-                            ball.correct_glue_direction = 1
-                    ball.x_speed = 0
-                    ball.y_speed = 0
-                    ball.rect.top -=1
-                    return
-            if (ball.rect.x-visual_object.rect.x) < STICK_LENGTH//3: 
-                if ball.x_speed > 0: ball.x_speed *= -1
-            elif (ball.rect.x-visual_object.rect.x)> STICK_LENGTH - STICK_LENGTH//3:
-                if ball.x_speed < 0: ball.x_speed *= -1
-        if (abs(visual_object.rect.top - ball.rect.bottom) < self.tolerance and ball.y_speed > 0) or \
-               (abs(visual_object.rect.bottom - ball.rect.top) < self.tolerance and ball.y_speed < 0):
-            ball.y_speed *= -1
-        elif (abs(visual_object.rect.right - ball.rect.left) < self.tolerance and ball.x_speed < 0) or \
-                 (abs(visual_object.rect.left - ball.rect.right) < self.tolerance and ball.x_speed > 0):
-            ball.x_speed *= -1   
+    
         
-    def collideDetect(self):    
+    def ballCollideDetect(self):    
         for visual_object in self.all_visual_objects:
             for ball in self.ball.all_balls:
                 if ball.rect.bottom >= SCREEN_HEIGHT:
@@ -98,7 +74,7 @@ class Game(BaseGameObject):
                 ball.rect.y -= COLISION_TOLERANCE
                 ball.x_speed = BALL_X_SPEED * ball.correct_glue_direction
                 ball.y_speed = BALL_Y_SPEED
-                
+
     def collisionReaction(self) -> None:
         self.points += self.points_per_brick
         if self.collisionInfo.visual_object.brick_hardness == min(self.level.brick_break):    
@@ -137,7 +113,7 @@ while running:
                 pygame.mixer.Sound.play(pygame.mixer.Sound('dum.wav'))  
                 bullet =  game.stick.shot();
     
-    game.collisionInfo = game.collideDetect()  # type: ignore
+    game.collisionInfo = game.ballCollideDetect()  # type: ignore
     
     #DONE 2-те метода които са bulletCollideDetect и luckCollideDetect трябва да са в базовия клас
     if len(game.stick.bullets) > 0:
