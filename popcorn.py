@@ -20,7 +20,7 @@ class Game(BaseGameObject):
         self.ball = Ball()
         self.ball.initializeBalls(DEFAULT_NUMBER_OF_BALLS)
         self.stick = Stick(self.screen)
-        self.luck = Luck()
+        #self.luck = Luck()
         self.all_lucks = Group()
         self.points = 0
         self.points_per_brick = POINTS_PER_BRICK
