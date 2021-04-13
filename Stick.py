@@ -49,35 +49,9 @@ class Luck(BaseStick):
             self.luck_image = pygame.image.load(self.images[self.number])
             self.image.blit(self.luck_image, sprite_top_surface)
             self.rect.midtop = midtop
-     
-    def luckCollideDetect(self, sticks, lucks: List[Any]) -> None:  # TO DO change name
-        self.images = STICK_IMAGES
-        def initChangedStick(stick: Stick, stick_image = STICK_TEXTURE):
-            stick_length = STICK_LENGTH
-            if stick.longbar:
-                stick_length = STICK_LENGTH + STICK_CORRECTION
-            elif stick.shortbar:
-                stick_length = STICK_LENGTH - STICK_CORRECTION
-                
-            stick.image = Surface((stick_length,STICK_HEIGHT))
-            stick.luck_image = pygame.image.load(stick_image)
-            stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
-            stick.rect = stick.image.get_rect()
             
-            
-        def resetLucks(stick, luck, luck_number):
-            stick_lucks=[False] * len(self.images)
-            stick_lucks[luck_number] = True
-            stick.shoot, stick.glue, stick.longbar, stick.shortbar = stick_lucks
-        for stick in sticks:
-            for luck in lucks:
-                if luck.rect.colliderect(stick.rect):
-                    if luck.number in range(len(self.images)):
-                        resetLucks(stick, luck, luck.number)
-                        initChangedStick(stick, self.images[luck.number])
-                    luck.kill()
-                elif luck.rect.bottom > SCREEN_HEIGHT:
-                    luck.kill()
+    
+    
     
     def update(self) -> None:
         self.rect.y += 1
@@ -94,21 +68,21 @@ class Bullet(BaseStick):
         self.rect.y = STICK_Y_POSITION
         self.bullet_position = Coordinate(x_offset, pygame.mouse.get_pos()[1])
 
-    def bulletCollideDetect(self, bricks: List[Brick], bullets: List[Any]):
-        """Action when bullet is collide to brick
+    # def bulletCollideDetect(self, bricks: List[Brick], bullets: List[Any]):
+    #     """Action when bullet is collide to brick
 
-        Args:
-            bricks (List[Brick])
-            bullets (List[Any])
-        """
-        for bullet in bullets:
-            for brick in bricks:
-                if bullet.rect.colliderect(brick.rect):
-                    bullet.kill()
-                    if brick.brick_hardness < 4:
-                        brick.kill()
-                elif bullet.rect.y < UP_BORDER_HEIGHT:
-                    bullet.kill()
+    #     Args:
+    #         bricks (List[Brick])
+    #         bullets (List[Any])
+    #     """
+    #     for bullet in bullets:
+    #         for brick in bricks:
+    #             if bullet.rect.colliderect(brick.rect):
+    #                 bullet.kill()
+    #                 if brick.brick_hardness < 4:
+    #                     brick.kill()
+    #             elif bullet.rect.y < UP_BORDER_HEIGHT:
+    #                 bullet.kill()
 
     def update(self) -> None:
         self.rect.x = self.bullet_position.x
@@ -125,11 +99,21 @@ class Stick(BaseStick):
                          STICK_TEXTURE, 
                          TOP_LEFT_SURFACE, 
                          BACKGROUND_COLOR)
-        self.bullet = Bullet()
-        self.bullets = Group(self.bullet)
+        #self.bullet = Bullet()
+        self.bullets = Group()
         self.screen = screen
-     
-    
+     #защо stick:Stick не работи
+    def initChangedStick(self,stick, stick_image = STICK_TEXTURE):
+            stick_length = STICK_LENGTH
+            if stick.longbar:
+                stick_length = STICK_LENGTH + STICK_CORRECTION
+            elif stick.shortbar:
+                stick_length = STICK_LENGTH - STICK_CORRECTION
+                
+            stick.image = Surface((stick_length,STICK_HEIGHT))
+            stick.luck_image = pygame.image.load(stick_image)
+            stick.image.blit(stick.luck_image, TOP_LEFT_SURFACE)
+            stick.rect = stick.image.get_rect() 
     def update(self) -> None: # type: ignore
         self.stick_position = Coordinate(coordinates = pygame.mouse.get_pos())
         self.rect.x = self.stick_position.x
@@ -145,8 +129,8 @@ class Stick(BaseStick):
     
     def shot(self) -> Bullet:
         
-        bullet = Bullet(self.rect.x)
-        self.bullets.add(bullet)
-        bullet = Bullet(self.rect.x+STICK_LENGTH-BULLET_WIDTH)
-        self.bullets.add(bullet)
-        return bullet
+        self.bullet = Bullet(self.rect.x)
+        self.bullets.add(self.bullet)
+        self.bullet = Bullet(self.rect.x+STICK_LENGTH-BULLET_WIDTH)
+        self.bullets.add(self.bullet)
+        return self.bullet
