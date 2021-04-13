@@ -44,7 +44,8 @@ class Game(BaseGameObject):
             self.brick_screen = pygame.display.set_mode((screen_width, screen_height))
             pygame.display.set_caption("My Game")
             self.font = pygame.font.SysFont(None, FONT_SIZE)
-            
+
+    # това трябва да се изнесе в отделен клас
     def printItemBar(self, points: int = 0) -> None:
         self.points = points
         # използвай този метод за билдване на стринг https://docs.python.org/3.6/whatsnew/3.6.html#whatsnew36-pep498
@@ -56,7 +57,7 @@ class Game(BaseGameObject):
         self.textRect = self.text.get_rect()
         self.textRect.midtop = (SCREEN_WIDTH//2,UP_WALL_Y)
         self.screen.blit(self.text,self.textRect)      
-       
+    
     def changeDirection(self, ball, visual_object):
         if isinstance(visual_object, Stick):
             ball.x_correction = (ball.rect.x-visual_object.rect.x)
@@ -123,17 +124,21 @@ while running:
     game.collisionInfo = game.collideDetect()  # type: ignore
     
     #2-те метода които са bulletCollideDetect и luckCollideDetect трябва да са в базовия клас
+    # махай коментарите когато ги направиш за да знаем до къде сме
     game.stick.bullet.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
     game.luck.luckCollideDetect(game.all_sticks ,game.all_lucks)
        
     if game.collisionInfo is not None:
-        # нов метод в базовия клас който се казва changeDirection, от него трябва да се извади логиката която не е за смяна на посоката
-        # смяна на нивово, точки, kill, смяна на hardness, късмети
-        # тези неща трябва да се напишат в метод който се казва collisionReaction
+        
+        # changeDirection трябва да е метод на обекта ball и трябва да се получи това:
+        # game.collisionInfo.ball.changeDirection(game.collisionInfo.visual_object)
+        # game.collisionInfo.visual_object трябва да ти е destination obeject-a този в който токчето се удря
+        # махай коментарите когато ги направиш за да знаем до къде сме
         
         game.changeDirection(game.collisionInfo.ball, game.collisionInfo.visual_object)
         if isinstance(game.collisionInfo.visual_object, Brick):
-            game.points += game.points_per_brick
+            game.points += game.points_per_brick #(трябва да има различни точки за различни тухли и точки трябва да се генерират само ако има kill)
+            # махай коментарите когато ги направиш за да знаем до къде сме
             if game.collisionInfo.visual_object.brick_hardness == min(game.level.brick_break):    
                 game.collisionInfo.visual_object.kill()
                 if len(game.level.all_bricks) == game.level.number_of_unbreakable_bricks:
