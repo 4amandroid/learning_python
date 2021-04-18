@@ -32,10 +32,7 @@ class Game(BaseGameObject):
         self.tolerance = COLISION_TOLERANCE
         self.collisionInfo = None
     
-    #def __initStick(self) -> None:
-    #DONE    # това трябва да се промени навсякъде - ще работим само с един стик за сега
-    #    self.all_sticks = Group()
-    #    self.all_sticks.add(self.stick)
+     
             
     def __initializeGraphics(self, screen_width: int, screen_height: int) -> None:
             pygame.init()
@@ -106,7 +103,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            #DONE нов метод за това с лепилото
+            
             game.ballPeelOff()
             
             if game.stick.shoot:
@@ -116,7 +113,7 @@ while running:
     
     game.collisionInfo = game.ballCollideDetect()  # type: ignore
     
-    #DONE 2-те метода които са bulletCollideDetect и luckCollideDetect трябва да са в базовия клас
+    
     if len(game.stick.bullets) > 0:
         game.bulletCollideDetect(game.level.all_bricks ,game.stick.bullets)
     game.luckCollideDetect(game.stick ,game.all_lucks)
